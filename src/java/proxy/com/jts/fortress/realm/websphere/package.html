@@ -1,0 +1,348 @@
+<!--
+  ~ Copyright © Joshua Tree Software, LLC, 2009-2011 All Rights Reserved.
+  -->
+<html>
+   <head>
+      <title>Package Documentation for Fortress Websphere SPI</title>
+   </head>
+   <body>
+      <p>
+         This package is the component that allows security checks to be performed within a
+          Websphere runtime environment.  The Websphere Realm has been split into two packages each contained within
+          its own jar file.
+          The Websphere Realm Jars include:
+          <ol>
+          <li>fortressProxyWebSphere-[version].jar</li>
+          <li>fortressRealm-[version].jar and configuration artifacts</li>
+          </ol>
+
+         The fortressProxyWebSphere jar is a thin layer of code that calls the fortressRealm implementation code via standard
+         Java URLClassloader logic.  The Fortress implementation code and configuration artifacts must remain separate from
+         Websphere's runtime system classpath.  The rationale for separation is it necessary to allow a
+         predictable and repeatable installation process as throwing non-native jars on any application server
+         system classpath contains risk due to variability of the runtime environment itself.
+         To put it simply, it is to keep Fortress code out of the application server's visibility which means
+         setting up Fortress in Websphere will work every time if the instructions are followed faithfully.
+      </p>
+
+      <h3>JoshuaTree Fortress Websphere UserRegistry Setup Notes</h3>
+      This installation document contains instructions for installing the Fortress Websphere UserRegistry component.  This component works
+       in Websphere 5,6,7.
+   <h4>Guidelines & Tips</h4>
+       <ul>
+       <li>In the document that follows, replace <em>[version]</em> with Fortress version label.  For example - if Fortress <em>1.0.0</em> release, change fortressProxyWebsphere-<em>[version]</em>.jar to fortressProxyWebsphere-<em>1.0.0</em>.jar</li>
+       <li>Restart Websphere server after any changes to Websphere config, Fortress config or lib files.</li>
+       <li>You (usually) do NOT need to restart Websphere after changes to the LDAP data, i.e. users, passwords, roles.</li>
+       <li>Steps I - III below are mandatory.</li>
+       <li>Step IV is optional, for testing purposes.</li>
+       <li>Common misconfiguration issues related to Fortress, LDAP and Websphere are located in section V.</li>
+       </ul>
+   </p>
+
+   <ol type="I">
+       <li>
+          <h3>Instructions to extract Fortress Realm Package to Target System</h3>
+           <ol type="A">
+              <li>Copy fortressRealmDist-[version].zip to hard drive on target server env.</li>
+              <li>Extract the zip.  The location for archive can vary according to requirements.  The location for package will be referred to as "FORTRESS_HOME" later in these instructions.</li>
+           </ol>
+       </li>
+
+       <li>
+          <h3>Instructions to configure Fortress Realm to use Target System LDAP</h3>
+           Note: the <b>dist</b> Ant target on this project will use settings contained within the <b>build.properties</b> file contained within the root folder of this component and replace substitution params contained within <em>oamRealm.properties.src</em> and create new <em>oamRealm.properties</em> file automatically.<br><br>
+           <ol type="A">
+              <li>Edit the FORTRESS_HOME properties file located in $FORTRESS_HOME/conf/oamRealm.properties.  If you did not run Ant <b>dist</b> target you will need to create using <em>oamRealm.properties.src</em>
+<font size="3" color="#000000"><pre>vi /home/user/fortressRealm-1.0.0/conf/oamRealm.properties</pre></font>
+              </li>
+              
+              <li>
+               Set the LDAP Host name (or IP) and port properties:
+					<font size="3" color="#000000">
+<pre>
+host=myldaphostname
+port=389
+</pre>
+					</font>              
+					</li>
+              <li>
+              Set the LDAP admin creds:
+<font size="" color="#000000"><pre>
+admin=cn=Manager\,dc=jts\,dc=com
+adminPw=secret
+</pre>                  
+</font>              </li>
+              <li>
+                  Set the LDAP connection pool info:
+<font size="3" color="#000000"><pre>
+minUserConn=1
+maxUserConn=10
+minConn=1
+maxConn=10
+</pre>
+</font>           <em>note: the min/max will vary according to anticipated load on your Websphere server.  For busy systems, the max number of
+                  ldap connections may be much higher.</em><br><br>
+              </li>
+              </ol>
+          </p>
+       </li>
+       <li>
+          <h3>Instructions to configure Websphere to use Fortress Realm</h3>
+           <ol type="A">
+               <li>Load the Proxy jar onto server classpath (WEBSPHERE_HOME/lib).
+                Copy the proxy jar located, FORTRESS_HOME/proxy/fortressProxyWebsphere-[version].jar to the Websphere Server's lib folder.
+<font size="3" color="#000000">                <pre>
+/opt/IBM/Websphere/AppServer/lib$ sudo cp /home/user/fortressRealm-1.0.0/proxy/fortressProxyWebsphere-1.0.0.jar  .
+               </pre>
+</font>               </li>
+                <em>note: This is the only Fortress binary or configuration artifact that will reside directly on Websphere's server classpath.</em><br><br>
+               </p>
+
+              <li>Restart the application server.</li>
+<font size="3" color="#000000">               <pre>
+/opt/IBM/WebSphere/AppServer/profiles/AppSrv01/bin/stopServer.sh server1 -profileName AppSrv01
+/opt/IBM/WebSphere/AppServer/profiles/AppSrv01/bin/startServer.sh server1 -profileName AppSrv01
+              </pre>
+</font>              <li>Go to Websphere Admin Console, i.e.: </li>
+<font size="3" color="#000000"><pre>https://localhost:9043/ibm/console/logon.jsp</pre></font>
+              <li>Navigate to Global Security Page:  <em>Security->GlobalSecurity</em></li>
+              <li>Select dropdown: <em>Available realm definitions</em>: <em>Standalone custom registry</em></li>
+              <li>Click on <em>Configure</em> button</li>
+              <li>Enter <em>Primary administrative user name</em> : <strong>wasadmin</strong></li>
+              <li>Select Radio button: <em>Server identity that is stored in the repository</em></li>
+              <li>Enter in field: <em>Server user ID or administrative user on a Version 6.0.x node</em> : <strong>wasadmin</strong>  (or whatever you choose as your default console userId)./li>
+              <li>Enter in field: <em>Password</em> : <strong>@dmin123</strong>  (or whatever you choose as your default consle user's password)</li>
+              <li>Enter in field: <em>Information required Custom registry class name</em> : <strong>com.jts.fortress.realm.websphere.WsAccessMgrProxy</strong></li>
+              <li>Enable checkbox: <em>Ignore case for authorization</em></li>
+              <li>Enter in field: <em>Custom properties</em>" :</li>
+<font size="3" color="#000000">               <pre>
+<em>Name</em> <strong>REALM_CLASSPATH</strong>   <em>Value</em> <strong>/home/user/fortressRealmDist-1.0.0-rc1/conf:/home/user/fortressRealmDist-1.0.0-rc1/lib/fortressRealm-1.0.0-rc1.jar</strong>
+              </pre>
+</font>              <li>Click on <em>Apply</em> button.</li>
+              <li>Click on <em>Save directly to the master configuration.</em> link.</li>
+              <li>Navigate back to <em>Global security</em> page by clicking on link of same name.</li>
+              <li>Enable checkbox: <em>Enable application security</em></li>
+              <li>Do <strong>NOT</strong> enable: <em>Use Java 2 security to restrict application access to local resources</em></li>
+              <li>For dropdown <em>Available realm definitions</em> select: <em>Standalone custom registry</em> and click on <em>Set as current</em> button.</li>
+              <li>Click on <em>Apply</em> button</li>
+               <br><em>Note: If you are going to have errors enabling Fortress as security manager, this is where it occurs.<br>
+               If no errors continue to next step, else go to Troubleshooting section of this document to determine what went wrong.</em><br><br>
+              <li>Click on <em># Save directly to the master configuration.</em> link.</li>
+              <li>Restart Webshere server:</li>
+<font size="3" color="#000000">               <pre>
+/opt/IBM/WebSphere/AppServer/bin$ ./stopServer.sh server1 -profileName AppSrv01
+/opt/IBM/WebSphere/AppServer/bin$ ./startServer.sh server1 -profileName AppSrv01
+              </pre>
+</font>              
+<li>Verify that realm started successfully by viewing following message in Websphere's log:</li>
+<font size="3" color="#000000">              <pre>
+/opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/server1$ tail -f -n10000 SystemOut.log              
+...
+[6/5/11 18:46:16:745 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,744 (INFO ) com.jts.fortress.realm.J2eePolicyMgrImpl - Initialized successfully
+[6/5/11 18:46:16:745 CDT] 00000000 WsAccessMgrPr I   com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize - Fortress UserRegistry initialized no errors.
+[6/5/11 18:46:16:748 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,748 (INFO ) com.jts.fortress.realm.websphere.WsAccessMgrImpl. J2EE policy agent initialization successful
+[6/5/11 18:46:16:759 CDT] 00000000 UserRegistryI A   SECJ0136I: Custom Registry:com.jts.fortress.realm.websphere.WsAccessMgrProxy has been initialized
+              </pre>
+</font>              </ol>
+          </p>
+       </li>
+    <em>If you made it this far without errors you are now ready to use Fortress enabled security in Websphere runtime environment.
+    If you need help understanding how Java EE security works, check out this link: 
+    <br><a href="http://download.oracle.com/javaee/5/tutorial/doc/bnbwk.html">The Java EE 5 Tutorial</a></em><br>       
+       <li>
+          <h3>Instructions to test Websphere Security</h3>
+           <ol type="A">
+              <li>logon to admin console: </li>
+<font size="3" color="#000000"><pre>https://localhost:9043/ibm/console/logon.jsp</pre></font>
+              <li>enter creds: wasadmin/@dmin123</li>
+              <li>Verify you get in successfully and can access Websphere Admin Console functions.</li>
+              </ol>
+          </p>
+      </li>
+       <li>
+          <h3>Common Troubleshooting Tips</h3>
+           <ol type="A">
+              <li>Server can't find config files (realmClasspath="/fortressRealm-1.0.0/conf/")
+                  <h4>Error</h4>
+<font size="3" color="#000000">                  <pre>
+[6/6/11 18:33:44:556 CDT] 00000000 WsAccessMgrPr W   com.jts.fortress.realm.websphere.WsAccessMgrProxy.getRealmImplClassname - REALM_IMPLEMENTATION default=com.jts.fortress.realm.websphere.WsAccessMgrImpl
+[6/6/11 18:33:44:572 CDT] 00000000 CpUtil        I   com.jts.fortress.realm.util.CpUtil.parseRealmClasspath </home/smckinn/JavaTools/realm/fortressRealmDist-1.0.0-rc1/conf:/home/smckinn/JavaTools/realm/fortressRealmDist-1.0.0-rc1/lib/fortressRealm-1.0.0-rc1.jar>
+[6/6/11 18:33:44:575 CDT] 00000000 CpUtil        I   com.jts.fortress.realm.util.CpUtil.parseRealmClasspath path0 <file:/home/smckinn/JavaTools/realm/fortressRealmDist-1.0.0-rc1/conf>
+[6/6/11 18:33:44:578 CDT] 00000000 CpUtil        I   com.jts.fortress.realm.util.CpUtil.parseRealmClasspath path1 <file:/home/smckinn/JavaTools/realm/fortressRealmDist-1.0.0-rc1/lib/fortressRealm-1.0.0-rc1.jar>
+[6/6/11 18:33:44:581 CDT] 00000000 WsAccessMgrPr I   com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize - instantiate class: com.jts.fortress.realm.websphere.WsAccessMgrImpl
+[6/6/11 18:33:44:854 CDT] 00000000 FfdcProvider  W com.ibm.ws.ffdc.impl.FfdcProvider logIncident FFDC1003I: FFDC Incident emitted on /opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/ffdc/server1_76887688_11.06.06_18.33.44.817562839570554853342.txt null 484
+[6/6/11 18:33:44:871 CDT] 00000000 ContainerHelp E   WSVR0501E: Error creating component null [class com.ibm.ws.security.core.SecurityComponentImpl]
+java.lang.ExceptionInInitializerError
+  at java.lang.J9VMInternals.initialize(J9VMInternals.java:222)
+  at com.jts.fortress.realm.J2eePolicyMgrFactory.<clinit>(J2eePolicyMgrFactory.java:32)
+  at java.lang.J9VMInternals.initializeImpl(Native Method)
+  at java.lang.J9VMInternals.initialize(J9VMInternals.java:200)
+  at com.jts.fortress.realm.websphere.WsAccessMgrImpl.<clinit>(WsAccessMgrImpl.java:41)
+  at java.lang.J9VMInternals.initializeImpl(Native Method)
+  at java.lang.J9VMInternals.initialize(J9VMInternals.java:200)
+  at java.lang.J9VMInternals.newInstanceImpl(Native Method)
+  at java.lang.Class.newInstance(Class.java:1325)
+  at com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize(WsAccessMgrProxy.java:60)
+  at com.ibm.ws.security.registry.UserRegistryImpl.initialize(UserRegistryImpl.java:260)
+  at com.ibm.ws.security.config.UserRegistryConfigImpl.do_createRegistryObjects(UserRegistryConfigImpl.java:680)
+  at com.ibm.ws.security.config.UserRegistryConfigImpl.createRegistryObjects(UserRegistryConfigImpl.java:637)
+  at com.ibm.ws.security.config.UserRegistryConfigImpl.getUserRegistryImpl(UserRegistryConfigImpl.java:622)
+  at com.ibm.ws.security.core.distSecurityComponentImpl.bindRegistry(distSecurityComponentImpl.java:509)
+  at com.ibm.ws.security.core.distSecurityComponentImpl.bindRegistries(distSecurityComponentImpl.java:486)
+  at com.ibm.ws.security.core.distSecurityComponentImpl.start(distSecurityComponentImpl.java:434)
+  at com.ibm.ws.security.core.SecurityComponentImpl.start(SecurityComponentImpl.java:104)
+  at com.ibm.ws.runtime.component.ContainerHelper.startComponents(ContainerHelper.java:538)
+  at com.ibm.ws.runtime.component.ContainerImpl.startComponents(ContainerImpl.java:627)
+  at com.ibm.ws.runtime.component.ContainerImpl.start(ContainerImpl.java:618)
+  at com.ibm.ws.runtime.component.ServerImpl.start(ServerImpl.java:503)
+  at com.ibm.ws.runtime.WsServerImpl.bootServerContainer(WsServerImpl.java:298)
+  at com.ibm.ws.runtime.WsServerImpl.start(WsServerImpl.java:214)
+  at com.ibm.ws.runtime.WsServerImpl.main(WsServerImpl.java:666)
+  at com.ibm.ws.runtime.WsServer.main(WsServer.java:59)
+  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+  at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:48)
+  at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:37)
+  at java.lang.reflect.Method.invoke(Method.java:600)
+  at com.ibm.wsspi.bootstrap.WSLauncher.launchMain(WSLauncher.java:213)
+  at com.ibm.wsspi.bootstrap.WSLauncher.main(WSLauncher.java:93)
+  at com.ibm.wsspi.bootstrap.WSLauncher.run(WSLauncher.java:74)
+  at org.eclipse.core.internal.runtime.PlatformActivator$1.run(PlatformActivator.java:78)
+  at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:92)
+  at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:68)
+  at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:400)
+  at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:177)
+  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+  at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:48)
+  at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:37)
+  at java.lang.reflect.Method.invoke(Method.java:600)
+  at org.eclipse.core.launcher.Main.invokeFramework(Main.java:340)
+  at org.eclipse.core.launcher.Main.basicRun(Main.java:282)
+  at org.eclipse.core.launcher.Main.run(Main.java:981)
+  at com.ibm.wsspi.bootstrap.WSPreLauncher.launchEclipse(WSPreLauncher.java:340)
+  at com.ibm.wsspi.bootstrap.WSPreLauncher.main(WSPreLauncher.java:110)
+Caused by: com.jts.fortress.ConfigurationRuntimeException: com.jts.fortress.configuration.Config static init: Error loading from configuration file: [oamConfig.xml] Exception=java.lang.RuntimeException: com.jts.fortress.configuration.Config static init: Error, null configuration file: oamConfig.xml, errCode=127
+  at com.jts.fortress.configuration.Config.<clinit>(Config.java:95)
+  at java.lang.J9VMInternals.initializeImpl(Native Method)
+  at java.lang.J9VMInternals.initialize(J9VMInternals.java:200)
+  ... 46 more
+Caused by: java.lang.RuntimeException: com.jts.fortress.configuration.Config static init: Error, null configuration file: oamConfig.xml
+  at com.jts.fortress.configuration.Config.<clinit>(Config.java:52)
+  ... 48 more
+
+6/6/11 18:34:01:566 CDT] 00000000 WsServerImpl  A   WSVR0002I: Server server1 open for e-business, problems occurred during startup
+                  </pre>
+</font>
+                  <h4>Corrective Action</h4>
+                  <pre>
+<em>Ensure step III.M points to Fortress realm configuration folder.</em>
+                  </pre>
+              </li>
+               <li>Server can't find proxy jar (Realm className="com.jts.fortress.realm.websphere.WsAccessMgrProxy")
+                   <h4>Error</h4>
+<font size="3" color="#000000">                   <pre>
+com.ibm.ws.security.registry.UserRegistryImpl.initialize 253
+[6/6/11 18:40:06:982 CDT] 00000000 UserRegistryI E   SECJ0330E: The registry implementation file com.jts.fortress.realm.websphere.WsAccessMgrProxy cannot be loaded because of the following exception java.lang.ClassNotFoundException: com.jts.fortress.realm.websphere.WsAccessMgrProxy
+at java.lang.Class.forNameImpl(Native Method)
+at java.lang.Class.forName(Class.java:169)
+at com.ibm.ws.security.registry.UserRegistryImpl.initialize(UserRegistryImpl.java:224)
+at com.ibm.ws.security.config.UserRegistryConfigImpl.do_createRegistryObjects(UserRegistryConfigImpl.java:680)
+at com.ibm.ws.security.config.UserRegistryConfigImpl.createRegistryObjects(UserRegistryConfigImpl.java:637)
+at com.ibm.ws.security.config.UserRegistryConfigImpl.getUserRegistryImpl(UserRegistryConfigImpl.java:622)
+at com.ibm.ws.security.core.distSecurityComponentImpl.bindRegistry(distSecurityComponentImpl.java:509)
+at com.ibm.ws.security.core.distSecurityComponentImpl.bindRegistries(distSecurityComponentImpl.java:486)
+at com.ibm.ws.security.core.distSecurityComponentImpl.start(distSecurityComponentImpl.java:434)
+at com.ibm.ws.security.core.SecurityComponentImpl.start(SecurityComponentImpl.java:104)
+at com.ibm.ws.runtime.component.ContainerHelper.startComponents(ContainerHelper.java:538)
+at com.ibm.ws.runtime.component.ContainerImpl.startComponents(ContainerImpl.java:627)
+at com.ibm.ws.runtime.component.ContainerImpl.start(ContainerImpl.java:618)
+at com.ibm.ws.runtime.component.ServerImpl.start(ServerImpl.java:503)
+at com.ibm.ws.runtime.WsServerImpl.bootServerContainer(WsServerImpl.java:298)
+at com.ibm.ws.runtime.WsServerImpl.start(WsServerImpl.java:214)
+at com.ibm.ws.runtime.WsServerImpl.main(WsServerImpl.java:666)
+at com.ibm.ws.runtime.WsServer.main(WsServer.java:59)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:48)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:37)
+at java.lang.reflect.Method.invoke(Method.java:600)
+at com.ibm.wsspi.bootstrap.WSLauncher.launchMain(WSLauncher.java:213)
+at com.ibm.wsspi.bootstrap.WSLauncher.main(WSLauncher.java:93)
+at com.ibm.wsspi.bootstrap.WSLauncher.run(WSLauncher.java:74)
+at org.eclipse.core.internal.runtime.PlatformActivator$1.run(PlatformActivator.java:78)
+at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:92)
+at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:68)
+at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:400)
+at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:177)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:48)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:37)
+at java.lang.reflect.Method.invoke(Method.java:600)
+at org.eclipse.core.launcher.Main.invokeFramework(Main.java:340)
+at org.eclipse.core.launcher.Main.basicRun(Main.java:282)
+at org.eclipse.core.launcher.Main.run(Main.java:981)
+at com.ibm.wsspi.bootstrap.WSPreLauncher.launchEclipse(WSPreLauncher.java:340)
+at com.ibm.wsspi.bootstrap.WSPreLauncher.main(WSPreLauncher.java:110)
+                   </pre>
+</font>                    Server fails to launch.
+                   <h4>Corrective Action</h4>
+                   <pre>
+<em>Ensure step III.A copied the Fortress realm proxy jar to /opt/IBM/Websphere/AppServer/lib folder.</em>
+                   </pre>
+               </li>
+               <li>Server can't find binaries (realmClasspath="...FORTRESS_HOME/lib/fortressRealm-[version].jar")
+                   <h4>Error</h4>
+<font size="3" color="#000000">                   <pre>
+[6/6/11 18:48:02:471 CDT] 00000000 WsAccessMgrPr I   com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize - instantiate class: com.jts.fortress.realm.websphere.WsAccessMgrImpl
+[6/6/11 18:48:02:474 CDT] 00000000 WsAccessMgrPr E   com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.realm.websphere.WsAccessMgrImpl
+[6/6/11 18:48:02:508 CDT] 00000000 UserRegistryI E   SECJ0331E: The registry implementation file com.jts.fortress.realm.websphere.WsAccessMgrProxy cannot be initialized because of the following exception com.ibm.websphere.security.CustomRegistryException: com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.realm.websphere.WsAccessMgrImpl
+at com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize(WsAccessMgrProxy.java:78)
+at com.ibm.ws.security.registry.UserRegistryImpl.initialize(UserRegistryImpl.java:260)
+at com.ibm.ws.security.config.UserRegistryConfigImpl.do_createRegistryObjects(UserRegistryConfigImpl.java:680)
+at com.ibm.ws.security.config.UserRegistryConfigImpl.createRegistryObjects(UserRegistryConfigImpl.java:637)
+at com.ibm.ws.security.config.UserRegistryConfigImpl.getUserRegistryImpl(UserRegistryConfigImpl.java:622)
+at com.ibm.ws.security.core.distSecurityComponentImpl.bindRegistry(distSecurityComponentImpl.java:509)
+at com.ibm.ws.security.core.distSecurityComponentImpl.bindRegistries(distSecurityComponentImpl.java:486)
+at com.ibm.ws.security.core.distSecurityComponentImpl.start(distSecurityComponentImpl.java:434)
+at com.ibm.ws.security.core.SecurityComponentImpl.start(SecurityComponentImpl.java:104)
+at com.ibm.ws.runtime.component.ContainerHelper.startComponents(ContainerHelper.java:538)
+at com.ibm.ws.runtime.component.ContainerImpl.startComponents(ContainerImpl.java:627)
+at com.ibm.ws.runtime.component.ContainerImpl.start(ContainerImpl.java:618)
+at com.ibm.ws.runtime.component.ServerImpl.start(ServerImpl.java:503)
+at com.ibm.ws.runtime.WsServerImpl.bootServerContainer(WsServerImpl.java:298)
+at com.ibm.ws.runtime.WsServerImpl.start(WsServerImpl.java:214)
+at com.ibm.ws.runtime.WsServerImpl.main(WsServerImpl.java:666)
+at com.ibm.ws.runtime.WsServer.main(WsServer.java:59)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:48)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:37)
+at java.lang.reflect.Method.invoke(Method.java:600)
+at com.ibm.wsspi.bootstrap.WSLauncher.launchMain(WSLauncher.java:213)
+at com.ibm.wsspi.bootstrap.WSLauncher.main(WSLauncher.java:93)
+at com.ibm.wsspi.bootstrap.WSLauncher.run(WSLauncher.java:74)
+at org.eclipse.core.internal.runtime.PlatformActivator$1.run(PlatformActivator.java:78)
+at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:92)
+at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:68)
+at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:400)
+at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:177)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:48)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:37)
+at java.lang.reflect.Method.invoke(Method.java:600)
+at org.eclipse.core.launcher.Main.invokeFramework(Main.java:340)
+at org.eclipse.core.launcher.Main.basicRun(Main.java:282)
+at org.eclipse.core.launcher.Main.run(Main.java:981)
+at com.ibm.wsspi.bootstrap.WSPreLauncher.launchEclipse(WSPreLauncher.java:340)
+at com.ibm.wsspi.bootstrap.WSPreLauncher.main(WSPreLauncher.java:110)
+                   </pre>
+</font>                    Server fails to launch
+                   <h4>Corrective Action</h4>
+                   <pre>
+   <em>Ensure step III.M configuration points fortressRealm jar,
+   i.e. FORTRESS_HOME/lib/fortressProxyWebsphere[version].jar.</em>
+                   </pre>
+               </li>
+              </ol>
+          </p>
+      </li>
+   </ol>
+   </body>
+</html>

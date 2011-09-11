@@ -1,0 +1,321 @@
+--------------------------------------------------------------
+JoshuaTree Fortress Tomcat Realm Setup Notes
+created: October 8, 2010
+last updated: June 4, 2011
+--------------------------------------------------------------
+###################################################################################
+# Guidelines & Tips
+###################################################################################
+
+- In the document that follows, replace "[version]" with Fortress version label.
+  For example - if Fortress 1.0 release, change fortressProxyTomcat-[version].jar to fortressProxyTomcat-1.0.jar
+
+- Restart Tomcat server after any changes to Tomcat config, Fortress config or lib files.
+
+- You (usually) do NOT need to restart Tomcat after changes to the LDAP data, i.e. users, passwords, roles.
+
+- Steps I - III below are mandatory.  
+
+- Step IV is optional, for testing purposes.
+
+- Common misconfiguration issues related to Fortress, LDAP and Tomcat are located in section III.
+
+- Tomcat 7 and beyond uses a different proxy jar.  Take special note of this difference in Step I.C.
+
+###################################################################################
+# Summary of installation steps to be completed before Tomcat can use Fortress LDAP
+###################################################################################
+I. Extract Fortress Realm binaries and config to target server
+a. copy tar or zip to server
+b. unzip tar or zip package
+c. copy fortressProxyTomcat[version].jar to TOMCAT_HOME/lib/
+
+II. Configure Fortress Realm for target LDAP server
+a. edit Fortress properties file located in FORTRESS_HOME/conf folder
+b. update ldap host info
+c. update ldap dn info
+d. update ldap admin creds
+e. update ldap connection pool levels
+
+III. Configure Tomcat to use Fortress Realm
+a. edit TOMCAT_HOME/conf/server.xml
+b. comment out old UserDatabase config
+c. add RealmProxy
+d. restart Tomcat
+e. Verify success
+
+IV. Test Tomcat Security (Optional)
+a. Enable Tomcat Manager Web app
+b. Verify/enable role constraint 
+c. Add role to LDAP
+d. Add test user to LDAP 
+e. Assign test user the Manager role 
+f. logon Manager app
+
+###################################################################################
+# I. Instructions to extract Fortress Realm Package to Target System
+###################################################################################
+
+a. Copy fortressRealmDist-1.0.0-rc1-[version].zip to hard drive on target server
+env.  
+
+b. Extract the zip.  The location for archive can vary according to requirements.  The location
+for package will be referred to as "FORTRESS_HOME" later in these instructions.
+
+###################################################################################
+# II. Instructions to configure Fortress Realm to use Target System LDAP
+###################################################################################
+
+Note: the 'dist' ant target on this project will set these properties using build.properties settings.
+
+a. Edit the FORTRESS_HOME properties file located in $FORTRESS_HOME/conf/fortress.properties
+
+b. Set the LDAP Host and port properties:
+
+host=localhost  (host or ip)
+port=389
+
+c. Set the LDAP admin creds:
+
+admin=cn=Manager\,dc=jts\,dc=com
+adminPw=secret
+
+d. Set the LDAP connection pool info:
+
+note: the min/max will vary according to anticipated load on your Tomcat server.  For busy systems, the max number of
+ldap connections may be much higher.
+
+minUserConn=1
+maxUserConn=10
+minConn=1
+maxConn=10
+
+###################################################################################
+# III. Instructions to configure Tomcat to use Fortress Realm
+###################################################################################
+
+a. Load the Proxy jar onto server classpath.
+
+if Tomcat 7 and beyond:
+    Copy the proxy jar located, FORTRESS_HOME/proxy/fortressProxyTomcat7-[version].jar to the Tomcat Server's lib folder.
+    /opt/apache-tomcat-7.0.21/lib$ sudo cp /home/smckinn/JavaTools/realm/fortressRealm-1.0.0/proxy/fortressProxyTomcat7-1.0.0.jar  .
+
+else
+    Copy the proxy jar located, FORTRESS_HOME/proxy/fortressProxyTomcat-[version].jar to the Tomcat Server's lib folder.
+    /opt/apache-tomcat-6.0.24/lib$ sudo cp /home/smckinn/JavaTools/realm/fortressRealm-1.0.0/proxy/fortressProxyTomcat-1.0.0.jar  .
+
+note: This is the only Fortress binary or configuration artifact that will reside directly on Tomcat's server classpath.
+
+b. Edit the Tomcat server.xml in the /conf.
+c. Comment out existing "UserDatabase" config (if present)
+d. Add the following to Tomcat's server.xml file:
+
+<Realm className="com.jts.fortress.realm.tomcat.TcAccessMgrProxy"
+    debug="0"
+    resourceName="UserDatabase"
+    containerType="Tomcat6"
+    realmClasspath="/FORTRESS_HOME/conf:/FORTRESS_HOME/lib/fortressRealm-[version].jar"
+    />
+
+note: "FORTRESS_HOME" will point to root folder of Fortress realm package.  i.e. /home/user/fortressRealm-1.0.0 or /usr/local/fortressRealm-1.0.0.  These
+packages will remain off the Tomcat server classpath but must be correct or server will fail to initialize.
+
+save and exit.
+
+e. Restart Tomcat server
+
+smckinn@smckinnlt-lr01:/opt/apache-tomcat-6.0.24/bin$ sudo ./startup.sh
+
+f. verify that realm started successfully by viewing following message in catalina.log:
+
+smckinn@smckinnlt-lr01:/opt/apache-tomcat-6.0.24/bin$ tail -f -n10000 ../logs/catalina.out
+
+...
+INFO: com.jts.fortress.realm.tomcat.TcAccessMgrProxy J2EE policy agent initialization successful
+
+If Tomcat 7 and beyond:
+
+INFO: com.jts.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
+
+-------------------------------------------
+Common troubleshooting tips:
+-------------------------------------------
+
+-------------------------------------------------------------------------------------------
+i. - Server can't find config files (realmClasspath="/fortressRealm-1.0.0/conf/")
+-------------------------------------------------------------------------------------------
+Jul 15, 2011 8:21:16 PM com.jts.fortress.realm.tomcat.Tc7AccessMgrProxy initialize
+INFO: com.jts.fortress.realm.tomcat.Tc7AccessMgrProxy.initialize - instantiate policy agent name: com.jts.fortress.realm.tomcat.TcAccessMgrImpl
+2011-07-15 20:21:17,053 (FATAL) com.jts.fortress.configuration.Config static init: Error, null configuration file: fortress.properties
+Jul 15, 2011 8:21:17 PM com.jts.fortress.realm.tomcat.Tc7AccessMgrProxy startInternal
+SEVERE: com.jts.fortress.realm.tomcat.Tc7AccessMgrProxy.startInternal caught Throwable=java.lang.ExceptionInInitializerError
+java.lang.ExceptionInInitializerError
+        at com.jts.fortress.realm.J2eePolicyMgrFactory.<clinit>(J2eePolicyMgrFactory.java:32)
+        at com.jts.fortress.realm.tomcat.TcAccessMgrImpl.<init>(TcAccessMgrImpl.java:35)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:513)
+        at java.lang.Class.newInstance0(Class.java:355)
+        at java.lang.Class.newInstance(Class.java:308)
+        at com.jts.fortress.realm.tomcat.Tc7AccessMgrProxy.initialize(Tc7AccessMgrProxy.java:112)
+        at com.jts.fortress.realm.tomcat.Tc7AccessMgrProxy.startInternal(Tc7AccessMgrProxy.java:236)
+        at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
+        at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:1026)
+        at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:291)
+        at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
+        at org.apache.catalina.core.StandardService.startInternal(StandardService.java:443)
+        at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
+        at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:727)
+        at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
+        at org.apache.catalina.startup.Catalina.start(Catalina.java:620)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+        at java.lang.reflect.Method.invoke(Method.java:597)
+        at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:303)
+        at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:431)
+Caused by: java.lang.RuntimeException: com.jts.fortress.configuration.Config static init: Error, null configuration file: fortress.properties
+        at com.jts.fortress.configuration.Config.<clinit>(Config.java:51)
+        ... 25 more
+
+ACTION:
+
+Ensure step 3c points to Fortress realm configuration folder.
+
+-------------------------------------------------------------------------------------------
+ii. - Server can't find proxy jar (Realm className="com.jts.fortress.realm.tomcat.TcAccessMgrProxy")
+-------------------------------------------------------------------------------------------
+INFO: The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/i386/server:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/i386:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/../lib/i386:/usr/java/packages/lib/i386:/lib:/usr/lib
+Apr 22, 2011 10:24:04 PM org.apache.tomcat.util.digester.Digester startElement
+SEVERE: Begin event threw exception
+java.lang.ClassNotFoundException: com.jts.fortress.realm.tomcat.TcAccessMgrProxy
+
+ACTION:
+
+Ensure step 1c copied the Fortress realm proxy jar to TOMCAT_HOME/lib folder.
+
+-------------------------------------------------------------------------------------------
+iii. - Server can't find binaries (realmClasspath="...FORTRESS_HOME/lib/fortressRealm-[version].jar")
+-------------------------------------------------------------------------------------------
+Apr 22, 2011 10:22:25 PM com.jts.fortress.realm.tomcat.TcAccessMgrProxy initialize
+SEVERE: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.realm.tomcat.TcAccessMgrImpl
+Apr 22, 2011 10:22:25 PM com.jts.fortress.realm.tomcat.TcAccessMgrProxy start
+SEVERE: Fortress Tomcat Realm.start caught Exception=java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.realm.tomcat.TcAccessMgrImpl
+java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.realm.tomcat.TcAccessMgrImpl
+        at com.jts.fortress.realm.tomcat.TcAccessMgrProxy.initialize(TcAccessMgrProxy.java:118)
+
+ACTION:
+
+Ensure step 3c configuration points fortressRealm jar, i.e. FORTRESS_HOME/lib/fortressProxyTomcat[version].jar.
+
+-------------------------------------------------------------------------------------------
+iv. - Incompatible Tomcat Proxy jar loaded for Tomcat 7 and beyond
+-------------------------------------------------------------------------------------------
+
+The Tomcat realm base class changed between Tomcat version's 6 and 7.  If you are running Tomcat7 and see error that looks like this:
+
+Jun 4, 2011 3:01:41 PM org.apache.tomcat.util.digester.Digester startElement
+SEVERE: Begin event threw error
+java.lang.VerifyError: class com.jts.fortress.realm.tomcat.TcAccessMgrProxy overrides final method start.()V
+        at java.lang.ClassLoader.defineClass1(Native Method)
+        at java.lang.ClassLoader.defineClassCond(ClassLoader.java:632)
+        at java.lang.ClassLoader.defineClass(ClassLoader.java:616)
+        at java.security.SecureClassLoader.defineClass(SecureClassLoader.java:141)
+        at java.net.URLClassLoader.defineClass(URLClassLoader.java:283)
+        at java.net.URLClassLoader.access$000(URLClassLoader.java:58)
+        at java.net.URLClassLoader$1.run(URLClassLoader.java:197)
+        at java.security.AccessController.doPrivileged(Native Method)
+        at java.net.URLClassLoader.findClass(URLClassLoader.java:190)
+        at java.lang.ClassLoader.loadClass(ClassLoader.java:307)
+        at java.lang.ClassLoader.loadClass(ClassLoader.java:248)
+        at org.apache.tomcat.util.digester.ObjectCreateRule.begin(ObjectCreateRule.java:144)
+        at org.apache.tomcat.util.digester.Digester.startElement(Digester.java:1282)
+        at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.startElement(AbstractSAXParser.java:501)
+        at com.sun.org.apache.xerces.internal.parsers.AbstractXMLDocumentParser.emptyElement(AbstractXMLDocumentParser.java:179)
+        at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanStartElement(XMLDocumentFragmentScannerImpl.java:1343)
+        at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:2755)
+        at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:648)
+        at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:511)
+        at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:808)
+        at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:737)
+        at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:119)
+        at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1205)
+        at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:522)
+        at org.apache.tomcat.util.digester.Digester.parse(Digester.java:1543)
+        at org.apache.catalina.startup.Catalina.load(Catalina.java:554)
+        at org.apache.catalina.startup.Catalina.load(Catalina.java:595)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+        at java.lang.reflect.Method.invoke(Method.java:597)
+        at org.apache.catalina.startup.Bootstrap.load(Bootstrap.java:262)
+        at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:430)
+
+ACTION:
+
+You have the wrong Tomcat Proxy jar on the server's classpath.  You need to get the proxy jar that is compatible with Tomcat version 7 and beyond.
+Ensure step 3c configuration points fortressProxyTomcat7-[version].jar, i.e. FORTRESS_HOME/lib/fortressProxyTomcat7-[version].jar.
+
+-------------------------------------------------------------------------------------------
+v. - Incompatible Tomcat Proxy jar loaded for Tomcat 6 and before
+-------------------------------------------------------------------------------------------
+
+The Tomcat realm base class changed between Tomcat version's 6 and 7.  If you are running Tomcat 4, 5 or 6 and see error that looks like this:
+
+SEVERE: An exception or error occurred in the container during the request processing
+java.lang.RuntimeException: com.jts.fortress.realm.tomcat.Tc7AccessMgrProxyauthenticate detected Fortress Tomcat7 Realm not initialized correctly.  Check your Fortress Realm configuration
+        at com.jts.fortress.realm.tomcat.Tc7AccessMgrProxy.authenticate(Tc7AccessMgrProxy.java:161)
+        at org.apache.catalina.authenticator.FormAuthenticator.authenticate(FormAuthenticator.java:259)
+        at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:449)
+        at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+        at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+        at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+        at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+        at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+        at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+        at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+        at java.lang.Thread.run(Thread.java:662)
+
+
+ACTION:
+
+You have the wrong Tomcat Proxy jar on the server's classpath.  You need to get the proxy jar that is compatible with Tomcat version 6 and before:
+Ensure step 3c configuration points fortressProxyTomcat-[version].jar, i.e. FORTRESS_HOME/lib/fortressProxyTomcat-[version].jar.
+
+
+###################################################################################
+# IV. Instructions to test Tomcat Security
+###################################################################################
+
+a. enable Tomcat Manager application.  note: check the Tomcat documentation on how to do this.
+
+b. verify/enable role name.  Edit TOMCAT_HOME/webapps/manager/WEB-INF/web.xml
+
+  <!-- Security roles referenced by this web application -->
+  <security-role>
+    <description>
+      The role that is required to log in to the Manager Application
+    </description>
+    <role-name>manager</role-name>
+  </security-role>
+
+c. Add Role to access Tomcat Manager application:
+
+Note: If Fortress 'init-slapd' ant task was run this data will already be loaded into the directory.
+
+If Tomcat 7 and beyond:
+    Add Role named "manager-gui":
+else if Tomcat 6 and before:
+    Add Role named "manager":
+
+d. Add User named "tcmanager":  (or whatever you want to nanme it)
+
+e. Assign Test User "tcmanager" Role "manager", (if Tomcat 7 this role is "manager-gui")
+
+f. Test logon onto the Tomcat Manager app.
+
+i. Enter URL to manager web app:
+http://localhost:8080/manager/html
+ii. enter creds (tcmanager, password) into basic logon form
+iii. verify authentication/authorization success to web app.

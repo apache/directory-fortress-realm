@@ -1,0 +1,151 @@
+--------------------------------------------------------------
+JoshuaTree Fortress Websphere UserRegistry Setup Notes
+created: June 5, 2011
+last updated: June 5, 2011
+--------------------------------------------------------------
+###################################################################################
+# Guidelines & Tips
+###################################################################################
+
+- In the document that follows, replace "[version]" with Fortress version label.
+  For example - if Fortress 1.0 release, change fortressProxyWebsphere-[version].jar to fortressProxyWebsphere-1.0.jar
+
+- Restart Websphere server after any changes to Websphere config, Fortress config or lib files.
+
+- You (usually) do NOT need to restart Websphere after changes to the LDAP data, i.e. users, passwords, roles.
+
+- Steps I - III below are mandatory.  
+
+- Step IV is optional, for testing purposes.
+
+- Common misconfiguration issues related to Fortress, LDAP and Websphere are located in section III.
+
+###################################################################################
+# I. Instructions to extract Fortress Realm Package to Target System
+###################################################################################
+
+a. Copy fortressRealmDist-1.0.0-rc1-[version].zip to hard drive on target server
+env.  
+
+b. Extract the zip.  The location for archive can vary according to requirements.  The location
+for package will be referred to as "FORTRESS_HOME" later in these instructions.
+
+###################################################################################
+# II. Instructions to configure Fortress Realm to use Target System LDAP
+###################################################################################
+
+Note: the 'dist' ant target on this project will set these properties using build.properties settings.
+
+a. Edit the FORTRESS_HOME properties file located in $FORTRESS_HOME/conf/oamRealm.properties
+
+b. Set the LDAP Host and port properties:
+
+host=localhost  (host or ip)
+port=389
+
+c. Set the LDAP admin creds:
+
+admin=cn=Manager\,dc=jts\,dc=com
+adminPw=secret
+
+d. Set the LDAP connection pool info:
+
+note: the min/max will vary according to anticipated load on your Websphere server.  For busy systems, the max number of
+ldap connections may be much higher.
+
+minUserConn=1
+maxUserConn=10
+minConn=1
+maxConn=10
+
+###################################################################################
+# III. Instructions to configure Websphere to use Fortress Realm
+###################################################################################
+
+a. Load the Proxy jar onto server classpath.
+
+  Copy the proxy jar located, FORTRESS_HOME/proxy/fortressProxyWebsphere-[version].jar to the Websphere Server's lib folder.
+  /opt/IBM/Websphere/AppServer/lib$ sudo cp /home/smckinn/JavaTools/realm/fortressRealm-1.0.0/proxy/fortressProxyWebsphere-1.0.0.jar  .
+
+note: This is the only Fortress binary or configuration artifact that will reside directly on Websphere's server classpath.
+
+b. Restart the application server.
+
+/opt/IBM/WebSphere/AppServer/profiles/AppSrv01/bin/stopServer.sh server1 -profileName AppSrv01
+/opt/IBM/WebSphere/AppServer/profiles/AppSrv01/bin/startServer.sh server1 -profileName AppSrv01
+
+c. Go to Websphere Admin Console: https://localhost:9043/ibm/console/logon.jsp
+d. Navigate to Global Security Page:  Security->GlobalSecurity
+e. Select dropdown: "Available realm definitions": "Standalone custom registry"
+f. Click on "Configure" button
+g. Enter "Primary administrative user name": wasadmin
+h. Select Radio button: "Server identity that is stored in the repository"
+i. Enter in field: "Server user ID or administrative user on a Version 6.0.x node": wasadmin  (or whatever you choose as your default console userId).
+j. Enter in field: "Password": @dmin123  (or whatever you choose as your default consle user's password)
+k. Enter in field: "Information required Custom registry class name": com.jts.fortress.realm.websphere.WsAccessMgrProxy
+l. Enable checkbox: "Ignore case for authorization"
+m. Enter in field: "Custom properties":
+    "Name" REALM_CLASSPATH   "Value" /home/smckinn/JavaTools/realm/fortressRealmDist-1.0.0-rc1/conf:/home/smckinn/JavaTools/realm/fortressRealmDist-1.0.0-rc1/lib/fortressRealm-1.0.0-rc1.jar
+n. Click on "Apply" button.
+o. Click on "Save directly to the master configuration." link.
+p. Navigate back to "Global security" page by clicking on link of same name.
+q. Enable checkbox: "Enable application security"
+r. Do NOT enable: "Use Java 2 security to restrict application access to local resources"
+s. For dropdown "Available realm definitions" select: "Standalone custom registry" and click on "Set as current" button.
+t. Click on "Apply" button
+
+Note: If you are going to have errors enabling Fortress as security manager, this is where it occurs.
+If no errors continue to next step, else go to Troubleshooting section of this document to determine what went wrong.
+
+u. Click on "# Save directly to the master configuration." link.
+v. Restart Webshere server:
+
+/opt/IBM/WebSphere/AppServer/bin$ ./stopServer.sh server1 -profileName AppSrv01
+/opt/IBM/WebSphere/AppServer/bin$ ./startServer.sh server1 -profileName AppSrv01
+
+w. verify that realm started successfully by viewing following message in Websphere's log:
+
+/opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/server1$ tail -f -n10000 SystemOut.log
+
+...
+[6/5/11 18:46:16:745 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,744 (INFO ) com.jts.fortress.realm.J2eePolicyMgrImpl - Initialized successfully
+[6/5/11 18:46:16:745 CDT] 00000000 WsAccessMgrPr I   com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize - Fortress UserRegistry initialized no errors.
+[6/5/11 18:46:16:748 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,748 (INFO ) com.jts.fortress.realm.websphere.WsAccessMgrImpl. J2EE policy agent initialization successful
+[6/5/11 18:46:16:759 CDT] 00000000 UserRegistryI A   SECJ0136I: Custom Registry:com.jts.fortress.realm.websphere.WsAccessMgrProxy has been initialized
+
+
+-------------------------------------------
+Common troubleshooting tips:
+-------------------------------------------
+
+-------------------------------------------------------------------------------------------
+i. - Server can't find config files (realmClasspath="/fortressRealm-1.0.0/conf/")
+-------------------------------------------------------------------------------------------
+
+ACTION:
+
+Ensure step 3c points to Fortress realm configuration folder.
+
+-------------------------------------------------------------------------------------------
+ii. - Server can't find proxy jar (Realm className="com.jts.fortress.realm.tomcat.TcAccessMgrProxy")
+-------------------------------------------------------------------------------------------
+
+ACTION:
+
+Ensure step 1c copied the Fortress realm proxy jar to TOMCAT_HOME/lib folder.
+
+-------------------------------------------------------------------------------------------
+iii. - Server can't find binaries (realmClasspath="...FORTRESS_HOME/lib/fortressRealm-[version].jar")
+-------------------------------------------------------------------------------------------
+
+ACTION:
+
+Ensure step 3c configuration points fortressRealm jar, i.e. FORTRESS_HOME/lib/fortressProxyTomcat[version].jar.
+
+###################################################################################
+# IV. Instructions to test Websphere Security
+###################################################################################
+
+a. logon to admin console: https://localhost:9043/ibm/console/logon.jsp
+b. enter creds: wasadmin/@dmin123
+c. verify you get in.

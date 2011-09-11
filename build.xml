@@ -1,0 +1,384 @@
+<!--
+  Copyright © 2009-2011. Joshua Tree Software, LLC.  All Rights Reserved.
+  Licensed to Joshua Tree Software, LLC under New BSD license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  JTS licenses this file to You under the New BSD License
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.jtstools.com/licenses
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<project name="Fortress Realm" default="build" basedir=".">
+
+   <target name="init">
+
+      <!-- read properties from the build.properties, if any -->
+      <property name="component-propfile" value="${basedir}/build.properties"/>
+      <property file="${component-propfile}"/>
+
+      <!-- read properties from the ${user.home}/propfile, if any -->
+      <property name="user-propfile" value="${user.home}/build.properties"/>
+      <property file="${user-propfile}"/>
+
+       <property name="project.name" value="Fortress Realm"/>
+       <property name="name" value="fortressRealm"/>
+       <property name="version" value="1.0.0-rc3"/>
+       <property name="title" value="Fortress Realm ${version}"/>
+       <property name="vendor" value="Joshua Tree Software"/>
+       <property name="package" value="com.jts.fortress.realm.*"/>
+
+       <!-- Env vars -->
+       <property name="src.dir" value="${basedir}/src"/>
+       <property name="lib.dir" value="${basedir}/lib"/>
+       <property name="config.dir" value="${basedir}/conf"/>
+       <property name="src.java.dir" value="${src.dir}/java"/>
+       <property name="src.java.proxy.dir" value="${src.java.dir}/proxy"/>
+       <property name="src.java.impl.dir" value="${src.java.dir}/impl"/>
+       <property name="build.dir" value="${basedir}/build"/>
+       <property name="build.classes.dir" value="${build.dir}/classes"/>
+       <property name="build.classes.proxy.dir" value="${build.classes.dir}/proxy"/>
+       <property name="build.classes.impl.dir" value="${build.classes.dir}/impl"/>
+       <property name="dist.dir" value="${basedir}/dist"/>
+       <property name="work.base.dir" value="${build.dir}/work"/>
+       <property name="work.dir" value="${work.base.dir}/dflt"/>
+       <property name="work.jboss.dir" value="${work.base.dir}/jb"/>
+       <property name="src.dist.zip" value="${dist.dir}/${name}Src-${version}.zip"/>
+       <property name="dst.remote.conf" value="${config.dir}/fortress.properties"/>
+       <property name="src.remote.conf" value="${config.dir}/fortress.properties.src"/>
+       <!-- config.suffix has a '\' which is required for commons configuration utility -->
+       <property name="config.suffix" value="dc=${suffix.name}\,dc=com"/>
+
+       <!-- Build artifacts -->
+       <property name="fortressTomcatRealm.jar" value="${dist.dir}/fortressProxyTomcat-${version}.jar"/>
+       <property name="fortressTomcat7Realm.jar" value="${dist.dir}/fortressProxyTomcat7-${version}.jar"/>
+       <property name="fortressUserRegistry.jar" value="${dist.dir}/fortressProxyWebSphere-${version}.jar"/>
+       <property name="fortressRealm.jar" value="${dist.dir}/fortressRealm-${version}.jar"/>
+       <property name="fortressRealm.zip" value="${dist.dir}/fortressRealmDist-${version}.zip"/>
+       <property name="fortressRealmDistro.jar" value="${dist.dir}/fortressRealm-${version}.jar"/>
+       <property name="fortressJbossRealmDistro.jar" value="${dist.dir}/fortressRealmJBoss-${version}.jar"/>
+       <property name="fortressRealmImpl.jar" value="${dist.dir}/fortressRealmImpl-${version}.jar"/>
+       <property name="javadoc.dist.zip" value="${dist.dir}/fortressRealmDoc-${version}.zip"/>
+
+       <!-- Dependent LIBs -->
+       <property name="config.dir" value="${basedir}/conf"/>
+       <property name="catalina7.jar" value="${lib.dir}/catalina-7.0.12.jar"/>
+       <property name="catalina.jar" value="${lib.dir}/catalina-4.1.27.jar"/>
+       <property name="fortress.jar" value="${lib.dir}/fortress-${version}.jar"/>
+       <property name="websphere.jar" value="${lib.dir}/websphere.jar"/>
+       <property name="ws_runtime.jar" value="${lib.dir}/ws_runtime.jar"/>
+       <property name="commons-config.jar" value="${lib.dir}/commons-configuration-1.6.jar"/>
+       <property name="commons-lang.jar" value="${lib.dir}/commons-lang-2.4.jar"/>
+       <property name="commons-collections.jar" value="${lib.dir}/commons-collections-3.2.1.jar"/>
+       <property name="commons-pool.jar" value="${lib.dir}/commons-pool-1.5.2.jar"/>
+       <property name="commons-logging.jar" value="${lib.dir}/commons-logging-1.1.1.jar"/>
+       <property name="unboundsdk.jar" value="${lib.dir}/unboundid-ldapsdk-se.jar"/>
+       <property name="jgraph.jar" value="${lib.dir}/jgrapht-jdk1.6.jar"/>
+       <property name="jasypt.jar" value="${lib.dir}/jasypt-1.8.jar"/>
+       <property name="log4j.jar" value="${lib.dir}/log4j-1.2.16.jar"/>
+
+       <!-- ########### Define classpaths ########################### -->
+       <path id="build.proxy.class.path">
+           <!-- J2EE JARs -->
+           <pathelement location="${catalina.jar}"/>
+           <pathelement location="${ws_runtime.jar}"/>
+           <pathelement location="${websphere.jar}"/>
+       </path>
+
+       <path id="build.proxy.tc7.class.path">
+           <!-- J2EE JARs -->
+           <pathelement location="${catalina7.jar}"/>
+           <pathelement location="${ws_runtime.jar}"/>
+           <pathelement location="${websphere.jar}"/>
+       </path>
+
+       <path id="build.impl.class.path">
+           <!-- J2EE JARs -->
+           <pathelement location="${catalina.jar}"/>
+           <pathelement location="${ws_runtime.jar}"/>
+           <pathelement location="${websphere.jar}"/>
+
+           <!-- Fortress JARs -->
+           <pathelement location="${build.classes.proxy.dir}"/>
+           <pathelement location="${fortress.jar}"/>
+           <pathelement location="${log4j.jar}"/>
+           <pathelement location="${commons-collections.jar}"/>
+           <pathelement location="${commons-config.jar}"/>
+           <pathelement location="${commons-lang.jar}"/>
+           <pathelement location="${commons-logging.jar}"/>
+           <pathelement location="${commons-pool.jar}"/>
+           <pathelement location="${unboundsdk.jar}"/>
+           <pathelement location="${jgraph.jar}"/>
+           <pathelement location="${jasypt.jar}"/>
+       </path>
+
+       <!-- JARS required for distribution -->
+       <patternset id="dist.libs">
+           <include name="${fortress.jar}"/>
+           <include name="${log4j.jar}"/>
+           <include name="${commons-collections.jar}"/>
+           <include name="${commons-config.jar}"/>
+           <include name="${commons-lang.jar}"/>
+           <include name="${commons-logging.jar}"/>
+           <include name="${commons-pool.jar}"/>
+           <include name="${jgraph.jar}"/>
+           <include name="${jasypt.jar}"/>
+       </patternset>
+
+      <!-- Javadoc vars -->
+      <property name="javadoc.dir" value="${dist.dir}/docs/api"/>
+      <property name="javadoc.images.dir" value="${javadoc.dir}/images"/>
+      <property name="javadoc.bottom" value="&lt;small&gt;Copyright &amp;copy; 2009-2011 Joshua Tree Software, LLC. All Rights Reserved."/>
+      <property name="javadoc.overview" value="${src.java.dir}/overview.html" />
+      <property name="javadoc.stylesheet" value="${src.java.dir}/fortress-javadoc.css" />
+
+       <path id="javadoc.source.path">
+           <pathelement location="${src.java.proxy.dir}"/>
+           <pathelement location="${src.java.impl.dir}"/>
+       </path>
+
+
+      <property name="javac.optimize" value="false"/>
+      <property name="javac.debug" value="true"/>
+      <property name="javac.deprecation" value="true"/>
+
+       <!-- Presetdef to create jar with common manifest -->
+       <presetdef name="fortressRealm.jar">
+           <jar compress="true">
+               <manifest>
+                   <attribute name="Created-By" value="${vendor} - ${project.name} dev team"/>
+                   <attribute name="Implementation-Vendor" value="${vendor}"/>
+                   <attribute name="Implementation-Version" value="${version}"/>
+                   <attribute name="Specification-Title" value="${title}"/>
+                   <attribute name="Package" value="${package}"/>
+                   <attribute name="Extension-Name" value="${name}"/>
+                   <attribute name="Built-By" value="${user.name}"/>
+                   <attribute name="Compile-JDK" value="${java.runtime.version}"/>
+                   <attribute name="Test-VM" value="${java.vm.version}"/>
+               </manifest>
+           </jar>
+       </presetdef>
+
+   </target>
+
+   <!-- ######################################################### -->
+   <target name="clean" depends="init" description="removes generated files">
+      <delete dir="${build.dir}"/>
+      <delete dir="${dist.dir}"/>
+   </target>
+
+    <!-- ###############  create javadoc ############################### -->
+    <target name="javadoc" depends="init" description="generates javadocs">
+       <mkdir dir="${javadoc.dir}"/>
+       <mkdir dir="${javadoc.images.dir}"/>
+
+        <javadoc packagenames="${package}"
+                 sourcepathref="javadoc.source.path"
+                 destdir="${javadoc.dir}"
+                 windowtitle="${title}"
+                 doctitle="${title} "
+                 bottom="${javadoc.bottom}"
+                 overview="${javadoc.overview}"
+                 stylesheetfile="${javadoc.stylesheet}"
+                 public="true"
+                 version="true"
+                 author="true"
+                 splitindex="false"
+                 nodeprecated="true"
+                 nodeprecatedlist="true"
+                 notree="true"
+                 noindex="false"
+                 nohelp="true"
+                 nonavbar="false"
+                 serialwarn="false">
+        </javadoc>
+
+   </target>
+
+    <!-- ###############  compile packages ############################### -->
+    <target name="compile-proxy" depends="init" description="compiles proxy source files">
+       <mkdir dir="${build.classes.proxy.dir}"/>
+       <javac srcdir="${src.java.proxy.dir}"
+              debug="${javac.debug}"
+              deprecation="${javac.deprecation}"
+              destdir="${build.classes.proxy.dir}">
+              <exclude name="com/jts/fortress/realm/tomcat/Tc7AccessMgrProxy.java"/>
+             <classpath refid="build.proxy.class.path"/>
+         </javac>
+    </target>
+
+    <target name="compile-proxy-tc7" depends="compile-proxy" description="compiles tomcat 7 proxy source files">
+       <javac srcdir="${src.java.proxy.dir}"
+              debug="${javac.debug}"
+              deprecation="${javac.deprecation}"
+              destdir="${build.classes.proxy.dir}">
+              <exclude name="com/jts/fortress/realm/tomcat/TcAccessMgrProxy.java"/>
+             <classpath refid="build.proxy.tc7.class.path"/>
+         </javac>
+    </target>
+
+    <target name="compile-impl" depends="init" description="compiles impl source files">
+       <mkdir dir="${build.classes.impl.dir}"/>
+       <javac srcdir="${src.java.impl.dir}"
+              debug="${javac.debug}"
+              deprecation="${javac.deprecation}"
+              destdir="${build.classes.impl.dir}">
+             <classpath refid="build.impl.class.path"/>
+         </javac>
+    </target>
+
+    <target name="build-jar-tcproxy" depends="compile-proxy,compile-proxy-tc7,compile-impl">
+       <mkdir dir="${dist.dir}"/>
+       <fortressRealm.jar destfile="${fortressTomcatRealm.jar}">
+          <fileset dir="${build.classes.proxy.dir}">
+              <include name="com/jts/fortress/realm/tomcat/**"/>
+              <include name="com/jts/fortress/realm/util/**"/>
+              <exclude name="com/jts/fortress/realm/tomcat/Tc7AccessMgrProxy.class"/>
+          </fileset>
+           <fileset dir="${build.classes.impl.dir}">
+               <include name="com/jts/fortress/realm/tomcat/TcPrincipal.class"/>
+           </fileset>
+          <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
+       </fortressRealm.jar>
+    </target>
+
+    <target name="build-jar-tc7proxy" depends="compile-proxy,compile-impl">
+       <mkdir dir="${dist.dir}"/>
+       <fortressRealm.jar destfile="${fortressTomcat7Realm.jar}">
+          <fileset dir="${build.classes.proxy.dir}">
+              <include name="com/jts/fortress/realm/tomcat/**"/>
+              <include name="com/jts/fortress/realm/util/**"/>
+              <exclude name="com/jts/fortress/realm/tomcat/TcAccessMgrProxy.class"/>
+          </fileset>
+           <fileset dir="${build.classes.impl.dir}">
+               <include name="com/jts/fortress/realm/tomcat/TcPrincipal.class"/>
+           </fileset>
+          <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
+       </fortressRealm.jar>
+    </target>
+
+    <target name="build-jar-wsproxy" depends="compile-proxy">
+       <mkdir dir="${dist.dir}"/>
+       <fortressRealm.jar destfile="${fortressUserRegistry.jar}">
+          <fileset dir="${build.classes.proxy.dir}">
+              <include name="com/jts/fortress/realm/websphere/**"/>
+              <include name="com/jts/fortress/realm/util/**"/>
+          </fileset>
+          <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
+       </fortressRealm.jar>
+    </target>
+
+    <target name="build-jar-impl" depends="compile-impl">
+       <mkdir dir="${dist.dir}"/>
+       <fortressRealm.jar basedir="${build.classes.impl.dir}" destfile="${fortressRealmImpl.jar}"/>
+    </target>
+
+    <target name="build-jar-distro" depends="init,build-jar-impl">
+        <unjar dest="${work.dir}" src="${fortressRealmImpl.jar}"/>
+        <unjar dest="${work.dir}" src="${fortress.jar}"/>
+        <unjar dest="${work.dir}" src="${log4j.jar}"/>
+        <unjar dest="${work.dir}" src="${commons-collections.jar}"/>
+        <unjar dest="${work.dir}" src="${commons-config.jar}"/>
+        <unjar dest="${work.dir}" src="${commons-lang.jar}"/>
+        <unjar dest="${work.dir}" src="${commons-pool.jar}"/>
+        <unjar dest="${work.dir}" src="${commons-logging.jar}"/>
+        <unjar dest="${work.dir}" src="${unboundsdk.jar}"/>
+        <unjar dest="${work.dir}" src="${jgraph.jar}"/>
+        <unjar dest="${work.dir}" src="${jasypt.jar}"/>
+        <fortressRealm.jar basedir="${work.dir}" compress="true" jarfile="${fortressRealmDistro.jar}"/>
+    </target>
+
+    <target name="build-jar-distro-jboss" depends="init,build-jar-impl">
+        <unjar dest="${work.jboss.dir}" src="${fortressRealmImpl.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${fortress.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${log4j.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${commons-collections.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${commons-config.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${commons-lang.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${commons-pool.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${commons-logging.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${unboundsdk.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${jgraph.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${jasypt.jar}"/>
+        <fileset dir="${config.dir}">
+            <include name="*.xml"/>
+            <include name="*.properties"/>
+        </fileset>
+        <fortressRealm.jar basedir="${work.jboss.dir}" jarfile="${fortressJbossRealmDistro.jar}"/>
+    </target>
+
+   <target name="build" depends="clean,build-jar-tcproxy,build-jar-tc7proxy,build-jar-wsproxy,build-jar-impl, build-jar-distro,build-jar-distro-jboss,javadoc">
+      <copy todir="${dist.dir}" file="${basedir}/LICENSE.txt"/>
+      <copy todir="${dist.dir}" file="${basedir}/NOTICE.txt"/>
+      <copy todir="${dist.dir}" file="${basedir}/TOMCAT-SETUP-NOTES.txt"/>
+   </target>
+
+    <!-- ###############  create distribution packages ############################ -->
+    <target name="dist" depends="build" description="Create source and binary distribution">
+
+         <zip destfile='${src.dist.zip}'>
+           <zipfileset dir='${src.java.dir}'/>
+
+           <zipfileset dir='${dist.dir}' prefix='META-INF'>
+               <include name="*.txt"/>
+           </zipfileset>
+        </zip>
+
+        <zip destfile="${javadoc.dist.zip}" basedir="${javadoc.dir}">
+            <zipfileset dir='${dist.dir}' prefix='META-INF'>
+                <include name="LICENSE.txt"/>
+                <include name="NOTICE.txt"/>
+            </zipfileset>
+        </zip>
+
+        <echo message="###############  Modify fortress configuration per user settings  ###############"/>
+        <delete file="${dst.remote.conf}"/>
+        <copyfile src="${src.remote.conf}" dest="${dst.remote.conf}"/>
+        <replace file="${dst.remote.conf}" token="@SUFFIX@" value="${suffix}"/>
+        <replace file="${dst.remote.conf}" token="@LDAP_HOST@" value="${ldap.host}"/>
+        <replace file="${dst.remote.conf}" token="@LDAP_PORT@" value="${ldap.port}"/>
+        <replace file="${dst.remote.conf}" token="@ROOT_DN@" value="${root.dn}"/>
+        <replace file="${dst.remote.conf}" token="@CFG_ROOT_PW@" value="${cfg.root.pw}"/>
+        <replace file="${dst.remote.conf}" token="@ADM_MIN_CONN@" value="${admin.min.conn}"/>
+        <replace file="${dst.remote.conf}" token="@ADM_MAX_CONN@" value="${admin.max.conn}"/>
+        <replace file="${dst.remote.conf}" token="@CFG_CRYPTO_PROP@" value="${crypto.prop}"/>
+
+        <!-- Break up the install binary packages by platform:  -->
+        <zip destfile="${fortressRealm.zip}">
+            <zipfileset dir="${dist.dir}" prefix="doc">
+                <include name="fortressRealmDoc*.zip"/>
+            </zipfileset>
+            <zipfileset dir="${dist.dir}" prefix="src">
+                <include name="fortressRealmSrc*.zip"/>
+            </zipfileset>
+            <zipfileset dir="${dist.dir}" prefix="proxy">
+                <include name="fortressTomcatRealm*.jar"/>
+                <include name="fortressTomcat7Realm*.jar"/>
+                <include name="fortressUserRegistry*.jar"/>
+            </zipfileset>
+            <zipfileset dir="${lib.dir}" prefix="lib" excludes="ws_runtime*">
+                <include name="*.jar"/>
+            </zipfileset>
+            <zipfileset dir="${dist.dir}" prefix="lib">
+                <include name="fortress*.jar"/>
+                <exclude name="fortressTomcatRealm*.jar"/>
+                <exclude name="fortressTomcat7Realm*.jar"/>
+                <exclude name="fortressUserRegistry*.jar"/>
+            </zipfileset>
+            <zipfileset dir="${config.dir}" prefix="conf">
+                <include name="*.xml"/>
+                <include name="*.properties"/>
+            </zipfileset>
+            <zipfileset dir='${basedir}'>
+                <include name="*.txt"/>
+            </zipfileset>
+        </zip>
+     </target>
+
+</project>
