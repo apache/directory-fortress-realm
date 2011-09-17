@@ -158,95 +158,246 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         }
         HashMap<String, Session> context = new HashMap<String, Session>();
         context.put(SESSION, session);
-        return new password)
- );
-      on                                                                                                                  * T                  maps to {@link c policy violations.
-     * <li> thry user who not be acvern{@cod    T Duty }ng u'    '), ot be acvon} if User id not, ot be acvon} if   in the event of data validation fail                 T Duty rtress.at violate Dynsionjts.fortom.jts.fortress.rrExceptiobjpasurn nere, secof Admin role naluate tcod  ress.rbac.User#password}
-     * <li> is Sek c pich contaid for that user.
-  Id} - required
-     * <li> {@link com.jts,y violaRntaid for that user.
-  Id} - required
-     * <li> {@linkink com.jts.f,m.jts.fo pwer RBAC Sod  user.
-  Id} - required
-     * <li> {@lwar metk c policy violations.
-     * <li> * <li> ixpi contebe onds User#userId} - required
-     * <li> {@liraceLog   s.fortmorion to checking user password validity it will apply configured password policy checks {@link com.jts.fortress.rbac.User#pwPolicy}..<br />
-     * Method may also store prExceptiicate user pas     @lines()} if    T Duty ortEntity}.
+        return new TcPrincipal(userId, context);
+    }
+
+
+    /**
+     * Perform user authentication {@link User#password} and role activations.<br />
+     * This method must be called once per user prior to calling other methods within this class.
+     * The successful result is {@link com.jts.fortress.rbac.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
+     * In addition to checking user password validity it will apply configured password policy checks {@link com.jts.fortress.rbac.User#pwPolicy}..<br />
+     * Method may also store parms passed in for audit trail {@link com.jts.fortress.FortEntity}.
      * <h4> This API will...</h4>
-   rm <a hrefDtp:/="http:(org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-pass.i> {@liId      > assword policy evaluatThe foll> authenticate user pas@lines  T Duty o, com.jts.fortress.pwpoliDcPrrk c     ged laRntai as        d.securitet user   * Inms passed objpas     nk com.jtsdoeynsion        hi * <li> r polac.S        on target user;
-        R activrolaoad   conteer#userpjdk.LDAPCo    Cboolea(                 )}                      ps passed          et user   * In's RBAC {@link UseRoles}nclud  u;
-        R actng other methodsonta      Mis class.
-     * The successful resuR ac# {
- com.jts.fortress.rb       Rntai ason bewordpjdk.LDAPCo                                                                                     s {@link com.jts.fortre is Session * Met                             has     ms passed pk.LDAPCo  .jts.foonta    ortEntity}.
-     * <h4> This API will...</h4>
-    jts.fo    f Duti                  .has    "<li> perform <a hrefDtp:/="http:(org/">OpenLDAP</a> <a href="http://    f Duti         behera-ldap-pk.LDAPCo              sion);
-ldap-onta        sassword policyword poli// Fd exclosrtress.r                           word poli// ms passed .fortre, secofwpolicy.e.Constraint}(sa          sExceptiobjpas.y evaluation</a>, see {@link com.jts.fortres((pjdk.LDAPCo)-pk.LDAPCo)    Cboolea(ssword poli     .ess.rtd <N   (ts.fort,             .icy(_CTXT_NULL,o    f Duti    )  word poli//   nk cy.e.fortre, secofw         ink com:</h4>
      * <ul>
-     * <lkPasswor   licy(comssword poli     .ess.rtd <N   (s the use            .  * _icy(_NULL,o    f Duti    )  word poli// C</ul>     @link comcata set
- sword polink com:</h4>
-        . * </h4>data set
- s(s the use     .data set
- Type.  * 
-     * <li> perfo// C</ul>R acti@link comcata set
- s;sdon't* </ul>
-SD:</h4>
-        . * </h4>data set
- s(s the use     .data set
- Type.ROLE
-     * <li> perfo// Gle( pol * <li>d, String p      fromd polink com:</h4>
-   Set, see {.Time)ZR acti=ext.put(Sinki, String om.jts.<li> perform <ime)ZR acti        &&Time)ZR act.sing   > 0rg/">OpenLDAP</a> <a hre// Does( pol * <li>d, String p      re, secofw {
-  m           polonetress.rbac?AP</a> <a hrerm <ime)ZR act.traint}((onta    o                                // Yes, wvela of  m    .                                                                                          f="http://    f Duti         behera-ldap-pk.LDAPCo              sion);
-ldap-onta        s                               }                                            }                                                                                                                         // UNotes:
-siond, String pord poiron
-    {
-.                     f="http://    f Duti         behera-ldap-pk.LDAPCo              sis:
-siond, String pon);
-ldap-onta        sassword poli        }                                                            // UNotedoeynsionla of nyomcat runtime     ord poiron
-    {
-.                          f Duti         behera-ldap-pk.LDAPCo              sih    o>d, String p     assword policy evaluatThe fol                               f Dutiecatds Rntai       fromd polon);
-c         orddfor                            onta     his class.
-    R ac# {
- c,clasbeecatdom.jts.fortress.rRntai       .Constrr   ponds.secuation or D                                                                         thr     n    tion oed on be is Session * Me oc   s                     Rntaicatd           oonta    ortEntity}.
-     * <h4> This API will...</h4>
-   The fol         .catd     .lda     onta    o                          SearchncipaR activslog.      ged laUin same ord               search      oMis class.
-     * The successful resuior to calling other methodslimit/h4>
-   crtresss( pol ing<li>ac.S         * <The fortom.jts.fortress.rL policytype  jts.fog this meth pols.
-     * The successful resuR ac# {
- c<li>derIdslog.   R actng other mking user password validity it will apply configured password policy checks {@link com.jts.fortre />
-     * Method may also store pL po, see {.Tsearchom.jts jts.fosearch      , conslimitortEntity}.
-     * <h4> This API will...</h4>
-   The fol         .fin om.jtssearch      , limito                         f Dutiecae fos m    s.fo            Roles}.<        d.securitthat eop);
-c         ordthatdfor                            behera-his class.
-     to {@link coRolesm     s     rd ordthatdfor        behera-}.<g     ly uniq    y configured passwwwwww eop);
-c        om.jts.fortress.r       g this methm    s.fo * T s {@ng other mking us                     t   rd oed on be is Session * Me oc   s                          catd{@linrail {@link cortEntity}.
-     * <h4> This API will...</h4>
-   The fol         .catd{@linsword if trusteo                          Rhe follol policytype  jts.foli>derItrussword pol eop);
-c         Rolesm        * Notra-fieldtress.rbac.            on API.
-  nk com.jts}.<br />
-     *                               sm x    * </h4>The fortItrusswer#setRole(
-     *cone     imit/argsame ord               search      otraint}(saerIis So      dc.Userars .Constrr   pond       rs com.jd ordthatdfor      g other methodslimit/h4>
-   cone    ew Useoles( polm x The fortIt   rdsom.jts.fortress.rL policytype  jts.fog this methm    s.fo * TIdtng other mking us                   rd policy checkSession * Method may also store pL po, see {.Tsearch    ts jts.fosearch      , conslimitortEntity}.
-     * <h4> This API will...</h4>
-   The fol         .fin     tssword if search      ), limito                           nk le hostnacae fos  pol * <li>   rs vslog.      a ged laonta.example hostname:myservername        or ip:1d polon);
-s:
-     * </h4>
-   ROLE<ul>
-      on API.
-    m x    * </h4>   rs The fortI}.<   a set
- />
-   imit/argu     on API.
-  nk com.jts}.<br />
-     *                              nk com.jtsdoeynNOT     hierarchical  resu                      onta     his class.
-    R ac# {
- cl whintai       vslog.       in same ordemethodslimit/h4>cone    ew Useoles( polm x The fortIt   rdsom.jts.fortress.rL policytype  jts.fog this meth * TIdt vslog.      a ethticularaonta.g other mking user password validity it will apply configured password policy checks {@link com.jtsis Session * Method may also store pL po, see {.Tvslog.      ts jts.foonta    , conslimitortEntity}.
-     * <h4> This API will...</h4>
-   The fol         .vslog.      ts.lda     onta    o, limito                           nk le hostnacae fos  pol * <li>e activations will pra ged la in sexample hostname:myserver        ame or ip:1    * Notes:
+     * <li> authenticate user password if trusted == false.
+     * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>, see {@link com.jts.fortress.pwpolicy.openldap.OLPWControlImpl#checkPasswordPolicy(com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPConnection, boolean, com.jts.fortress.pwpolicy.PwMessage)}.
+     * <li> fail for any user who is locked by OpenLDAP's policies {@link com.jts.fortress.rbac.User#isLocked()}, regardless of trusted flag being set as parm on API.
+     * <li> evaluate temporal {@link com.jts.fortress.util.time.Constraint}(s) on {@link User}, {@link com.jts.fortress.rbac.UserRole} and {@link com.jts.fortress.arbac.UserAdminRole} entities.
+     * <li> process selective role activations into User RBAC Session {@link User#roles}.
+     * <li> check Dynamic Separation of Duties {@link com.jts.fortress.rbac.DSD#validate(com.jts.fortress.rbac.Session, com.jts.fortress.util.time.Constraint, com.jts.fortress.util.time.Time)} on {@link com.jts.fortress.rbac.User#roles}.
+     * <li> process selective administrative role activations {@link User#adminRoles}.
+     * <li> return a {@link com.jts.fortress.rbac.Session} containing {@link com.jts.fortress.rbac.Session#getUser()}, {@link com.jts.fortress.rbac.Session#getRoles()} and {@link com.jts.fortress.rbac.Session#getAdminRoles()} if everything checks out good.
+     * <li> throw a checked exception that will be {@link com.jts.fortress.SecurityException} or its derivation.
+     * <li> throw a {@link SecurityException} for system failures.
+     * <li> throw a {@link com.jts.fortress.PasswordException} for authentication and password policy violations.
+     * <li> throw a {@link com.jts.fortress.ValidationException} for data validation errors.
+     * <li> throw a {@link com.jts.fortress.FinderException} if User id not found.
+     * </ul>
+     * <h4>
+     * The function is valid if and only if:
      * </h4>
      * <ul>
-                            behera-his class.
-     to {@link com    s.fo            com.jd ordthatdfor      g other mtress.rrEolicytype  jts.fog this meth polr activslog.   is lockeswor   itrtom.jts.forking us                  I4>   r oed on be is Session * Me oc   s                     L po, see {.Tv, String om.jtsrail {@link cortEntity}.
-     * <h4> This API will...</h4>
-   L po, see {.Tl pol      <li> perfo//   nk rn ner</ul>@link comcata set
- swoc.     is lR actng othe     * <ul>
-     * <lkcate user password if trusteo,      <li> perfo// Gle( polS* <li>d, String pR actng othe     t, see {.Time)ZR acS* <=             Ir   itrtom.jtsse.put(Sinkom.jts. <li> perfo// I;
-     h   d, String p     ng othe   rm <ime)ZR acS* <        &&Time)ZR acS* .sing   > 0rg/">OpenLDAP</a> <a hre// Convere( polS* <nd AdmiL polbefo     ess.e {:AP</a> <a hrel pol   wor         , see {.<ime)ZR acS* ssword policy evaluatThe foll     policy   
+     * <li> the user is a member of the USERS data set
+     * <li> the password is supplied (unless trusted).
+     * <li> the (optional) active role set is a subset of the roles authorized for that user.
+     * </ul>
+     * <h4>
+     * The following attributes may be set when calling this method
+     * </h4>
+     * <ul>
+     * <li> {@link User#userId} - required
+     * <li> {@link com.jts.fortress.rbac.User#password}
+     * <li> {@link com.jts.fortress.rbac.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
+     * <li> {@link com.jts.fortress.rbac.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
+     * <li> {@link User#props} collection of name value pairs collected on behalf of User during signon.  For example hostname:myservername or ip:192.168.1.99
+     * </ul>
+     * <h4>
+     * Notes:
+     * </h4>
+     * <ul>
+     * <li> roles that violate Dynamic Separation of Duty Relationships will not be activated into session.
+     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link User#setRole(String)}.
+     * </ul>
+     * </p>
+     *
+     * @param user      Contains {@link User#userId}, {@link com.jts.fortress.rbac.User#password} (optional if {@code isTrusted} is 'true'), optional {@link User#roles}, optional {@link com.jts.fortress.rbac.User#adminRoles}
+     * @param isTrusted if true password is not required.
+     * @return Session object will contain authentication result code {@link com.jts.fortress.rbac.Session#errorId}, RBAC role activations {@link com.jts.fortress.rbac.Session#getRoles()}, Admin Role activations {@link com.jts.fortress.rbac.Session#getAdminRoles()},OpenLDAP pw policy codes {@link com.jts.fortress.rbac.Session#warningId}, {@link com.jts.fortress.rbac.Session#expirationSeconds}, {@link com.jts.fortress.rbac.Session#graceLogins} and more.
+     * @throws com.jts.fortress.SecurityException
+     *          in the event of data validation failure, security policy violation or DAO error.
+     */
+    public Session createSession(User user, boolean isTrusted)
+        throws SecurityException
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug(OCLS_NM + ".createSession userId <" + user.getUserId() + "> ");
+        }
+        return accessMgr.createSession(user, isTrusted);
+    }
+
+
+    /**
+     * Determine if given Role is contained within User's Tomcat Principal object.  This method does not need to hit
+     * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
+     *
+     * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
+     * @param roleName  Maps to {@link com.jts.fortress.rbac.Role#name}.
+     * @return True if Role is found in TcPrincipal, false otherwise.
+     * @throws com.jts.fortress.SecurityException
+     *          data validation failure or system error..
+     */
+    public boolean hasRole(Principal principal, String roleName)
+        throws SecurityException
+    {
+        String fullMethodName = OCLS_NM + ".hasRole";
+        if (log.isDebugEnabled())
+        {
+            log.debug(fullMethodName + " userId <" + principal.getName() + "> role <" + roleName + ">");
+        }
+
+        // Fail closed
+        boolean result = false;
+
+        // Principal must contain a HashMap that contains a Fortress session object.
+        HashMap<String, Session> context = ((TcPrincipal) principal).getContext();
+        VUtil.assertNotNull(context, GlobalErrIds.SESS_CTXT_NULL, fullMethodName);
+
+        // This Map must contain a Fortress Session:
+        Session session = context.get(SESSION);
+        VUtil.assertNotNull(session, GlobalErrIds.USER_SESS_NULL, fullMethodName);
+
+        // Check User temporal constraints in the Session:
+        CUtil.validateConstraints(session, CUtil.ConstraintType.USER, false);
+        // Check Roles temporal constraints; don't check DSD:
+        CUtil.validateConstraints(session, CUtil.ConstraintType.ROLE, false);
+        // Get the set of authorized roles from the Session:
+        Set<String> authZRoles = session.getAuthorizedRoles();
+        if (authZRoles != null && authZRoles.size() > 0)
+        {
+            // Does the set of authorized roles contain a name matched to the one passed in?
+            if (authZRoles.contains(roleName))
+            {
+                // Yes, we have a match.
+                if (log.isEnabledFor(Level.DEBUG))
+                {
+                    log.debug(fullMethodName + " userId <" + principal.getName() + "> role <" + roleName + "> successful");
+                }
+                result = true;
+            }
+            else
+            {
+                if (log.isEnabledFor(Level.DEBUG))
+                {
+                    // User is not authorized in their Session..
+                    log.debug(fullMethodName + " userId <" + principal.getName() + "> is not authorized role <" + roleName + ">");
+                }
+            }
+        }
+        else
+        {
+            // User does not have any authorized Roles in their Session..
+            log.info(fullMethodName + " userId <" + principal.getName() + "> has no authorized roles");
+        }
+        return result;
+    }
+
+
+    /**
+     * Method reads Role entity from the role container in directory.
+     *
+     * @param roleName maps to {@link Role#name}, to be read.
+     * @return Role entity that corresponds with role name.
+     * @throws com.jts.fortress.SecurityException
+     *          will be thrown if role not found or system error occurs.
+     */
+    public Role readRole(String roleName)
+        throws SecurityException
+    {
+        return reviewMgr.readRole(new Role(roleName));
+    }
+
+
+    /**
+     * Search for Roles assigned to given User.
+     *
+     * @param searchString Maps to {@link com.jts.fortress.rbac.User#userId}.
+     * @param limit        controls the size of ldap result set returned.
+     * @return List of type String containing the {@link com.jts.fortress.rbac.Role#name} of all assigned Roles.
+     * @throws com.jts.fortress.SecurityException
+     *          in the event of data validation failure or DAO error.
+     */
+    public List<String> searchRoles(String searchString, int limit)
+        throws SecurityException
+    {
+        return reviewMgr.findRoles(searchString, limit);
+    }
+
+
+    /**
+     * Method returns matching User entity that is contained within the people container in the directory.
+     *
+     * @param userId maps to {@link User#userId} that matches record in the directory.  userId is globally unique in
+     *               people container.
+     * @return entity containing matching user data.
+     * @throws SecurityException if record not found or system error occurs.
+     */
+    public User readUser(String userId)
+        throws SecurityException
+    {
+        return reviewMgr.readUser(new User(userId));
+    }
+
+
+    /**
+     * Return a list of type String of all users in the people container that match the userId field passed in User entity.
+     * This method is used by the Websphere realm component.  The max number of returned users may be set by the integer limit arg.
+     *
+     * @param searchString contains all or some leading chars that correspond to users stored in the directory.
+     * @param limit        integer value sets the max returned records.
+     * @return List of type String containing matching userIds.
+     * @throws SecurityException in the event of system error.
+     */
+    public List<String> searchUsers(String searchString, int limit)
+        throws SecurityException
+    {
+        return reviewMgr.findUsers(new User(searchString), limit);
+    }
+
+
+    /**
+     * This function returns the set of users assigned to a given role. The function is valid if and
+     * only if the role is a member of the ROLES data set.
+     * The max number of users returned is constrained by limit argument.
+     * This method is used by the Websphere realm component.  This method does NOT use hierarchical rbac.
+     *
+     * @param roleName maps to {@link Role#name} of Role entity assigned to user.
+     * @param limit    integer value sets the max returned records.
+     * @return List of type String containing userIds assigned to a particular role.
+     * @throws com.jts.fortress.SecurityException
+     *          in the event of data validation or system error.
+     */
+    public List<String> assignedUsers(String roleName, int limit)
+        throws SecurityException
+    {
+        return reviewMgr.assignedUsers(new Role(roleName), limit);
+    }
+
+
+    /**
+     * This function returns the set of roles authorized for a given user. The function is valid if
+     * and only if the user is a member of the USERS data set.
+     *
+     * @param userId maps to {@link User#userId} matching User entity stored in the directory.
+     * @return Set of type String containing the roles assigned and roles inherited.
+     * @throws SecurityException If user not found or system error occurs.
+     */
+    public List<String> authorizedRoles(String userId)
+        throws SecurityException
+    {
+        List<String> list = null;
+        // This will check temporal constraints on User and Roles.
+        Session session = createSession(new User(userId), true);
+        // Get the Set of authorized Roles.
+        Set<String> authZRoleSet = RoleUtil.getInheritedRoles(session.getRoles());
+        // If User has authorized roles.
+        if (authZRoleSet != null && authZRoleSet.size() > 0)
+        {
+            // Convert the Set into a List before returning:
+            list = new ArrayList<String>(authZRoleSet);
+        }
+        return list;
+    }
+}
+
