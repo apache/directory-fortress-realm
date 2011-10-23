@@ -160,7 +160,7 @@ public class TcAccessMgrProxy extends RealmBase
         {
             throw new RuntimeException(OCLS_NM + "authenticate detected Fortress Tomcat Realm not initialized correctly.  Check your Fortress Realm configuration");
         }
-        return realm.authenticate(userId, password);
+        return realm.authenticate(userId, password.toCharArray());
     }
 
 

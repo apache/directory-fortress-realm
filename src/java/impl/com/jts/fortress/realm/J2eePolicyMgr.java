@@ -32,7 +32,7 @@ public interface J2eePolicyMgr
      * @throws com.jts.fortress.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
-    public boolean authenticate(String userId, String password)
+    public boolean authenticate(String userId, char[] password)
         throws SecurityException;
 
 
@@ -91,7 +91,7 @@ public interface J2eePolicyMgr
      * @throws com.jts.fortress.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
-    public TcPrincipal createSession(String userId, String password)
+    public TcPrincipal createSession(String userId, char[] password)
         throws SecurityException;
 
 

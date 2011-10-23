@@ -87,7 +87,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         }
         try
         {
-            boolean result = j2eeMgr.authenticate(userId, passwd);
+            boolean result = j2eeMgr.authenticate(userId, passwd.toCharArray());
             if (!result)
             {
                 String info = OCLS_NM + ".checkPassword user <" + userId + "> authentication failed";

@@ -34,7 +34,7 @@ public interface TcAccessMgr
      * @param password Contains the user's password.
      * @return Principal which contains the Fortress RBAC session data.
      */
-    public Principal authenticate(String userId, String password);
+    public Principal authenticate(String userId, char[] password);
 }
 
 
