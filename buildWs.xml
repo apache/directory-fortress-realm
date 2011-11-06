@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<project name="fortress-realm" default="build" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="fortress-realm-websphere" default="build" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
    <target name="init">
 
@@ -27,10 +27,10 @@
       <property name="user-propfile" value="${user.home}/build.properties"/>
       <property file="${user-propfile}"/>
 
-       <property name="project.name" value="Fortress Realm"/>
+       <property name="project.name" value="Fortress Realm Websphere"/>
        <property name="name" value="fortressRealm"/>
        <property name="version" value="1.0.0-rc4"/>
-       <property name="title" value="Fortress Realm ${version}"/>
+       <property name="title" value="Fortress Realm Websphere ${version}"/>
        <property name="vendor" value="Joshua Tree Software"/>
        <property name="package" value="com.jts.fortress.realm.*"/>
        <property name="ivy.install.version" value="2.2.0"/>
@@ -59,15 +59,17 @@
        <!-- Build artifacts -->
        <property name="fortressTomcatRealm.jar" value="${dist.dir}/fortressProxyTomcat-${version}.jar"/>
        <property name="fortressTomcat7Realm.jar" value="${dist.dir}/fortressProxyTomcat7-${version}.jar"/>
+       <property name="fortressUserRegistry.jar" value="${dist.dir}/fortressProxyWebSphere-${version}.jar"/>
        <property name="fortressRealm.jar" value="${dist.dir}/fortressRealm-${version}.jar"/>
-       <property name="fortressRealm.zip" value="${dist.dir}/fortressRealmDist-${version}.zip"/>
+       <property name="fortressRealm.zip" value="${dist.dir}/fortressRealmWebsphereDist-${version}.zip"/>
        <property name="fortressRealmDistro.jar" value="${dist.dir}/fortressRealm-${version}.jar"/>
        <property name="fortressJbossRealmDistro.jar" value="${dist.dir}/fortressRealmJBoss-${version}.jar"/>
        <property name="fortressRealmImpl.jar" value="${dist.dir}/fortressRealmImpl-${version}.jar"/>
        <property name="javadoc.dist.zip" value="${dist.dir}/fortressRealmDoc-${version}.zip"/>
        <property name="config.dir" value="${basedir}/conf"/>
-       <!-- Dependent LIB, not in maven yet -->
+       <!-- Dependent LIBs, not in maven -->
        <property name="fortress.jar" value="${lib.dir}/fortress-${version}.jar"/>
+       <property name="ws_runtime.jar" value="${lib.dir}/ws_runtime.jar"/>
        <!-- Dependent LIBs in maven -->
        <property name="catalina7.jar" value="${lib.dir}/tomcat-catalina-7.0.22.jar"/>
        <property name="catalina.jar" value="${lib.dir}/catalina-6.0.33.jar"/>
@@ -85,17 +87,21 @@
        <path id="build.proxy.class.path">
            <!-- J2EE JARs -->
            <pathelement location="${catalina.jar}"/>
+           <pathelement location="${ws_runtime.jar}"/>
            <!--pathelement location="${websphere.jar}"/-->
        </path>
 
        <path id="build.proxy.tc7.class.path">
            <!-- J2EE JARs -->
            <pathelement location="${catalina7.jar}"/>
+           <pathelement location="${ws_runtime.jar}"/>
        </path>
 
        <path id="build.impl.class.path">
            <!-- J2EE JARs -->
            <pathelement location="${catalina.jar}"/>
+           <pathelement location="${ws_runtime.jar}"/>
+
            <!-- Fortress JARs -->
            <pathelement location="${build.classes.proxy.dir}"/>
            <pathelement location="${fortress.jar}"/>
@@ -225,7 +231,6 @@
               deprecation="${javac.deprecation}"
               destdir="${build.classes.proxy.dir}">
               <exclude name="com/jts/fortress/realm/tomcat/Tc7AccessMgrProxy.java"/>
-              <exclude name="com/jts/fortress/realm/websphere/**"/>
              <classpath refid="build.proxy.class.path"/>
          </javac>
     </target>
@@ -236,7 +241,6 @@
               deprecation="${javac.deprecation}"
               destdir="${build.classes.proxy.dir}">
               <exclude name="com/jts/fortress/realm/tomcat/TcAccessMgrProxy.java"/>
-              <exclude name="com/jts/fortress/realm/websphere/**"/>
              <classpath refid="build.proxy.tc7.class.path"/>
          </javac>
     </target>
@@ -247,7 +251,6 @@
               debug="${javac.debug}"
               deprecation="${javac.deprecation}"
               destdir="${build.classes.impl.dir}">
-              <exclude name="com/jts/fortress/realm/websphere/**"/>
              <classpath refid="build.impl.class.path"/>
          </javac>
     </target>
@@ -278,6 +281,17 @@
            <fileset dir="${build.classes.impl.dir}">
                <include name="com/jts/fortress/realm/tomcat/TcPrincipal.class"/>
            </fileset>
+          <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
+       </fortressRealm.jar>
+    </target>
+
+    <target name="build-jar-wsproxy" depends="compile-proxy">
+       <mkdir dir="${dist.dir}"/>
+       <fortressRealm.jar destfile="${fortressUserRegistry.jar}">
+          <fileset dir="${build.classes.proxy.dir}">
+              <include name="com/jts/fortress/realm/websphere/**"/>
+              <include name="com/jts/fortress/realm/util/**"/>
+          </fileset>
           <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
        </fortressRealm.jar>
     </target>
@@ -321,10 +335,11 @@
         <fortressRealm.jar basedir="${work.jboss.dir}" jarfile="${fortressJbossRealmDistro.jar}"/>
     </target>
 
-   <target name="build" depends="clean,build-jar-tcproxy,build-jar-tc7proxy,build-jar-impl, build-jar-distro,build-jar-distro-jboss,javadoc">
+   <target name="build" depends="clean,build-jar-tcproxy,build-jar-tc7proxy,build-jar-wsproxy,build-jar-impl, build-jar-distro,build-jar-distro-jboss,javadoc">
       <copy todir="${dist.dir}" file="${basedir}/LICENSE.txt"/>
       <copy todir="${dist.dir}" file="${basedir}/NOTICE.txt"/>
       <copy todir="${dist.dir}" file="${basedir}/TOMCAT-SETUP-NOTES.txt"/>
+      <copy todir="${dist.dir}" file="${basedir}/WEBSPHERE-SETUP-NOTES.txt"/>
    </target>
 
     <!-- ###############  create distribution packages ############################ -->
@@ -368,6 +383,7 @@
             <zipfileset dir="${dist.dir}" prefix="proxy">
                 <include name="fortressTomcatRealm*.jar"/>
                 <include name="fortressTomcat7Realm*.jar"/>
+                <include name="fortressUserRegistry*.jar"/>
             </zipfileset>
             <zipfileset dir="${lib.dir}" prefix="lib" excludes="ws_runtime*,*catalina*,websphere*">
                 <include name="*.jar"/>
@@ -376,6 +392,7 @@
                 <include name="fortress*.jar"/>
                 <exclude name="fortressTomcatRealm*.jar"/>
                 <exclude name="fortressTomcat7Realm*.jar"/>
+                <exclude name="fortressUserRegistry*.jar"/>
             </zipfileset>
             <zipfileset dir="${config.dir}" prefix="conf">
                 <include name="*.xml"/>
