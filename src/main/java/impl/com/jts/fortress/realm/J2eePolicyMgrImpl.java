@@ -20,7 +20,6 @@ import com.jts.fortress.rbac.RoleUtil;
 import com.jts.fortress.rbac.User;
 import com.jts.fortress.rbac.Role;
 import com.jts.fortress.rbac.Session;
-import com.jts.fortress.rbac.UserRole;
 import com.jts.fortress.realm.tomcat.TcPrincipal;
 import com.jts.fortress.util.attr.VUtil;
 import com.jts.fortress.util.time.CUtil;

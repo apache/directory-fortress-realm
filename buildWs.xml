@@ -29,7 +29,7 @@
 
        <property name="project.name" value="Fortress Realm Websphere"/>
        <property name="name" value="fortressRealm"/>
-       <property name="version" value="1.0.0-rc4"/>
+       <property name="version" value="1.0.0-rc6"/>
        <property name="title" value="Fortress Realm Websphere ${version}"/>
        <property name="vendor" value="Joshua Tree Software"/>
        <property name="package" value="com.jts.fortress.realm.*"/>
@@ -39,7 +39,7 @@
        <property name="src.dir" value="${basedir}/src"/>
        <property name="lib.dir" value="${basedir}/lib"/>
        <property name="config.dir" value="${basedir}/conf"/>
-       <property name="src.java.dir" value="${src.dir}/java"/>
+       <property name="src.java.dir" value="${src.dir}/main/java"/>
        <property name="src.java.proxy.dir" value="${src.java.dir}/proxy"/>
        <property name="src.java.impl.dir" value="${src.java.dir}/impl"/>
        <property name="build.dir" value="${basedir}/build"/>

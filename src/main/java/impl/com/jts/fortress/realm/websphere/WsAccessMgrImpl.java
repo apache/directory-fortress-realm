@@ -6,7 +6,6 @@ package com.jts.fortress.realm.websphere;
 
 import com.jts.fortress.SecurityException;
 import com.jts.fortress.constants.GlobalErrIds;
-import com.jts.fortress.rbac.Role;
 import com.jts.fortress.rbac.User;
 import com.jts.fortress.realm.J2eePolicyMgrFactory;
 import com.jts.fortress.realm.J2eePolicyMgr;
