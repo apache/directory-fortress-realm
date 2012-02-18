@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2009-2011. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
  */
 
-package com.jts.fortress.realm.tomcat;
+package com.jts.fortress.sentry.tomcat;
 
 import com.jts.fortress.SecurityException;
-import com.jts.fortress.realm.J2eePolicyMgr;
-import com.jts.fortress.realm.J2eePolicyMgrFactory;
+import com.jts.fortress.sentry.J2eePolicyMgr;
+import com.jts.fortress.sentry.J2eePolicyMgrFactory;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 

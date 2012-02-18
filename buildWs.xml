@@ -1,5 +1,5 @@
 <!--
-  Copyright © 2009-2011. Joshua Tree Software, LLC.  All Rights Reserved.
+  Copyright © 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
   Licensed to Joshua Tree Software, LLC under New BSD license agreements.  See the NOTICE file distributed with
   this work for additional information regarding copyright ownership.
   JTS licenses this file to You under the New BSD License
@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<project name="fortress-realm-websphere" default="build" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="fortress-sentry" default="build" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
    <target name="init">
 
@@ -27,12 +27,12 @@
       <property name="user-propfile" value="${user.home}/build.properties"/>
       <property file="${user-propfile}"/>
 
-       <property name="project.name" value="Fortress Realm Websphere"/>
-       <property name="name" value="fortressRealm"/>
+       <property name="project.name" value="Fortress Java Sentry Websphere"/>
+       <property name="name" value="fortressSentry"/>
        <property name="version" value="1.0.0-rc6"/>
-       <property name="title" value="Fortress Realm Websphere ${version}"/>
+       <property name="title" value="Fortress Java Sentry Websphere ${version}"/>
        <property name="vendor" value="Joshua Tree Software"/>
-       <property name="package" value="com.jts.fortress.realm.*"/>
+       <property name="package" value="com.jts.fortress.sentry.*"/>
        <property name="ivy.install.version" value="2.2.0"/>
 
        <!-- Env vars -->
@@ -57,15 +57,15 @@
        <property name="config.suffix" value="dc=${suffix.name}\,dc=com"/>
 
        <!-- Build artifacts -->
-       <property name="fortressTomcatRealm.jar" value="${dist.dir}/fortressProxyTomcat-${version}.jar"/>
-       <property name="fortressTomcat7Realm.jar" value="${dist.dir}/fortressProxyTomcat7-${version}.jar"/>
+       <property name="fortressTomcatSentry.jar" value="${dist.dir}/fortressProxyTomcat-${version}.jar"/>
+       <property name="fortressTomcat7Sentry.jar" value="${dist.dir}/fortressProxyTomcat7-${version}.jar"/>
        <property name="fortressUserRegistry.jar" value="${dist.dir}/fortressProxyWebSphere-${version}.jar"/>
-       <property name="fortressRealm.jar" value="${dist.dir}/fortressRealm-${version}.jar"/>
-       <property name="fortressRealm.zip" value="${dist.dir}/fortressRealmWebsphereDist-${version}.zip"/>
-       <property name="fortressRealmDistro.jar" value="${dist.dir}/fortressRealm-${version}.jar"/>
-       <property name="fortressJbossRealmDistro.jar" value="${dist.dir}/fortressRealmJBoss-${version}.jar"/>
-       <property name="fortressRealmImpl.jar" value="${dist.dir}/fortressRealmImpl-${version}.jar"/>
-       <property name="javadoc.dist.zip" value="${dist.dir}/fortressRealmDoc-${version}.zip"/>
+       <property name="fortressSentry.jar" value="${dist.dir}/fortressSentry-${version}.jar"/>
+       <property name="fortressSentry.zip" value="${dist.dir}/fortressSentryWebsphereDist-${version}.zip"/>
+       <property name="fortressSentryDistro.jar" value="${dist.dir}/fortressSentry-${version}.jar"/>
+       <property name="fortressJbossSentryDistro.jar" value="${dist.dir}/fortressSentryJBoss-${version}.jar"/>
+       <property name="fortressSentryImpl.jar" value="${dist.dir}/fortressSentryImpl-${version}.jar"/>
+       <property name="javadoc.dist.zip" value="${dist.dir}/fortressSentryDoc-${version}.zip"/>
        <property name="config.dir" value="${basedir}/conf"/>
        <!-- Dependent LIBs, not in maven -->
        <property name="fortress.jar" value="${lib.dir}/fortress-${version}.jar"/>
@@ -147,7 +147,7 @@
       <property name="javac.deprecation" value="true"/>
 
        <!-- Presetdef to create jar with common manifest -->
-       <presetdef name="fortressRealm.jar">
+       <presetdef name="fortressSentry.jar">
            <jar compress="true">
                <manifest>
                    <attribute name="Created-By" value="${vendor} - ${project.name} dev team"/>
@@ -230,7 +230,7 @@
               debug="${javac.debug}"
               deprecation="${javac.deprecation}"
               destdir="${build.classes.proxy.dir}">
-              <exclude name="com/jts/fortress/realm/tomcat/Tc7AccessMgrProxy.java"/>
+              <exclude name="com/jts/fortress/sentry/tomcat/Tc7AccessMgrProxy.java"/>
              <classpath refid="build.proxy.class.path"/>
          </javac>
     </target>
@@ -240,7 +240,7 @@
               debug="${javac.debug}"
               deprecation="${javac.deprecation}"
               destdir="${build.classes.proxy.dir}">
-              <exclude name="com/jts/fortress/realm/tomcat/TcAccessMgrProxy.java"/>
+              <exclude name="com/jts/fortress/sentry/tomcat/TcAccessMgrProxy.java"/>
              <classpath refid="build.proxy.tc7.class.path"/>
          </javac>
     </target>
@@ -257,52 +257,52 @@
 
     <target name="build-jar-tcproxy" depends="compile-proxy,compile-proxy-tc7,compile-impl">
        <mkdir dir="${dist.dir}"/>
-       <fortressRealm.jar destfile="${fortressTomcatRealm.jar}">
+       <fortressSentry.jar destfile="${fortressTomcatSentry.jar}">
           <fileset dir="${build.classes.proxy.dir}">
-              <include name="com/jts/fortress/realm/tomcat/**"/>
-              <include name="com/jts/fortress/realm/util/**"/>
-              <exclude name="com/jts/fortress/realm/tomcat/Tc7AccessMgrProxy.class"/>
+              <include name="com/jts/fortress/sentry/tomcat/**"/>
+              <include name="com/jts/fortress/sentry/util/**"/>
+              <exclude name="com/jts/fortress/sentry/tomcat/Tc7AccessMgrProxy.class"/>
           </fileset>
            <fileset dir="${build.classes.impl.dir}">
-               <include name="com/jts/fortress/realm/tomcat/TcPrincipal.class"/>
+               <include name="com/jts/fortress/sentry/tomcat/TcPrincipal.class"/>
            </fileset>
           <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
-       </fortressRealm.jar>
+       </fortressSentry.jar>
     </target>
 
     <target name="build-jar-tc7proxy" depends="compile-proxy,compile-impl">
        <mkdir dir="${dist.dir}"/>
-       <fortressRealm.jar destfile="${fortressTomcat7Realm.jar}">
+       <fortressSentry.jar destfile="${fortressTomcat7Sentry.jar}">
           <fileset dir="${build.classes.proxy.dir}">
-              <include name="com/jts/fortress/realm/tomcat/**"/>
-              <include name="com/jts/fortress/realm/util/**"/>
-              <exclude name="com/jts/fortress/realm/tomcat/TcAccessMgrProxy.class"/>
+              <include name="com/jts/fortress/sentry/tomcat/**"/>
+              <include name="com/jts/fortress/sentry/util/**"/>
+              <exclude name="com/jts/fortress/sentry/tomcat/TcAccessMgrProxy.class"/>
           </fileset>
            <fileset dir="${build.classes.impl.dir}">
-               <include name="com/jts/fortress/realm/tomcat/TcPrincipal.class"/>
+               <include name="com/jts/fortress/sentry/tomcat/TcPrincipal.class"/>
            </fileset>
           <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
-       </fortressRealm.jar>
+       </fortressSentry.jar>
     </target>
 
     <target name="build-jar-wsproxy" depends="compile-proxy">
        <mkdir dir="${dist.dir}"/>
-       <fortressRealm.jar destfile="${fortressUserRegistry.jar}">
+       <fortressSentry.jar destfile="${fortressUserRegistry.jar}">
           <fileset dir="${build.classes.proxy.dir}">
-              <include name="com/jts/fortress/realm/websphere/**"/>
-              <include name="com/jts/fortress/realm/util/**"/>
+              <include name="com/jts/fortress/sentry/websphere/**"/>
+              <include name="com/jts/fortress/sentry/util/**"/>
           </fileset>
           <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
-       </fortressRealm.jar>
+       </fortressSentry.jar>
     </target>
 
     <target name="build-jar-impl" depends="compile-impl">
        <mkdir dir="${dist.dir}"/>
-       <fortressRealm.jar basedir="${build.classes.impl.dir}" destfile="${fortressRealmImpl.jar}"/>
+       <fortressSentry.jar basedir="${build.classes.impl.dir}" destfile="${fortressSentryImpl.jar}"/>
     </target>
 
     <target name="build-jar-distro" depends="init,build-jar-impl">
-        <unjar dest="${work.dir}" src="${fortressRealmImpl.jar}"/>
+        <unjar dest="${work.dir}" src="${fortressSentryImpl.jar}"/>
         <unjar dest="${work.dir}" src="${fortress.jar}"/>
         <unjar dest="${work.dir}" src="${log4j.jar}"/>
         <unjar dest="${work.dir}" src="${commons-collections.jar}"/>
@@ -313,11 +313,11 @@
         <unjar dest="${work.dir}" src="${unboundsdk.jar}"/>
         <unjar dest="${work.dir}" src="${jgraph.jar}"/>
         <unjar dest="${work.dir}" src="${jasypt.jar}"/>
-        <fortressRealm.jar basedir="${work.dir}" compress="true" jarfile="${fortressRealmDistro.jar}"/>
+        <fortressSentry.jar basedir="${work.dir}" compress="true" jarfile="${fortressSentryDistro.jar}"/>
     </target>
 
     <target name="build-jar-distro-jboss" depends="init,build-jar-impl">
-        <unjar dest="${work.jboss.dir}" src="${fortressRealmImpl.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${fortressSentryImpl.jar}"/>
         <unjar dest="${work.jboss.dir}" src="${fortress.jar}"/>
         <unjar dest="${work.jboss.dir}" src="${log4j.jar}"/>
         <unjar dest="${work.jboss.dir}" src="${commons-collections.jar}"/>
@@ -332,7 +332,7 @@
             <include name="*.xml"/>
             <include name="*.properties"/>
         </fileset>
-        <fortressRealm.jar basedir="${work.jboss.dir}" jarfile="${fortressJbossRealmDistro.jar}"/>
+        <fortressSentry.jar basedir="${work.jboss.dir}" jarfile="${fortressJbossSentryDistro.jar}"/>
     </target>
 
    <target name="build" depends="clean,build-jar-tcproxy,build-jar-tc7proxy,build-jar-wsproxy,build-jar-impl, build-jar-distro,build-jar-distro-jboss,javadoc">
@@ -373,16 +373,16 @@
         <replace file="${dst.remote.conf}" token="@CFG_CRYPTO_PROP@" value="${crypto.prop}"/>
 
         <!-- Break up the install binary packages by platform:  -->
-        <zip destfile="${fortressRealm.zip}">
+        <zip destfile="${fortressSentry.zip}">
             <zipfileset dir="${dist.dir}" prefix="doc">
-                <include name="fortressRealmDoc*.zip"/>
+                <include name="fortressSentryDoc*.zip"/>
             </zipfileset>
             <zipfileset dir="${dist.dir}" prefix="src">
-                <include name="fortressRealmSrc*.zip"/>
+                <include name="fortressSentrySrc*.zip"/>
             </zipfileset>
             <zipfileset dir="${dist.dir}" prefix="proxy">
-                <include name="fortressTomcatRealm*.jar"/>
-                <include name="fortressTomcat7Realm*.jar"/>
+                <include name="fortressTomcatSentry*.jar"/>
+                <include name="fortressTomcat7Sentry*.jar"/>
                 <include name="fortressUserRegistry*.jar"/>
             </zipfileset>
             <zipfileset dir="${lib.dir}" prefix="lib" excludes="ws_runtime*,*catalina*,websphere*">
@@ -390,8 +390,8 @@
             </zipfileset>
             <zipfileset dir="${dist.dir}" prefix="lib">
                 <include name="fortress*.jar"/>
-                <exclude name="fortressTomcatRealm*.jar"/>
-                <exclude name="fortressTomcat7Realm*.jar"/>
+                <exclude name="fortressTomcatSentry*.jar"/>
+                <exclude name="fortressTomcat7Sentry*.jar"/>
                 <exclude name="fortressUserRegistry*.jar"/>
             </zipfileset>
             <zipfileset dir="${config.dir}" prefix="conf">

@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2009-2011. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
  */
 
-package com.jts.fortress.realm;
+package com.jts.fortress.sentry;
 
 import com.jts.fortress.configuration.Config;
 import com.jts.fortress.SecurityException;
@@ -23,10 +23,10 @@ import org.apache.log4j.Logger;
 public class J2eePolicyMgrFactory
 {
     /**
-     * When this optional tag, {@code realmImplementation}, is placed in Fortress properties, its class name will be the default {@code com.mims.Fortress.security.RealmMgr} instance used.
+     * When this optional tag, {@code realmImplementation}, is placed in Fortress properties, its class name will be the default {@code com.jts.fortress.security.RealmMgr} instance used.
      */
     private static final String J2EE_POLICYMGR_IMPLEMENTATION = "realmImplementation";
-    private static final String J2EE_POLICYMGR_DEFAULT_CLASS = "com.jts.fortress.realm.J2eePolicyMgrImpl";
+    private static final String J2EE_POLICYMGR_DEFAULT_CLASS = "com.jts.fortress.sentry.J2eePolicyMgrImpl";
     private static final String OCLS_NM = J2eePolicyMgrFactory.class.getName();
     private static final Logger log = Logger.getLogger(OCLS_NM);
     private static String j2eeClassName = Config.getProperty(J2EE_POLICYMGR_IMPLEMENTATION);

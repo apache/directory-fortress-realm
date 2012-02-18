@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2009-2011. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
  */
 
-package com.jts.fortress.realm.tomcat;
+package com.jts.fortress.sentry.tomcat;
 
-import com.jts.fortress.realm.util.CpUtil;
+import com.jts.fortress.sentry.util.CpUtil;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.realm.RealmBase;
@@ -13,7 +13,7 @@ import java.security.Principal;
 import java.net.URLClassLoader;
 import java.util.logging.Logger;
 
-import com.jts.fortress.realm.util.ChildFirstUrlClassLoader;
+import com.jts.fortress.sentry.util.ChildFirstUrlClassLoader;
 
 /**
  * This class extends the Tomcat 7 and beyond RealmBase class and provides Java EE security services within the Tomcat container.
@@ -27,7 +27,7 @@ public class Tc7AccessMgrProxy extends RealmBase
 {
     private static final String OCLS_NM = Tc7AccessMgrProxy.class.getName();
     private static final Logger log = Logger.getLogger(OCLS_NM);
-    private static final String REALM_IMPL = "com.jts.fortress.realm.tomcat.TcAccessMgrImpl";
+    private static final String REALM_IMPL = "com.jts.fortress.sentry.tomcat.TcAccessMgrImpl";
     private static final String REALM_CLASSPATH = "REALM_CLASSPATH";
     private static final String JBOSS_AGENT = "jboss";
     private static String container = "Catalina7";
@@ -260,7 +260,7 @@ public class Tc7AccessMgrProxy extends RealmBase
         // Perform normal superclass finalization
         super.stopInternal();
 
-        // Release reference to our realm impl
+        // Release reference to our sentry impl
         realm = null;
 
     }

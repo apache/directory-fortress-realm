@@ -3,20 +3,20 @@
   -->
 <html>
    <head>
-      <title>Package Documentation for Fortress Websphere SPI</title>
+      <title>Package Documentation for Java Sentry Websphere SPI</title>
    </head>
    <body>
       <p>
          This package is the component that allows security checks to be performed within a
-          Websphere runtime environment.  The Websphere Realm has been split into two packages each contained within
+          Websphere runtime environment.  The Websphere Java Sentry has been split into two packages each contained within
           its own jar file.
-          The Websphere Realm Jars include:
+          The Websphere Sentry Jars include:
           <ol>
           <li>fortressProxyWebSphere-[version].jar</li>
-          <li>fortressRealm-[version].jar and configuration artifacts</li>
+          <li>fortressSentry-[version].jar and configuration artifacts</li>
           </ol>
 
-         The fortressProxyWebSphere jar is a thin layer of code that calls the fortressRealm implementation code via standard
+         The fortressProxyWebSphere jar is a thin layer of code that calls the fortressSentry implementation code via standard
          Java URLClassloader logic.  The Fortress implementation code and configuration artifacts must remain separate from
          Websphere's runtime system classpath.  The rationale for separation is it necessary to allow a
          predictable and repeatable installation process as throwing non-native jars on any application server
@@ -25,7 +25,7 @@
          setting up Fortress in Websphere will work every time if the instructions are followed faithfully.
       </p>
 
-      <h3>JoshuaTree Fortress Websphere UserRegistry Setup Notes</h3>
+      <h3>JoshuaTree Java Sentry Websphere UserRegistry Setup Notes</h3>
       This installation document contains instructions for installing the Fortress Websphere UserRegistry component.  This component works
        in Websphere 5,6,7.
    <h4>Guidelines & Tips</h4>
@@ -41,19 +41,19 @@
 
    <ol type="I">
        <li>
-          <h3>Instructions to extract Fortress Realm Package to Target System</h3>
+          <h3>Instructions to extract Fortress Java Sentry Package to Target System</h3>
            <ol type="A">
-              <li>Copy fortressRealmDist-[version].zip to hard drive on target server env.</li>
+              <li>Copy fortressSentryDist-[version].zip to hard drive on target server env.</li>
               <li>Extract the zip.  The location for archive can vary according to requirements.  The location for package will be referred to as "FORTRESS_HOME" later in these instructions.</li>
            </ol>
        </li>
 
        <li>
-          <h3>Instructions to configure Fortress Realm to use Target System LDAP</h3>
-           Note: the <b>dist</b> Ant target on this project will use settings contained within the <b>build.properties</b> file contained within the root folder of this component and replace substitution params contained within <em>oamRealm.properties.src</em> and create new <em>oamRealm.properties</em> file automatically.<br><br>
+          <h3>Instructions to configure Fortress Java Sentry to use Target System LDAP</h3>
+           Note: the <b>dist</b> Ant target on this project will use settings contained within the <b>build.properties</b> file contained within the root folder of this component and replace substitution params contained within <em>fortress.properties.src</em> and create new <em>fortress.properties</em> file automatically.<br><br>
            <ol type="A">
-              <li>Edit the FORTRESS_HOME properties file located in $FORTRESS_HOME/conf/oamRealm.properties.  If you did not run Ant <b>dist</b> target you will need to create using <em>oamRealm.properties.src</em>
-<font size="3" color="#000000"><pre>vi /home/user/fortressRealm-1.0.0/conf/oamRealm.properties</pre></font>
+              <li>Edit the FORTRESS_HOME properties file located in $FORTRESS_HOME/conf/fortress.properties.  If you did not run Ant <b>dist</b> target you will need to create using <em>fortress.properties.src</em>
+<font size="3" color="#000000"><pre>vi /home/user/fortressSentry-1.0.0/conf/fortress.properties</pre></font>
               </li>
               
               <li>
@@ -87,12 +87,12 @@ maxConn=10
           </p>
        </li>
        <li>
-          <h3>Instructions to configure Websphere to use Fortress Realm</h3>
+          <h3>Instructions to configure Websphere to use Fortress Java Sentry</h3>
            <ol type="A">
                <li>Load the Proxy jar onto server classpath (WEBSPHERE_HOME/lib).
                 Copy the proxy jar located, FORTRESS_HOME/proxy/fortressProxyWebsphere-[version].jar to the Websphere Server's lib folder.
 <font size="3" color="#000000">                <pre>
-/opt/IBM/Websphere/AppServer/lib$ sudo cp /home/user/fortressRealm-1.0.0/proxy/fortressProxyWebsphere-1.0.0.jar  .
+/opt/IBM/Websphere/AppServer/lib$ sudo cp /home/user/fortressSentry-1.0.0/proxy/fortressProxyWebsphere-1.0.0.jar  .
                </pre>
 </font>               </li>
                 <em>note: This is the only Fortress binary or configuration artifact that will reside directly on Websphere's server classpath.</em><br><br>
@@ -112,11 +112,11 @@ maxConn=10
               <li>Select Radio button: <em>Server identity that is stored in the repository</em></li>
               <li>Enter in field: <em>Server user ID or administrative user on a Version 6.0.x node</em> : <strong>wasadmin</strong>  (or whatever you choose as your default console userId)./li>
               <li>Enter in field: <em>Password</em> : <strong>@dmin123</strong>  (or whatever you choose as your default consle user's password)</li>
-              <li>Enter in field: <em>Information required Custom registry class name</em> : <strong>com.jts.fortress.realm.websphere.WsAccessMgrProxy</strong></li>
+              <li>Enter in field: <em>Information required Custom registry class name</em> : <strong>com.jts.fortress.sentry.websphere.WsAccessMgrProxy</strong></li>
               <li>Enable checkbox: <em>Ignore case for authorization</em></li>
               <li>Enter in field: <em>Custom properties</em>" :</li>
 <font size="3" color="#000000">               <pre>
-<em>Name</em> <strong>REALM_CLASSPATH</strong>   <em>Value</em> <strong>/home/user/fortressRealmDist-1.0.0-rc1/conf:/home/user/fortressRealmDist-1.0.0-rc1/lib/fortressRealm-1.0.0-rc1.jar</strong>
+<em>Name</em> <strong>REALM_CLASSPATH</strong>   <em>Value</em> <strong>/home/user/fortressSentryDist-1.0.0/conf:/home/user/fortressSentryDist-1.0.0/lib/fortressSentry-1.0.0.jar</strong>
               </pre>
 </font>              <li>Click on <em>Apply</em> button.</li>
               <li>Click on <em>Save directly to the master configuration.</em> link.</li>
@@ -134,14 +134,14 @@ maxConn=10
 /opt/IBM/WebSphere/AppServer/bin$ ./startServer.sh server1 -profileName AppSrv01
               </pre>
 </font>              
-<li>Verify that realm started successfully by viewing following message in Websphere's log:</li>
+<li>Verify that sentry started successfully by viewing following message in Websphere's log:</li>
 <font size="3" color="#000000">              <pre>
 /opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/server1$ tail -f -n10000 SystemOut.log              
 ...
-[6/5/11 18:46:16:745 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,744 (INFO ) com.jts.fortress.realm.J2eePolicyMgrImpl - Initialized successfully
-[6/5/11 18:46:16:745 CDT] 00000000 WsAccessMgrPr I   com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize - Fortress UserRegistry initialized no errors.
-[6/5/11 18:46:16:748 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,748 (INFO ) com.jts.fortress.realm.websphere.WsAccessMgrImpl. J2EE policy agent initialization successful
-[6/5/11 18:46:16:759 CDT] 00000000 UserRegistryI A   SECJ0136I: Custom Registry:com.jts.fortress.realm.websphere.WsAccessMgrProxy has been initialized
+[6/5/11 18:46:16:745 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,744 (INFO ) com.jts.fortress.sentry.J2eePolicyMgrImpl - Initialized successfully
+[6/5/11 18:46:16:745 CDT] 00000000 WsAccessMgrPr I   com.jts.fortress.sentry.websphere.WsAccessMgrProxy.initialize - Fortress UserRegistry initialized no errors.
+[6/5/11 18:46:16:748 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,748 (INFO ) com.jts.fortress.sentry.websphere.WsAccessMgrImpl. J2EE policy agent initialization successful
+[6/5/11 18:46:16:759 CDT] 00000000 UserRegistryI A   SECJ0136I: Custom Registry:com.jts.fortress.sentry.websphere.WsAccessMgrProxy has been initialized
               </pre>
 </font>              </ol>
           </p>
@@ -162,27 +162,27 @@ maxConn=10
        <li>
           <h3>Common Troubleshooting Tips</h3>
            <ol type="A">
-              <li>Server can't find config files (realmClasspath="/fortressRealm-1.0.0/conf/")
+              <li>Server can't find config files (realmClasspath="/fortressSentry-1.0.0/conf/")
                   <h4>Error</h4>
 <font size="3" color="#000000">                  <pre>
-[6/6/11 18:33:44:556 CDT] 00000000 WsAccessMgrPr W   com.jts.fortress.realm.websphere.WsAccessMgrProxy.getRealmImplClassname - REALM_IMPLEMENTATION default=com.jts.fortress.realm.websphere.WsAccessMgrImpl
-[6/6/11 18:33:44:572 CDT] 00000000 CpUtil        I   com.jts.fortress.realm.util.CpUtil.parseRealmClasspath </home/smckinn/JavaTools/realm/fortressRealmDist-1.0.0-rc1/conf:/home/smckinn/JavaTools/realm/fortressRealmDist-1.0.0-rc1/lib/fortressRealm-1.0.0-rc1.jar>
-[6/6/11 18:33:44:575 CDT] 00000000 CpUtil        I   com.jts.fortress.realm.util.CpUtil.parseRealmClasspath path0 <file:/home/smckinn/JavaTools/realm/fortressRealmDist-1.0.0-rc1/conf>
-[6/6/11 18:33:44:578 CDT] 00000000 CpUtil        I   com.jts.fortress.realm.util.CpUtil.parseRealmClasspath path1 <file:/home/smckinn/JavaTools/realm/fortressRealmDist-1.0.0-rc1/lib/fortressRealm-1.0.0-rc1.jar>
-[6/6/11 18:33:44:581 CDT] 00000000 WsAccessMgrPr I   com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize - instantiate class: com.jts.fortress.realm.websphere.WsAccessMgrImpl
+[6/6/11 18:33:44:556 CDT] 00000000 WsAccessMgrPr W   com.jts.fortress.sentry.websphere.WsAccessMgrProxy.getRealmImplClassname - REALM_IMPLEMENTATION default=com.jts.fortress.sentry.websphere.WsAccessMgrImpl
+[6/6/11 18:33:44:572 CDT] 00000000 CpUtil        I   com.jts.fortress.sentry.util.CpUtil.parseRealmClasspath </home/smckinn/JavaTools/sentry/fortressSentryDist-1.0.0-rc1/conf:/home/smckinn/JavaTools/sentry/fortressSentryDist-1.0.0-rc1/lib/fortressSentry-1.0.0-rc1.jar>
+[6/6/11 18:33:44:575 CDT] 00000000 CpUtil        I   com.jts.fortress.sentry.util.CpUtil.parseRealmClasspath path0 <file:/home/smckinn/JavaTools/sentry/fortressSentryDist-1.0.0-rc1/conf>
+[6/6/11 18:33:44:578 CDT] 00000000 CpUtil        I   com.jts.fortress.sentry.util.CpUtil.parseRealmClasspath path1 <file:/home/smckinn/JavaTools/sentry/fortressSentryDist-1.0.0-rc1/lib/fortressSentry-1.0.0-rc1.jar>
+[6/6/11 18:33:44:581 CDT] 00000000 WsAccessMgrPr I   com.jts.fortress.sentry.websphere.WsAccessMgrProxy.initialize - instantiate class: com.jts.fortress.sentry.websphere.WsAccessMgrImpl
 [6/6/11 18:33:44:854 CDT] 00000000 FfdcProvider  W com.ibm.ws.ffdc.impl.FfdcProvider logIncident FFDC1003I: FFDC Incident emitted on /opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/ffdc/server1_76887688_11.06.06_18.33.44.817562839570554853342.txt null 484
 [6/6/11 18:33:44:871 CDT] 00000000 ContainerHelp E   WSVR0501E: Error creating component null [class com.ibm.ws.security.core.SecurityComponentImpl]
 java.lang.ExceptionInInitializerError
   at java.lang.J9VMInternals.initialize(J9VMInternals.java:222)
-  at com.jts.fortress.realm.J2eePolicyMgrFactory.<clinit>(J2eePolicyMgrFactory.java:32)
+  at com.jts.fortress.sentry.J2eePolicyMgrFactory.<clinit>(J2eePolicyMgrFactory.java:32)
   at java.lang.J9VMInternals.initializeImpl(Native Method)
   at java.lang.J9VMInternals.initialize(J9VMInternals.java:200)
-  at com.jts.fortress.realm.websphere.WsAccessMgrImpl.<clinit>(WsAccessMgrImpl.java:41)
+  at com.jts.fortress.sentry.websphere.WsAccessMgrImpl.<clinit>(WsAccessMgrImpl.java:41)
   at java.lang.J9VMInternals.initializeImpl(Native Method)
   at java.lang.J9VMInternals.initialize(J9VMInternals.java:200)
   at java.lang.J9VMInternals.newInstanceImpl(Native Method)
   at java.lang.Class.newInstance(Class.java:1325)
-  at com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize(WsAccessMgrProxy.java:60)
+  at com.jts.fortress.sentry.websphere.WsAccessMgrProxy.initialize(WsAccessMgrProxy.java:60)
   at com.ibm.ws.security.registry.UserRegistryImpl.initialize(UserRegistryImpl.java:260)
   at com.ibm.ws.security.config.UserRegistryConfigImpl.do_createRegistryObjects(UserRegistryConfigImpl.java:680)
   at com.ibm.ws.security.config.UserRegistryConfigImpl.createRegistryObjects(UserRegistryConfigImpl.java:637)
@@ -234,14 +234,14 @@ Caused by: java.lang.RuntimeException: com.jts.fortress.configuration.Config sta
 </font>
                   <h4>Corrective Action</h4>
                   <pre>
-<em>Ensure step III.M points to Fortress realm configuration folder.</em>
+<em>Ensure step III.M points to Fortress sentry configuration folder.</em>
                   </pre>
               </li>
-               <li>Server can't find proxy jar (Realm className="com.jts.fortress.realm.websphere.WsAccessMgrProxy")
+               <li>Server can't find proxy jar (Realm className="com.jts.fortress.sentry.websphere.WsAccessMgrProxy")
                    <h4>Error</h4>
 <font size="3" color="#000000">                   <pre>
 com.ibm.ws.security.registry.UserRegistryImpl.initialize 253
-[6/6/11 18:40:06:982 CDT] 00000000 UserRegistryI E   SECJ0330E: The registry implementation file com.jts.fortress.realm.websphere.WsAccessMgrProxy cannot be loaded because of the following exception java.lang.ClassNotFoundException: com.jts.fortress.realm.websphere.WsAccessMgrProxy
+[6/6/11 18:40:06:982 CDT] 00000000 UserRegistryI E   SECJ0330E: The registry implementation file com.jts.fortress.sentry.websphere.WsAccessMgrProxy cannot be loaded because of the following exception java.lang.ClassNotFoundException: com.jts.fortress.sentry.websphere.WsAccessMgrProxy
 at java.lang.Class.forNameImpl(Native Method)
 at java.lang.Class.forName(Class.java:169)
 at com.ibm.ws.security.registry.UserRegistryImpl.initialize(UserRegistryImpl.java:224)
@@ -285,16 +285,16 @@ at com.ibm.wsspi.bootstrap.WSPreLauncher.main(WSPreLauncher.java:110)
 </font>                    Server fails to launch.
                    <h4>Corrective Action</h4>
                    <pre>
-<em>Ensure step III.A copied the Fortress realm proxy jar to /opt/IBM/Websphere/AppServer/lib folder.</em>
+<em>Ensure step III.A copied the Fortress sentry proxy jar to /opt/IBM/Websphere/AppServer/lib folder.</em>
                    </pre>
                </li>
-               <li>Server can't find binaries (realmClasspath="...FORTRESS_HOME/lib/fortressRealm-[version].jar")
+               <li>Server can't find binaries (realmClasspath="...FORTRESS_HOME/lib/fortressSentry-[version].jar")
                    <h4>Error</h4>
 <font size="3" color="#000000">                   <pre>
-[6/6/11 18:48:02:471 CDT] 00000000 WsAccessMgrPr I   com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize - instantiate class: com.jts.fortress.realm.websphere.WsAccessMgrImpl
-[6/6/11 18:48:02:474 CDT] 00000000 WsAccessMgrPr E   com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.realm.websphere.WsAccessMgrImpl
-[6/6/11 18:48:02:508 CDT] 00000000 UserRegistryI E   SECJ0331E: The registry implementation file com.jts.fortress.realm.websphere.WsAccessMgrProxy cannot be initialized because of the following exception com.ibm.websphere.security.CustomRegistryException: com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.realm.websphere.WsAccessMgrImpl
-at com.jts.fortress.realm.websphere.WsAccessMgrProxy.initialize(WsAccessMgrProxy.java:78)
+[6/6/11 18:48:02:471 CDT] 00000000 WsAccessMgrPr I   com.jts.fortress.sentry.websphere.WsAccessMgrProxy.initialize - instantiate class: com.jts.fortress.sentry.websphere.WsAccessMgrImpl
+[6/6/11 18:48:02:474 CDT] 00000000 WsAccessMgrPr E   com.jts.fortress.sentry.websphere.WsAccessMgrProxy.initialize ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.sentry.websphere.WsAccessMgrImpl
+[6/6/11 18:48:02:508 CDT] 00000000 UserRegistryI E   SECJ0331E: The registry implementation file com.jts.fortress.sentry.websphere.WsAccessMgrProxy cannot be initialized because of the following exception com.ibm.websphere.security.CustomRegistryException: com.jts.fortress.sentry.websphere.WsAccessMgrProxy.initialize ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.sentry.websphere.WsAccessMgrImpl
+at com.jts.fortress.sentry.websphere.WsAccessMgrProxy.initialize(WsAccessMgrProxy.java:78)
 at com.ibm.ws.security.registry.UserRegistryImpl.initialize(UserRegistryImpl.java:260)
 at com.ibm.ws.security.config.UserRegistryConfigImpl.do_createRegistryObjects(UserRegistryConfigImpl.java:680)
 at com.ibm.ws.security.config.UserRegistryConfigImpl.createRegistryObjects(UserRegistryConfigImpl.java:637)
@@ -336,7 +336,7 @@ at com.ibm.wsspi.bootstrap.WSPreLauncher.main(WSPreLauncher.java:110)
 </font>                    Server fails to launch
                    <h4>Corrective Action</h4>
                    <pre>
-   <em>Ensure step III.M configuration points fortressRealm jar,
+   <em>Ensure step III.M configuration points fortressSentry jar,
    i.e. FORTRESS_HOME/lib/fortressProxyWebsphere[version].jar.</em>
                    </pre>
                </li>

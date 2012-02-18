@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2009-2011. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
  */
 
-package com.jts.fortress.realm.tomcat;
+package com.jts.fortress.sentry.tomcat;
 
 import java.security.Principal;
 
 /**
  * This interface prescribes runtime methods that are needed to perform security in Tomcat.  The
- * interface is implemented by Fortress Tomcat Proxy and Realm implementation and allows isolation of
+ * interface is implemented by Fortress Tomcat Proxy and sentry implementation and allows isolation of
  * runtime dependencies from Tomcat's system classpath..
  *
  * @author smckinn

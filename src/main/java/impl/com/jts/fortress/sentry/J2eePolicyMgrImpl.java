@@ -1,28 +1,63 @@
 /*
- * Copyright (c) 2009-2011. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
  */
 
-package com.jts.fortress.realm;
+package com.jts.fortress.sentry;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.security.Principal;
+import java.util.Set;
 
+import com.jts.fortress.ReviewMgr;
+import com.jts.fortress.ReviewMgrFactory;
+import com.jts.fortress.AccessMgr;
+import com.jts.fortress.AccessMgrFactory;
+import com.jts.fortress.SecurityException;
+import com.jts.fortress.constants.GlobalErrIds;
+import com.jts.fortress.rbac.RoleUtil;
 import com.jts.fortress.rbac.User;
 import com.jts.fortress.rbac.Role;
-import com.jts.fortress.SecurityException;
 import com.jts.fortress.rbac.Session;
-import com.jts.fortress.realm.tomcat.TcPrincipal;
+import com.jts.fortress.sentry.tomcat.TcPrincipal;
+import com.jts.fortress.util.attr.VUtil;
+import com.jts.fortress.util.time.CUtil;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 /**
- * This interface is for components that use Websphere and Tomcat Container SPI's to provide
+ * This class is for components that use Websphere and Tomcat Container SPI's to provide
  * Java EE Security capabilities.  These APIs may be called by external programs as needed though the recommended
  * practice is to use Fortress Core APIs like {@link com.jts.fortress.AccessMgr} and {@link com.jts.fortress.ReviewMgr}.
  *
  * @author smckinn
  * @created January 13, 2010
  */
-public interface J2eePolicyMgr
+public class J2eePolicyMgrImpl implements J2eePolicyMgr
 {
+    private static final String OCLS_NM = J2eePolicyMgrImpl.class.getName();
+    private static final Logger log = Logger.getLogger(OCLS_NM);
+    private static AccessMgr accessMgr;
+    private static ReviewMgr reviewMgr;
+    private static final String SESSION = "session";
+
+    static
+    {
+        try
+        {
+            accessMgr = AccessMgrFactory.createInstance();
+            reviewMgr = ReviewMgrFactory.createInstance();
+            log.info(J2eePolicyMgrImpl.class.getName() + " - Initialized successfully");
+        }
+        catch (SecurityException se)
+        {
+            String error = OCLS_NM + " caught SecurityException=" + se;
+            log.fatal(error);
+        }
+    }
+
+
     /**
      * Perform user authentication and evaluate password policies.
      *
@@ -33,7 +68,28 @@ public interface J2eePolicyMgr
      *          in the event of data validation failure, security policy violation or DAO error.
      */
     public boolean authenticate(String userId, char[] password)
-        throws SecurityException;
+        throws SecurityException
+    {
+        boolean result = false;
+        Session session = accessMgr.authenticate(userId, password);
+        if (session != null)
+        {
+            result = true;
+            if (log.isEnabledFor(Level.DEBUG))
+            {
+                log.debug(OCLS_NM + ".authenticate userId <" + userId + "> successful");
+            }
+        }
+        else
+        {
+            if (log.isEnabledFor(Level.DEBUG))
+            {
+                log.debug(OCLS_NM + ".authenticate userId <" + userId + "> failed");
+            }
+        }
+
+        return result;
+    }
 
 
     /**
@@ -92,7 +148,17 @@ public interface J2eePolicyMgr
      *          in the event of data validation failure, security policy violation or DAO error.
      */
     public TcPrincipal createSession(String userId, char[] password)
-        throws SecurityException;
+        throws SecurityException
+    {
+        Session session = accessMgr.createSession(new User(userId, password), false);
+        if (log.isEnabledFor(Level.DEBUG))
+        {
+            log.debug(OCLS_NM + ".createSession userId <" + userId + "> successful");
+        }
+        HashMap<String, Session> context = new HashMap<String, Session>();
+        context.put(SESSION, session);
+        return new TcPrincipal(userId, context);
+    }
 
 
     /**
@@ -151,7 +217,14 @@ public interface J2eePolicyMgr
      *          in the event of data validation failure, security policy violation or DAO error.
      */
     public Session createSession(User user, boolean isTrusted)
-        throws SecurityException;
+        throws SecurityException
+    {
+        if (log.isDebugEnabled())
+        {
+            log.debug(OCLS_NM + ".createSession userId <" + user.getUserId() + "> ");
+        }
+        return accessMgr.createSession(user, isTrusted);
+    }
 
 
     /**
@@ -165,7 +238,59 @@ public interface J2eePolicyMgr
      *          data validation failure or system error..
      */
     public boolean hasRole(Principal principal, String roleName)
-        throws SecurityException;
+        throws SecurityException
+    {
+        String fullMethodName = OCLS_NM + ".hasRole";
+        if (log.isDebugEnabled())
+        {
+            log.debug(fullMethodName + " userId <" + principal.getName() + "> role <" + roleName + ">");
+        }
+
+        // Fail closed
+        boolean result = false;
+
+        // Principal must contain a HashMap that contains a Fortress session object.
+        HashMap<String, Session> context = ((TcPrincipal) principal).getContext();
+        VUtil.assertNotNull(context, GlobalErrIds.SESS_CTXT_NULL, fullMethodName);
+
+        // This Map must contain a Fortress Session:
+        Session session = context.get(SESSION);
+        VUtil.assertNotNull(session, GlobalErrIds.USER_SESS_NULL, fullMethodName);
+
+        // Check User temporal constraints in the Session:
+        CUtil.validateConstraints(session, CUtil.ConstraintType.USER, false);
+        // Check Roles temporal constraints; don't check DSD:
+        CUtil.validateConstraints(session, CUtil.ConstraintType.ROLE, false);
+        // Get the set of authorized roles from the Session:
+        Set<String> authZRoles = session.getAuthorizedRoles();
+        if (authZRoles != null && authZRoles.size() > 0)
+        {
+            // Does the set of authorized roles contain a name matched to the one passed in?
+            if (authZRoles.contains(roleName))
+            {
+                // Yes, we have a match.
+                if (log.isEnabledFor(Level.DEBUG))
+                {
+                    log.debug(fullMethodName + " userId <" + principal.getName() + "> role <" + roleName + "> successful");
+                }
+                result = true;
+            }
+            else
+            {
+                if (log.isEnabledFor(Level.DEBUG))
+                {
+                    // User is not authorized in their Session..
+                    log.debug(fullMethodName + " userId <" + principal.getName() + "> is not authorized role <" + roleName + ">");
+                }
+            }
+        }
+        else
+        {
+            // User does not have any authorized Roles in their Session..
+            log.info(fullMethodName + " userId <" + principal.getName() + "> has no authorized roles");
+        }
+        return result;
+    }
 
 
     /**
@@ -177,20 +302,26 @@ public interface J2eePolicyMgr
      *          will be thrown if role not found or system error occurs.
      */
     public Role readRole(String roleName)
-        throws SecurityException;
+        throws SecurityException
+    {
+        return reviewMgr.readRole(new Role(roleName));
+    }
 
 
     /**
      * Search for Roles assigned to given User.
      *
-     * @param userId Maps to {@link com.jts.fortress.rbac.User#userId}.
-     * @param limit  controls the size of ldap result set returned.
+     * @param searchString Maps to {@link com.jts.fortress.rbac.User#userId}.
+     * @param limit        controls the size of ldap result set returned.
      * @return List of type String containing the {@link com.jts.fortress.rbac.Role#name} of all assigned Roles.
      * @throws com.jts.fortress.SecurityException
      *          in the event of data validation failure or DAO error.
      */
-    public List<String> searchRoles(String userId, int limit)
-        throws SecurityException;
+    public List<String> searchRoles(String searchString, int limit)
+        throws SecurityException
+    {
+        return reviewMgr.findRoles(searchString, limit);
+    }
 
 
     /**
@@ -202,27 +333,33 @@ public interface J2eePolicyMgr
      * @throws SecurityException if record not found or system error occurs.
      */
     public User readUser(String userId)
-        throws SecurityException;
+        throws SecurityException
+    {
+        return reviewMgr.readUser(new User(userId));
+    }
 
 
     /**
      * Return a list of type String of all users in the people container that match the userId field passed in User entity.
-     * This method is used by the Websphere realm component.  The max number of returned users may be set by the integer limit arg.
+     * This method is used by the Websphere sentry component.  The max number of returned users may be set by the integer limit arg.
      *
-     * @param userId contains all or some leading chars that correspond to users stored in the directory.
-     * @param limit  integer value sets the max returned records.
+     * @param searchString contains all or some leading chars that correspond to users stored in the directory.
+     * @param limit        integer value sets the max returned records.
      * @return List of type String containing matching userIds.
      * @throws SecurityException in the event of system error.
      */
-    public List<String> searchUsers(String userId, int limit)
-        throws SecurityException;
+    public List<String> searchUsers(String searchString, int limit)
+        throws SecurityException
+    {
+        return reviewMgr.findUsers(new User(searchString), limit);
+    }
 
 
     /**
      * This function returns the set of users assigned to a given role. The function is valid if and
      * only if the role is a member of the ROLES data set.
      * The max number of users returned is constrained by limit argument.
-     * This method is used by the Websphere realm component.  This method does NOT use hierarchical rbac.
+     * This method is used by the Websphere sentry component.  This method does NOT use hierarchical rbac.
      *
      * @param roleName maps to {@link Role#name} of Role entity assigned to user.
      * @param limit    integer value sets the max returned records.
@@ -231,7 +368,10 @@ public interface J2eePolicyMgr
      *          in the event of data validation or system error.
      */
     public List<String> assignedUsers(String roleName, int limit)
-        throws SecurityException;
+        throws SecurityException
+    {
+        return reviewMgr.assignedUsers(new Role(roleName), limit);
+    }
 
 
     /**
@@ -243,6 +383,20 @@ public interface J2eePolicyMgr
      * @throws SecurityException If user not found or system error occurs.
      */
     public List<String> authorizedRoles(String userId)
-        throws SecurityException;
+        throws SecurityException
+    {
+        List<String> list = null;
+        // This will check temporal constraints on User and Roles.
+        Session session = createSession(new User(userId), true);
+        // Get the Set of authorized Roles.
+        Set<String> authZRoleSet = RoleUtil.getInheritedRoles(session.getRoles());
+        // If User has authorized roles.
+        if (authZRoleSet != null && authZRoleSet.size() > 0)
+        {
+            // Convert the Set into a List before returning:
+            list = new ArrayList<String>(authZRoleSet);
+        }
+        return list;
+    }
 }
 

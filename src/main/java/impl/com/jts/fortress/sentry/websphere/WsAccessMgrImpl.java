@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2009-2011. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
  */
 
-package com.jts.fortress.realm.websphere;
+package com.jts.fortress.sentry.websphere;
 
 import com.jts.fortress.SecurityException;
 import com.jts.fortress.constants.GlobalErrIds;
 import com.jts.fortress.rbac.User;
-import com.jts.fortress.realm.J2eePolicyMgrFactory;
-import com.jts.fortress.realm.J2eePolicyMgr;
+import com.jts.fortress.sentry.J2eePolicyMgrFactory;
+import com.jts.fortress.sentry.J2eePolicyMgr;
 
 import java.security.cert.X509Certificate;
 import java.util.List;

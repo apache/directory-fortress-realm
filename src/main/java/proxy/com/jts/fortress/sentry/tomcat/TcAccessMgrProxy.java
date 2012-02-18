@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2009-2011. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
  */
 
-package com.jts.fortress.realm.tomcat;
+package com.jts.fortress.sentry.tomcat;
 
-import com.jts.fortress.realm.util.CpUtil;
+import com.jts.fortress.sentry.util.CpUtil;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.ServerFactory;
 import org.apache.catalina.core.StandardServer;
@@ -14,7 +14,7 @@ import java.security.Principal;
 import java.net.URLClassLoader;
 import java.util.logging.Logger;
 
-import com.jts.fortress.realm.util.ChildFirstUrlClassLoader;
+import com.jts.fortress.sentry.util.ChildFirstUrlClassLoader;
 
 /**
  * This class extends the Tomcat 4-6.x RealmBase class and provides Java EE security sevices within the Tomcat container.
@@ -28,7 +28,7 @@ public class TcAccessMgrProxy extends RealmBase
 {
     private static final String OCLS_NM = TcAccessMgrProxy.class.getName();
     private static final Logger log = Logger.getLogger(OCLS_NM);
-    private static final String REALM_IMPL = "com.jts.fortress.realm.tomcat.TcAccessMgrImpl";
+    private static final String REALM_IMPL = "com.jts.fortress.sentry.tomcat.TcAccessMgrImpl";
     private static final String REALM_CLASSPATH = "REALM_CLASSPATH";
     private static final String JBOSS_AGENT = "jboss";
     private static String container = "Catalina";
@@ -221,7 +221,7 @@ public class TcAccessMgrProxy extends RealmBase
 
 
     /**
-     * This is the Tomcat 4 - 6 way of initializing the realm component.
+     * This is the Tomcat 4 - 6 way of initializing the sentry component.
      *
      * @throws LifecycleException Description of the Exception
      */
@@ -246,7 +246,7 @@ public class TcAccessMgrProxy extends RealmBase
 
 
     /**
-     * This is the Tomcat 4 - 6 way of stopping the realm component.
+     * This is the Tomcat 4 - 6 way of stopping the sentry component.
      *
      * @throws LifecycleException Description of the Exception
      */
