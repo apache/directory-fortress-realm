@@ -27,8 +27,8 @@ public class J2eePolicyMgrFactory
      */
     private static final String J2EE_POLICYMGR_IMPLEMENTATION = "realmImplementation";
     private static final String J2EE_POLICYMGR_DEFAULT_CLASS = "com.jts.fortress.sentry.J2eePolicyMgrImpl";
-    private static final String OCLS_NM = J2eePolicyMgrFactory.class.getName();
-    private static final Logger log = Logger.getLogger(OCLS_NM);
+    private static final String CLS_NM = J2eePolicyMgrFactory.class.getName();
+    private static final Logger log = Logger.getLogger(CLS_NM);
     private static String j2eeClassName = Config.getProperty(J2EE_POLICYMGR_IMPLEMENTATION);
 
     /**
@@ -48,25 +48,25 @@ public class J2eePolicyMgrFactory
                 j2eeClassName = J2EE_POLICYMGR_DEFAULT_CLASS;
                 if (log.isEnabledFor(Level.DEBUG))
                 {
-                    log.debug(OCLS_NM + ".createInstance <" + J2EE_POLICYMGR_IMPLEMENTATION + "> not found.");
-                    log.debug(OCLS_NM + ".createInstance use default <" + J2EE_POLICYMGR_DEFAULT_CLASS + ">");
+                    log.debug(CLS_NM + ".createInstance <" + J2EE_POLICYMGR_IMPLEMENTATION + "> not found.");
+                    log.debug(CLS_NM + ".createInstance use default <" + J2EE_POLICYMGR_DEFAULT_CLASS + ">");
                 }
             }
             realmMgr = (J2eePolicyMgr) Class.forName(j2eeClassName).newInstance();
         }
         catch (java.lang.ClassNotFoundException e)
         {
-            String error = OCLS_NM + ".createInstance caught java.lang.ClassNotFoundException=" + e;
+            String error = CLS_NM + ".createInstance caught java.lang.ClassNotFoundException=" + e;
             throw new SecurityException(GlobalErrIds.FT_MGR_CLASS_NOT_FOUND, error, e);
         }
         catch (java.lang.InstantiationException e)
         {
-            String error = OCLS_NM + ".createInstance caught java.lang.InstantiationException=" + e;
+            String error = CLS_NM + ".createInstance caught java.lang.InstantiationException=" + e;
             throw new SecurityException(GlobalErrIds.FT_MGR_INST_EXCEPTION, error, e);
         }
         catch (java.lang.IllegalAccessException e)
         {
-            String error = OCLS_NM + ".createInstance caught java.lang.IllegalAccessException=" + e;
+            String error = CLS_NM + ".createInstance caught java.lang.IllegalAccessException=" + e;
             log.fatal(error);
             throw new SecurityException(GlobalErrIds.FT_MGR_ILLEGAL_ACCESS, error, e);
         }

@@ -18,8 +18,8 @@ import java.util.StringTokenizer;
  */
 public class CpUtil
 {
-    private static final String OCLS_NM = CpUtil.class.getName();
-    private static Logger log = Logger.getLogger(OCLS_NM);
+    private static final String CLS_NM = CpUtil.class.getName();
+    private static Logger log = Logger.getLogger(CLS_NM);
     private static final String PATH_SEPARATOR = "path.separator";
     private static final String FILE_PREFIX = "file:/";
     private static final String UNIX_SLASH = "/";
@@ -53,7 +53,7 @@ public class CpUtil
                 slash = WIN_SLASH;
             }
 
-            log.info(OCLS_NM + ".parseRealmClasspath <" + classpath + ">");
+            log.info(CLS_NM + ".parseRealmClasspath <" + classpath + ">");
             StringTokenizer st = new StringTokenizer(classpath, pathSeparator, false);
             int size = st.countTokens();
             urls = new URL[size];
@@ -63,14 +63,14 @@ public class CpUtil
                 resource = getResource(resource, slash);
                 String file = filePrefix + resource;
                 urls[i] = new URL(file);
-                log.info(OCLS_NM + ".parseRealmClasspath path" + i + " <" + urls[i] + ">");
+                log.info(CLS_NM + ".parseRealmClasspath path" + i + " <" + urls[i] + ">");
             }
         }
         catch (java.net.MalformedURLException me)
         {
-            String error = OCLS_NM + ".parseRealmClasspath caught MalformedURLException=" + me;
+            String error = CLS_NM + ".parseRealmClasspath caught MalformedURLException=" + me;
             log.severe(error);
-            error = OCLS_NM + ".parseRealmClasspath check your Fortress REALM_CLASSPATH setting.";
+            error = CLS_NM + ".parseRealmClasspath check your Fortress REALM_CLASSPATH setting.";
             log.severe(error);
         }
         return urls;
@@ -103,7 +103,7 @@ public class CpUtil
             {
                 slash = WIN_SLASH;
             }
-            log.info(OCLS_NM + ".parseRealmClasspath <" + classpath + ">");
+            log.info(CLS_NM + ".parseRealmClasspath <" + classpath + ">");
             StringTokenizer st = new StringTokenizer(classpath, pathSeparator, false);
             int size = st.countTokens();
             urls = new URL[size];
@@ -113,14 +113,14 @@ public class CpUtil
                 resource = getResource(resource, slash);
                 String file = filePrefix + resource;
                 urls[i] = new URL(file);
-                log.info(OCLS_NM + ".parseRealmClasspath path" + i + " <" + urls[i] + ">");
+                log.info(CLS_NM + ".parseRealmClasspath path" + i + " <" + urls[i] + ">");
             }
         }
         catch (java.net.MalformedURLException me)
         {
-            String error = OCLS_NM + ".parseRealmClasspath caught MalformedURLException=" + me;
+            String error = CLS_NM + ".parseRealmClasspath caught MalformedURLException=" + me;
             log.severe(error);
-            error = OCLS_NM + ".parseRealmClasspath check your Fortress REALM_CLASSPATH setting.";
+            error = CLS_NM + ".parseRealmClasspath check your Fortress REALM_CLASSPATH setting.";
             log.severe(error);
         }
         return urls;
@@ -143,7 +143,7 @@ public class CpUtil
             if (name.lastIndexOf(slash) != (name.length() - 1))
             {
                 name += slash;
-                log.info(OCLS_NM + ".getResource slash added to dir path");
+                log.info(CLS_NM + ".getResource slash added to dir path");
             }
         }
         return name;

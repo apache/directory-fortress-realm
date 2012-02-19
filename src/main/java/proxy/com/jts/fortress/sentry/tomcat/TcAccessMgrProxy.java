@@ -26,8 +26,8 @@ import com.jts.fortress.sentry.util.ChildFirstUrlClassLoader;
  */
 public class TcAccessMgrProxy extends RealmBase
 {
-    private static final String OCLS_NM = TcAccessMgrProxy.class.getName();
-    private static final Logger log = Logger.getLogger(OCLS_NM);
+    private static final String CLS_NM = TcAccessMgrProxy.class.getName();
+    private static final Logger log = Logger.getLogger(CLS_NM);
     private static final String REALM_IMPL = "com.jts.fortress.sentry.tomcat.TcAccessMgrImpl";
     private static final String REALM_CLASSPATH = "REALM_CLASSPATH";
     private static final String JBOSS_AGENT = "jboss";
@@ -53,7 +53,7 @@ public class TcAccessMgrProxy extends RealmBase
      */
     public void setContainerType(String container)
     {
-        log.info(OCLS_NM + ".setContainerType <" + container + ">");
+        log.info(CLS_NM + ".setContainerType <" + container + ">");
         this.container = container;
     }
 
@@ -65,7 +65,7 @@ public class TcAccessMgrProxy extends RealmBase
      */
     public String getRealmClasspath()
     {
-        log.info(OCLS_NM + ".getRealmClasspath <" + realmClasspath + ">");
+        log.info(CLS_NM + ".getRealmClasspath <" + realmClasspath + ">");
         return realmClasspath;
     }
 
@@ -77,7 +77,7 @@ public class TcAccessMgrProxy extends RealmBase
      */
     public void setRealmClasspath(String rCpth)
     {
-        log.info(OCLS_NM + ".setRealmClasspath <" + rCpth + ">");
+        log.info(CLS_NM + ".setRealmClasspath <" + rCpth + ">");
         this.realmClasspath = rCpth;
     }
 
@@ -93,12 +93,12 @@ public class TcAccessMgrProxy extends RealmBase
             URLClassLoader ucl = null;
             if (container.equalsIgnoreCase(JBOSS_AGENT))
             {
-                log.info(OCLS_NM + ".initialize JBoss policy agent");
+                log.info(CLS_NM + ".initialize JBoss policy agent");
                 ucl = new ChildFirstUrlClassLoader(CpUtil.getRealmClasspath(REALM_CLASSPATH), this.getClass().getClassLoader());
             }
             else
             {
-                log.info(OCLS_NM + ".initialize Tomcat policy agent");
+                log.info(CLS_NM + ".initialize Tomcat policy agent");
                 if (realmClasspath != null && realmClasspath.length() > 0)
                 {
                     ucl = new URLClassLoader(CpUtil.parseRealmClasspath(realmClasspath), this.getClass().getClassLoader());
@@ -108,26 +108,26 @@ public class TcAccessMgrProxy extends RealmBase
                     ucl = new URLClassLoader(CpUtil.getRealmClasspath(REALM_CLASSPATH), this.getClass().getClassLoader());
                 }
             }
-            log.info(OCLS_NM + ".initialize - instantiate policy agent name: " + REALM_IMPL);
+            log.info(CLS_NM + ".initialize - instantiate policy agent name: " + REALM_IMPL);
             Class sc = ucl.loadClass(REALM_IMPL);
             realm = (TcAccessMgr) sc.newInstance();
-            log.info(OCLS_NM + " J2EE policy agent initialization successful");
+            log.info(CLS_NM + " J2EE policy agent initialization successful");
         }
         catch (java.lang.ClassNotFoundException e)
         {
-            String error = OCLS_NM + ".initialize caught java.lang.ClassNotFoundException=" + e.toString();
+            String error = CLS_NM + ".initialize caught java.lang.ClassNotFoundException=" + e.toString();
             log.severe(error);
             throw new java.lang.RuntimeException(error, e);
         }
         catch (java.lang.InstantiationException ie)
         {
-            String error = OCLS_NM + ".initialize caught java.lang.InstantiationException=" + ie.toString();
+            String error = CLS_NM + ".initialize caught java.lang.InstantiationException=" + ie.toString();
             log.severe(error);
             throw new java.lang.RuntimeException(error, ie);
         }
         catch (java.lang.IllegalAccessException iae)
         {
-            String error = OCLS_NM + ".initialize caught java.lang.IllegalAccessException=" + iae.toString();
+            String error = CLS_NM + ".initialize caught java.lang.IllegalAccessException=" + iae.toString();
             log.severe(error);
             throw new java.lang.RuntimeException(error, iae);
         }
@@ -158,7 +158,7 @@ public class TcAccessMgrProxy extends RealmBase
     {
         if(realm == null)
         {
-            throw new RuntimeException(OCLS_NM + "authenticate detected Fortress Tomcat Realm not initialized correctly.  Check your Fortress Realm configuration");
+            throw new RuntimeException(CLS_NM + "authenticate detected Fortress Tomcat Realm not initialized correctly.  Check your Fortress Realm configuration");
         }
         return realm.authenticate(userId, password.toCharArray());
     }
@@ -176,7 +176,7 @@ public class TcAccessMgrProxy extends RealmBase
     {
         if(realm == null)
         {
-            throw new RuntimeException(OCLS_NM + "authenticate detected Fortress Tomcat Realm not initialized correctly.  Check your Fortress Realm configuration");
+            throw new RuntimeException(CLS_NM + "authenticate detected Fortress Tomcat Realm not initialized correctly.  Check your Fortress Realm configuration");
         }
         return realm.hasRole(principal, role);
     }
@@ -190,7 +190,7 @@ public class TcAccessMgrProxy extends RealmBase
     @Override
     protected String getName()
     {
-        return (OCLS_NM);
+        return (CLS_NM);
     }
 
 
@@ -236,7 +236,7 @@ public class TcAccessMgrProxy extends RealmBase
         }
         catch (Throwable e)
         {
-            String error = OCLS_NM + ".start caught Throwable=" + e;
+            String error = CLS_NM + ".start caught Throwable=" + e;
             log.severe(error);
             e.printStackTrace();
             throw new LifecycleException(error);

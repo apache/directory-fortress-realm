@@ -36,8 +36,8 @@ import org.apache.log4j.Logger;
  */
 public class J2eePolicyMgrImpl implements J2eePolicyMgr
 {
-    private static final String OCLS_NM = J2eePolicyMgrImpl.class.getName();
-    private static final Logger log = Logger.getLogger(OCLS_NM);
+    private static final String CLS_NM = J2eePolicyMgrImpl.class.getName();
+    private static final Logger log = Logger.getLogger(CLS_NM);
     private static AccessMgr accessMgr;
     private static ReviewMgr reviewMgr;
     private static final String SESSION = "session";
@@ -52,7 +52,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         }
         catch (SecurityException se)
         {
-            String error = OCLS_NM + " caught SecurityException=" + se;
+            String error = CLS_NM + " caught SecurityException=" + se;
             log.fatal(error);
         }
     }
@@ -77,14 +77,14 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
             result = true;
             if (log.isEnabledFor(Level.DEBUG))
             {
-                log.debug(OCLS_NM + ".authenticate userId <" + userId + "> successful");
+                log.debug(CLS_NM + ".authenticate userId <" + userId + "> successful");
             }
         }
         else
         {
             if (log.isEnabledFor(Level.DEBUG))
             {
-                log.debug(OCLS_NM + ".authenticate userId <" + userId + "> failed");
+                log.debug(CLS_NM + ".authenticate userId <" + userId + "> failed");
             }
         }
 
@@ -153,7 +153,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         Session session = accessMgr.createSession(new User(userId, password), false);
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".createSession userId <" + userId + "> successful");
+            log.debug(CLS_NM + ".createSession userId <" + userId + "> successful");
         }
         HashMap<String, Session> context = new HashMap<String, Session>();
         context.put(SESSION, session);
@@ -221,7 +221,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     {
         if (log.isDebugEnabled())
         {
-            log.debug(OCLS_NM + ".createSession userId <" + user.getUserId() + "> ");
+            log.debug(CLS_NM + ".createSession userId <" + user.getUserId() + "> ");
         }
         return accessMgr.createSession(user, isTrusted);
     }
@@ -240,7 +240,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     public boolean hasRole(Principal principal, String roleName)
         throws SecurityException
     {
-        String fullMethodName = OCLS_NM + ".hasRole";
+        String fullMethodName = CLS_NM + ".hasRole";
         if (log.isDebugEnabled())
         {
             log.debug(fullMethodName + " userId <" + principal.getName() + "> role <" + roleName + ">");

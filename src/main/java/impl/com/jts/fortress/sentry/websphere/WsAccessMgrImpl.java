@@ -29,8 +29,8 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * Description of the Field
      */
     protected static String realmAgentName = "FortressUserRegistry";
-    private static final String OCLS_NM = WsAccessMgrImpl.class.getName();
-    private static final Logger log = Logger.getLogger(OCLS_NM);
+    private static final String CLS_NM = WsAccessMgrImpl.class.getName();
+    private static final Logger log = Logger.getLogger(CLS_NM);
     private static J2eePolicyMgr j2eeMgr;
 
     static
@@ -41,7 +41,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         }
         catch (SecurityException se)
         {
-            String error = OCLS_NM + " static initializer caught SecurityException=" + se;
+            String error = CLS_NM + " static initializer caught SecurityException=" + se;
             log.fatal(error);
         }
     }
@@ -62,7 +62,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
             log.fatal(error);
             throw new CustomRegistryException(error);
         }
-        log.info(OCLS_NM + ". J2EE policy agent initialization successful");
+        log.info(CLS_NM + ". J2EE policy agent initialization successful");
     }
 
 
@@ -82,21 +82,21 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
     {
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".checkPassword(" + userId + ")");
+            log.debug(CLS_NM + ".checkPassword(" + userId + ")");
         }
         try
         {
             boolean result = j2eeMgr.authenticate(userId, passwd.toCharArray());
             if (!result)
             {
-                String info = OCLS_NM + ".checkPassword user <" + userId + "> authentication failed";
+                String info = CLS_NM + ".checkPassword user <" + userId + "> authentication failed";
                 log.info(info);
                 throw new PasswordCheckFailedException(info);
             }
         }
         catch (SecurityException se)
         {
-            String error = OCLS_NM + ".checkPassword caught SecurityException=" + se;
+            String error = CLS_NM + ".checkPassword caught SecurityException=" + se;
             log.error(error);
             throw new CustomRegistryException(error);
         }
@@ -122,7 +122,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
     {
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".mapCertificate");
+            log.debug(CLS_NM + ".mapCertificate");
         }
         String name = null;
         try
@@ -132,13 +132,13 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         }
         catch (Exception ex)
         {
-            String error = OCLS_NM + ".mapCertificate exception=" + ex;
+            String error = CLS_NM + ".mapCertificate exception=" + ex;
             log.error(error);
             throw new CertificateMapNotSupportedException(ex.getMessage());
         }
         if (!isValidUser(name))
         {
-            String warning = OCLS_NM + ".mapCertificate invalid user <" + name + ">";
+            String warning = CLS_NM + ".mapCertificate invalid user <" + name + ">";
             log.error(warning);
             throw new CustomRegistryException(name);
         }
@@ -174,7 +174,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         List<String> users;
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".getUsers(" + pattern + ")");
+            log.debug(CLS_NM + ".getUsers(" + pattern + ")");
         }
         try
         {
@@ -182,7 +182,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         }
         catch (SecurityException se)
         {
-            String error = OCLS_NM + ".getUsers caught caught SecurityException=" + se;
+            String error = CLS_NM + ".getUsers caught caught SecurityException=" + se;
             log.error(error);
             throw new CustomRegistryException(error);
         }
@@ -206,7 +206,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         List<String> users;
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".getUsersForGroup(" + groupSecurityName + ")");
+            log.debug(CLS_NM + ".getUsersForGroup(" + groupSecurityName + ")");
         }
         try
         {
@@ -214,7 +214,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         }
         catch (SecurityException se)
         {
-            String error = OCLS_NM + ".getUsersForGroup caught SecurityException=" + se;
+            String error = CLS_NM + ".getUsersForGroup caught SecurityException=" + se;
             log.error(error);
             throw new CustomRegistryException(error);
         }
@@ -237,7 +237,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
     {
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".getUserDisplayName(" + userName + ")");
+            log.debug(CLS_NM + ".getUserDisplayName(" + userName + ")");
         }
         return userName;
     }
@@ -257,7 +257,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
     {
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".getUniqueUserId(" + userName + ")");
+            log.debug(CLS_NM + ".getUniqueUserId(" + userName + ")");
         }
         return userName;
     }
@@ -277,7 +277,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
     {
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".getUserSecurityName(" + uniqueUserId + ")");
+            log.debug(CLS_NM + ".getUserSecurityName(" + uniqueUserId + ")");
         }
         return uniqueUserId;
     }
@@ -295,7 +295,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
     {
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".isValidUser(" + userName + ")");
+            log.debug(CLS_NM + ".isValidUser(" + userName + ")");
         }
         boolean bIsValid = false;
         try
@@ -310,11 +310,11 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         {
             if (se.getErrorId() == GlobalErrIds.USER_NOT_FOUND)
             {
-                log.info(OCLS_NM + ".isValidUser detected invalid user <" + userName + ">");
+                log.info(CLS_NM + ".isValidUser detected invalid user <" + userName + ">");
             }
             else
             {
-                String error = OCLS_NM + ".isValidUser() caught SecurityException=" + se;
+                String error = CLS_NM + ".isValidUser() caught SecurityException=" + se;
                 log.error(error);
                 throw new CustomRegistryException(error);
             }
@@ -338,7 +338,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         Result result = new Result();
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".getGroups(" + pattern + ")");
+            log.debug(CLS_NM + ".getGroups(" + pattern + ")");
         }
         try
         {
@@ -346,7 +346,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         }
         catch (SecurityException se)
         {
-            String error = OCLS_NM + ".getGroups caught SecurityException=" + se;
+            String error = CLS_NM + ".getGroups caught SecurityException=" + se;
             log.error(error);
             throw new CustomRegistryException(error);
         }
@@ -369,7 +369,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
     {
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".getUserRoles(" + userName + ")");
+            log.debug(CLS_NM + ".getUserRoles(" + userName + ")");
         }
         List<String> roles;
         try
@@ -380,13 +380,13 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         {
             if (!isValidUser(userName))
             {
-                String error = OCLS_NM + ".getGroupsForUser detected invalid user <" + userName + ">";
+                String error = CLS_NM + ".getGroupsForUser detected invalid user <" + userName + ">";
                 log.warn(error);
                 throw new EntryNotFoundException(userName);
             }
             else
             {
-                String error = OCLS_NM + ".getUserRoles caught SecurityException=" + se;
+                String error = CLS_NM + ".getUserRoles caught SecurityException=" + se;
                 log.error(error);
                 throw new CustomRegistryException(error);
             }
@@ -409,7 +409,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
     {
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".getGroupDisplayName(" + groupName + ")");
+            log.debug(CLS_NM + ".getGroupDisplayName(" + groupName + ")");
         }
         return groupName;
     }
@@ -429,7 +429,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
     {
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".getUniqueGroupId(" + groupName + ")");
+            log.debug(CLS_NM + ".getUniqueGroupId(" + groupName + ")");
         }
         return groupName;
     }
@@ -449,7 +449,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
     {
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".getUniqueGroupIds(" + uniqueUserId + ")");
+            log.debug(CLS_NM + ".getUniqueGroupIds(" + uniqueUserId + ")");
         }
         return this.getGroupsForUser(uniqueUserId);
     }
@@ -469,7 +469,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
     {
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".getGroupSecurityName(" + uniqueGroupId + ")");
+            log.debug(CLS_NM + ".getGroupSecurityName(" + uniqueGroupId + ")");
         }
         return uniqueGroupId;
     }
@@ -488,7 +488,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         boolean bIsValid = false;
         if (log.isEnabledFor(Level.DEBUG))
         {
-            log.debug(OCLS_NM + ".isValidGroup <" + groupName + ">");
+            log.debug(CLS_NM + ".isValidGroup <" + groupName + ">");
         }
         try
         {
@@ -499,11 +499,11 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
         {
             if (se.getErrorId() == GlobalErrIds.ROLE_NOT_FOUND)
             {
-                log.info(OCLS_NM + ".isValidGroup invalid group name: " + groupName);
+                log.info(CLS_NM + ".isValidGroup invalid group name: " + groupName);
             }
             else
             {
-                String error = OCLS_NM + ".isValidRole role <" + groupName + "> caught SecurityException=" + se;
+                String error = CLS_NM + ".isValidRole role <" + groupName + "> caught SecurityException=" + se;
                 log.error(error);
                 throw new CustomRegistryException(error);
             }

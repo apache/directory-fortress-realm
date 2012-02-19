@@ -20,8 +20,8 @@ import java.security.Principal;
  */
 public class TcAccessMgrImpl implements TcAccessMgr
 {
-    private static final String OCLS_NM = TcAccessMgrImpl.class.getName();
-    private static final Logger log = Logger.getLogger(OCLS_NM);
+    private static final String CLS_NM = TcAccessMgrImpl.class.getName();
+    private static final Logger log = Logger.getLogger(CLS_NM);
     private static int count = 0;
     private J2eePolicyMgr j2eeMgr;
 
@@ -33,11 +33,11 @@ public class TcAccessMgrImpl implements TcAccessMgr
         try
         {
             j2eeMgr = J2eePolicyMgrFactory.createInstance();
-            log.info(OCLS_NM + " constructor <" + count++ + ">");
+            log.info(CLS_NM + " constructor <" + count++ + ">");
         }
         catch (SecurityException se)
         {
-            String error = OCLS_NM + " constructor caught SecurityException=" + se;
+            String error = CLS_NM + " constructor caught SecurityException=" + se;
             log.fatal(error);
             se.printStackTrace();
             throw new java.lang.RuntimeException(error, se);
@@ -60,12 +60,12 @@ public class TcAccessMgrImpl implements TcAccessMgr
             prin = j2eeMgr.createSession(userId, password);
             if (log.isEnabledFor(Level.DEBUG))
             {
-                log.debug(OCLS_NM + ".authenticate userId <" + userId + "> successful");
+                log.debug(CLS_NM + ".authenticate userId <" + userId + "> successful");
             }
         }
         catch (SecurityException se)
         {
-            String warning = OCLS_NM + ".authenticate userId <" + userId + "> caught SecurityException=" + se;
+            String warning = CLS_NM + ".authenticate userId <" + userId + "> caught SecurityException=" + se;
             log.warn(warning);
         }
         return prin;
@@ -90,7 +90,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
             {
                 if (log.isEnabledFor(Level.DEBUG))
                 {
-                    log.debug(OCLS_NM + ".hasRole userId <" + principal.getName() + "> role <" + roleName + "> successful");
+                    log.debug(CLS_NM + ".hasRole userId <" + principal.getName() + "> role <" + roleName + "> successful");
                 }
                 result = true;
             }
@@ -98,13 +98,13 @@ public class TcAccessMgrImpl implements TcAccessMgr
             {
                 if (log.isEnabledFor(Level.DEBUG))
                 {
-                    log.debug(OCLS_NM + ".hasRole userId <" + principal.getName() + "> role <" + roleName + "> failed");
+                    log.debug(CLS_NM + ".hasRole userId <" + principal.getName() + "> role <" + roleName + "> failed");
                 }
             }
         }
         catch (SecurityException se)
         {
-            String warning = OCLS_NM + ".hasRole userId <" + userId + "> role <" + roleName + "> caught SecurityException=" + se;
+            String warning = CLS_NM + ".hasRole userId <" + userId + "> role <" + roleName + "> caught SecurityException=" + se;
             log.warn(warning);
 		}
 		return result;
