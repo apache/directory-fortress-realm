@@ -262,7 +262,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         // Check Roles temporal constraints; don't check DSD:
         CUtil.validateConstraints(session, CUtil.ConstraintType.ROLE, false);
         // Get the set of authorized roles from the Session:
-        Set<String> authZRoles = session.getAuthorizedRoles();
+        Set<String> authZRoles = accessMgr.authorizedRoles(session);
         if (authZRoles != null && authZRoles.size() > 0)
         {
             // Does the set of authorized roles contain a name matched to the one passed in?
@@ -389,7 +389,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         // This will check temporal constraints on User and Roles.
         Session session = createSession(new User(userId), true);
         // Get the Set of authorized Roles.
-        Set<String> authZRoleSet = RoleUtil.getInheritedRoles(session.getRoles());
+        Set<String> authZRoleSet = accessMgr.authorizedRoles(session);
         // If User has authorized roles.
         if (authZRoleSet != null && authZRoleSet.size() > 0)
         {

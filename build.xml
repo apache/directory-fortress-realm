@@ -29,7 +29,7 @@
 
        <property name="project.name" value="Fortress Java Sentry"/>
        <property name="name" value="fortressSentry"/>
-       <property name="version" value="1.0.0-rc6"/>
+       <property name="version" value="1.0.0-rc8"/>
        <property name="title" value="Fortress Java Sentry ${version}"/>
        <property name="vendor" value="Joshua Tree Software"/>
        <property name="package" value="com.jts.fortress.sentry.*"/>
@@ -80,12 +80,13 @@
        <property name="jgraph.jar" value="${lib.dir}/jgrapht-jdk1.5-0.7.3.jar"/>
        <property name="log4j.jar" value="${lib.dir}/log4j-1.2.16.jar"/>
        <property name="jasypt.jar" value="${lib.dir}/jasypt-1.8.jar"/>
+       <property name="ehcache-core.jar" value="${lib.dir}/ehcache-core-2.5.1.jar"/>
+       <property name="slf4j-api.jar" value="${lib.dir}/slf4j-api-1.6.1.jar"/>
 
        <!-- ########### Define classpaths ########################### -->
        <path id="build.proxy.class.path">
            <!-- J2EE JARs -->
            <pathelement location="${catalina.jar}"/>
-           <!--pathelement location="${websphere.jar}"/-->
        </path>
 
        <path id="build.proxy.tc7.class.path">
@@ -100,14 +101,6 @@
            <pathelement location="${build.classes.proxy.dir}"/>
            <pathelement location="${fortress.jar}"/>
            <pathelement location="${log4j.jar}"/>
-           <pathelement location="${commons-collections.jar}"/>
-           <pathelement location="${commons-config.jar}"/>
-           <pathelement location="${commons-lang.jar}"/>
-           <pathelement location="${commons-logging.jar}"/>
-           <pathelement location="${commons-pool.jar}"/>
-           <pathelement location="${unboundsdk.jar}"/>
-           <pathelement location="${jgraph.jar}"/>
-           <pathelement location="${jasypt.jar}"/>
        </path>
 
        <!-- JARS required for distribution -->
@@ -121,6 +114,8 @@
            <include name="${commons-pool.jar}"/>
            <include name="${jgraph.jar}"/>
            <include name="${jasypt.jar}"/>
+           <include name="${ehcache-core.jar}"/>
+           <include name="${slf4j-api.jar}"/>
        </patternset>
 
       <!-- Javadoc vars -->
@@ -299,6 +294,8 @@
         <unjar dest="${work.dir}" src="${unboundsdk.jar}"/>
         <unjar dest="${work.dir}" src="${jgraph.jar}"/>
         <unjar dest="${work.dir}" src="${jasypt.jar}"/>
+        <unjar dest="${work.dir}" src="${ehcache-core.jar}"/>
+        <unjar dest="${work.dir}" src="${slf4j-api.jar}"/>
         <fortressSentry.jar basedir="${work.dir}" compress="true" jarfile="${fortressSentryDistro.jar}"/>
     </target>
 
@@ -314,6 +311,8 @@
         <unjar dest="${work.jboss.dir}" src="${unboundsdk.jar}"/>
         <unjar dest="${work.jboss.dir}" src="${jgraph.jar}"/>
         <unjar dest="${work.jboss.dir}" src="${jasypt.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${ehcache-core.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${slf4j-api.jar}"/>
         <fileset dir="${config.dir}">
             <include name="*.xml"/>
             <include name="*.properties"/>
