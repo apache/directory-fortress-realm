@@ -82,6 +82,7 @@
        <property name="jasypt.jar" value="${lib.dir}/jasypt-1.8.jar"/>
        <property name="ehcache-core.jar" value="${lib.dir}/ehcache-core-2.5.1.jar"/>
        <property name="slf4j-api.jar" value="${lib.dir}/slf4j-api-1.6.1.jar"/>
+       <property name="slf4j-jcl.jar" value="${lib.dir}/slf4j-jcl-1.6.1.jar"/>
 
        <!-- ########### Define classpaths ########################### -->
        <path id="build.proxy.class.path">
@@ -116,6 +117,7 @@
            <include name="${jasypt.jar}"/>
            <include name="${ehcache-core.jar}"/>
            <include name="${slf4j-api.jar}"/>
+           <include name="${slf4j-jcl.jar}"/>
        </patternset>
 
       <!-- Javadoc vars -->
@@ -296,6 +298,7 @@
         <unjar dest="${work.dir}" src="${jasypt.jar}"/>
         <unjar dest="${work.dir}" src="${ehcache-core.jar}"/>
         <unjar dest="${work.dir}" src="${slf4j-api.jar}"/>
+        <unjar dest="${work.dir}" src="${slf4j-jcl.jar}"/>
         <fortressSentry.jar basedir="${work.dir}" compress="true" jarfile="${fortressSentryDistro.jar}"/>
     </target>
 
@@ -313,6 +316,7 @@
         <unjar dest="${work.jboss.dir}" src="${jasypt.jar}"/>
         <unjar dest="${work.jboss.dir}" src="${ehcache-core.jar}"/>
         <unjar dest="${work.jboss.dir}" src="${slf4j-api.jar}"/>
+        <unjar dest="${work.jboss.dir}" src="${slf4j-jcl.jar}"/>
         <fileset dir="${config.dir}">
             <include name="*.xml"/>
             <include name="*.properties"/>

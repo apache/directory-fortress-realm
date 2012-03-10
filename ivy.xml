@@ -30,6 +30,7 @@
         <dependency org="jgrapht" name="jgrapht" rev="0.7.3" conf="default->master"/>
         <dependency org="net.sf.ehcache" name="ehcache-core" rev="2.5.1" conf="default->master"/>
         <dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" conf="default->master"/>
+        <dependency org="org.slf4j" name="slf4j-jcl" rev="1.6.1" conf="default->master"/>
         <dependency org="org.apache.tomcat" name="tomcat-catalina" rev="7.0.22" conf="default->master">
             <artifact name="tomcat-catalina" type="jar" />
         </dependency>
