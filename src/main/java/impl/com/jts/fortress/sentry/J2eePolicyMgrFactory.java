@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
  * adding the {@link #J2EE_POLICYMGR_IMPLEMENTATION} config property.
  * <p/>
  *
- * @author smckinn
+ * @author Shawn McKinney
  * @created February 13, 2010
  */
 public class J2eePolicyMgrFactory

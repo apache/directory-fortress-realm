@@ -21,7 +21,7 @@ import com.jts.fortress.sentry.util.ChildFirstUrlClassLoader;
  * This class is a "proxy" for the {@link TcAccessMgrImpl} class which isolates dependencies from the Tomcat
  * runtime environment by loading the implementation on a URLClassLoader.
  *
- * @author smckinn
+ * @author Shawn McKinney
  * @created January 13, 2010
  */
 public class TcAccessMgrProxy extends RealmBase

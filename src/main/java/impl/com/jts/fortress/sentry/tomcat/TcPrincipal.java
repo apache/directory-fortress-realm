@@ -13,7 +13,7 @@ import java.util.HashMap;
  *  signed onto Tomcat system.  The session contains the User's active roles and other security attributes.
  *
  *
- *@author     smckinn
+ *@author     Shawn McKinney
  *@created    January 13, 2010
  */
 public class TcPrincipal

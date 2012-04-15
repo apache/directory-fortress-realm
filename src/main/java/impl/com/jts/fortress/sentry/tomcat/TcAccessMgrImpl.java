@@ -15,7 +15,7 @@ import java.security.Principal;
 /**
  * This class runs on a URL classloader and provides Fortress runtime security services for the Tomcat container.
  *
- * @author smckinn
+ * @author Shawn McKinney
  * @created January 13, 2010
  */
 public class TcAccessMgrImpl implements TcAccessMgr

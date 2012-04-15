@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * Java EE Security capabilities.  These APIs may be called by external programs as needed though the recommended
  * practice is to use Fortress Core APIs like {@link com.jts.fortress.AccessMgr} and {@link com.jts.fortress.ReviewMgr}.
  *
- * @author smckinn
+ * @author Shawn McKinney
  * @created January 13, 2010
  */
 public class J2eePolicyMgrImpl implements J2eePolicyMgr

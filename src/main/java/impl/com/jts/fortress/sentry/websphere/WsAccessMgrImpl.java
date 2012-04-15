@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 /**
  * This class runs on a URL classloader and provides Fortress runtime security services for the Websphere container.
  *
- * @author smckinn
+ * @author Shawn McKinney
  * @created January 13, 2010
  */
 public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry

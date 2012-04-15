@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  * This class is a "proxy" for the {@link WsAccessMgrImpl} class which isolates dependencies from the Websphere
  * runtime environment by loading the implementation on a URLClassLoader.
  *
- * @author smckinn
+ * @author Shawn McKinney
  * @created January 13, 2010
  */
 public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
