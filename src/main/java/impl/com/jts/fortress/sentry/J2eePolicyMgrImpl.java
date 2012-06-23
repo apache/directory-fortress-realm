@@ -16,7 +16,6 @@ import com.jts.fortress.AccessMgr;
 import com.jts.fortress.AccessMgrFactory;
 import com.jts.fortress.SecurityException;
 import com.jts.fortress.constants.GlobalErrIds;
-import com.jts.fortress.rbac.RoleUtil;
 import com.jts.fortress.rbac.User;
 import com.jts.fortress.rbac.Role;
 import com.jts.fortress.rbac.Session;
@@ -101,7 +100,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      * <h4> This API will...</h4>
      * <ul>
      * <li> authenticate user password if trusted == false.
-     * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>, see {@link com.jts.fortress.pwpolicy.openldap.OLPWControlImpl#checkPasswordPolicy(com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPConnection, boolean, com.jts.fortress.pwpolicy.PwMessage)}.
+     * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>, see {@link com.jts.fortress.pwpolicy.OLPWControlImpl#checkPasswordPolicy(com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPConnection, boolean, com.jts.fortress.pwpolicy.PwMessage)}.
      * <li> fail for any user who is locked by OpenLDAP's policies {@link com.jts.fortress.rbac.User#isLocked()}, regardless of trusted flag being set as parm on API.
      * <li> evaluate temporal {@link com.jts.fortress.util.time.Constraint}(s) on {@link User}, {@link com.jts.fortress.rbac.UserRole} and {@link com.jts.fortress.arbac.UserAdminRole} entities.
      * <li> process selective role activations into User RBAC Session {@link User#roles}.
@@ -170,7 +169,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      * <h4> This API will...</h4>
      * <ul>
      * <li> authenticate user password if trusted == false.
-     * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>, see {@link com.jts.fortress.pwpolicy.openldap.OLPWControlImpl#checkPasswordPolicy(com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPConnection, boolean, com.jts.fortress.pwpolicy.PwMessage)}.
+     * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>, see {@link com.jts.fortress.pwpolicy.OLPWControlImpl#checkPasswordPolicy(com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPConnection, boolean, com.jts.fortress.pwpolicy.PwMessage)}.
      * <li> fail for any user who is locked by OpenLDAP's policies {@link com.jts.fortress.rbac.User#isLocked()}, regardless of trusted flag being set as parm on API.
      * <li> evaluate temporal {@link com.jts.fortress.util.time.Constraint}(s) on {@link User}, {@link com.jts.fortress.rbac.UserRole} and {@link com.jts.fortress.arbac.UserAdminRole} entities.
      * <li> process selective role activations into User RBAC Session {@link User#roles}.
