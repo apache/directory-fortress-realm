@@ -4,9 +4,9 @@
 
 package com.jts.fortress.sentry;
 
-import com.jts.fortress.configuration.Config;
+import com.jts.fortress.cfg.Config;
 import com.jts.fortress.SecurityException;
-import com.jts.fortress.constants.GlobalErrIds;
+import com.jts.fortress.GlobalErrIds;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
