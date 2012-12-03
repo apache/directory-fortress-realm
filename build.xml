@@ -19,6 +19,8 @@
 
    <target name="init">
 
+<!--      <ivy:settings file="ivysettings.xml"/>-->
+
       <!-- read properties from the build.properties, if any -->
       <property name="component-propfile" value="${basedir}/build.properties"/>
       <property file="${component-propfile}"/>
@@ -29,7 +31,7 @@
 
        <property name="project.name" value="Fortress Java Sentry"/>
        <property name="name" value="fortressSentry"/>
-       <property name="version" value="1.0.0-RC16"/>
+       <property name="version" value="1.0-RC18"/>
        <property name="title" value="Fortress Java Sentry ${version}"/>
        <property name="vendor" value="Joshua Tree Software"/>
        <property name="package" value="com.jts.fortress.sentry.*"/>
