@@ -29,7 +29,6 @@
 
        <property name="project.name" value="Fortress Java Sentry"/>
        <property name="name" value="fortressSentry"/>
-       <property name="version" value="1.0-RC18"/>
        <property name="title" value="Fortress Java Sentry ${version}"/>
        <property name="vendor" value="Joshua Tree Software"/>
        <property name="package" value="com.jts.fortress.sentry.*"/>
@@ -416,12 +415,12 @@
         <zip destfile="${fortressSentryBuilder.zip}"
              update="true">
 
-            <zipfileset dir="${src.dir}" prefix="src">
+            <zipfileset dir="${src.dir}" prefix="sentry-${version}/src">
                 <include name="*/**"/>
                 <exclude name="*.iml"/>
             </zipfileset>
 
-            <zipfileset dir="${basedir}">
+            <zipfileset dir="${basedir}" prefix="sentry-${version}">
                 <include name="*.xml"/>
                 <include name="*.txt"/>
                 <include name="*.properties"/>
@@ -433,11 +432,70 @@
                 <exclude name="READ-ME.txt"/>
             </zipfileset>
 
-            <zipfileset dir="${config.dir}" prefix="conf">
+            <zipfileset dir="${config.dir}" prefix="sentry-${version}/conf">
                 <include name="*/**"/>
             </zipfileset>
         </zip>
 
+    </target>
+
+    <!-- =================================
+          Deploy Sentry to Tomcat server
+         ================================= -->
+    <target name="deploy-tomcat" depends="build" description="Deploy the security realm to Tomcat">
+        <property name="src.catalina.sh" value="${tomcat.dir}/bin/catalina.sh.src"/>
+        <property name="dst.catalina.sh" value="${tomcat.dir}/bin/catalina.sh"/>
+        <property name="src.server.xml" value="${tomcat.dir}/conf/server.xml.src"/>
+        <property name="dst.server.xml" value="${tomcat.dir}/conf/server.xml"/>
+        <echo message="###############  Deploy the Tomcat Security Realm  ###############"/>
+        <delete file="${dst.catalina.sh}"/>
+        <copyfile src="${src.catalina.sh}" dest="${dst.catalina.sh}"/>
+        <replace file="${dst.catalina.sh}" token="@JAVA_HOME@" value="${java.home}"/>
+        <delete file="${dst.server.xml}"/>
+        <copyfile src="${src.server.xml}" dest="${dst.server.xml}"/>
+        <replace file="${dst.server.xml}" token="@FORTRESS-SENTRY-REALM@" value="${tomcat-realm.conf}"/>
+        <copyfile src="${fortressTomcat7Sentry.jar}" dest="${dst.server.xml}"/>
+        <copy todir="${tomcat.dir}/lib" file="${fortressTomcat7Sentry.jar}"/>
+        <!--        <antcall target="start-tomcat-nix"></antcall>-->
+     </target>
+
+    <!-- =================================
+          call the target to start the Tomcat server
+         ================================= -->
+    <target name="start-tomcat" depends="init" description="--> start the Tomcat server">
+        <!--<antcall target="start-tomcat-win"></antcall>-->
+        <antcall target="start-tomcat-nix"></antcall>
+    </target>
+
+    <!-- =================================
+          Call the Unix Tomcat script to startup
+         ================================= -->
+    <target name="start-tomcat-nix" depends="init" unless="windows">
+        <echo message="###############  Start the tomcat process up  ###############"/>
+        <property name="startup.sh" value="${tomcat.dir}/bin/startup.sh"/>
+       <chmod dir="${tomcat.dir}" perm="a+x" includes="**/*.sh"/>
+        <exec dir="." executable="/bin/sh">
+            <arg line="${startup.sh}"/>
+        </exec>
+    </target>
+
+    <!-- =================================
+          call the target to stop the Tomcat server
+         ================================= -->
+    <target name="stop-tomcat" depends="init" description="--> stop the Tomcat server">
+        <!--<antcall target="stop-tomcat-win"></antcall>-->
+        <antcall target="stop-tomcat-nix"></antcall>
+    </target>
+
+    <!-- =================================
+          Call the unix Tomcat script to shutdown
+         ================================= -->
+    <target name="stop-tomcat-nix" depends="init" unless="windows">
+        <echo message="###############  Stop the tomcat process  ###############"/>
+        <property name="shutdown.sh" value="${tomcat.dir}/bin/shutdown.sh"/>
+        <exec dir="." executable="/bin/sh">
+            <arg line="${shutdown.sh}"/>
+        </exec>
     </target>
 
     <!-- =================================
