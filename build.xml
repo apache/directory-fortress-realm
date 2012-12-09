@@ -15,11 +15,9 @@
    limitations under the License.
 -->
 
-<project name="fortress-sentry" default="build" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="fortress-sentry" default="build" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
    <target name="init">
-
-<!--      <ivy:settings file="ivysettings.xml"/>-->
 
       <!-- read properties from the build.properties, if any -->
       <property name="component-propfile" value="${basedir}/build.properties"/>
@@ -67,10 +65,11 @@
        <property name="fortressJbossSentryDistro.jar" value="${dist.dir}/fortressSentryJBoss-${version}.jar"/>
        <property name="fortressSentryImpl.jar" value="${dist.dir}/fortressSentryImpl-${version}.jar"/>
        <property name="javadoc.dist.zip" value="${dist.dir}/fortressSentryDoc-${version}.zip"/>
+       <property name="fortressSentryBuilder.zip" value="${dist.dir}/fortressSentryBuilder-${version}.zip"/>
        <property name="config.dir" value="${basedir}/conf"/>
-       <!-- Dependent LIB, not in maven yet -->
-       <property name="fortress.jar" value="${lib.dir}/fortress-${version}.jar"/>
+
        <!-- Dependent LIBs in maven -->
+       <property name="fortress.jar" value="${lib.dir}/fortress-${version}.jar"/>
        <property name="catalina7.jar" value="${lib.dir}/tomcat-catalina-7.0.22.jar"/>
        <property name="catalina.jar" value="${lib.dir}/catalina-6.0.33.jar"/>
        <property name="commons-config.jar" value="${lib.dir}/commons-configuration-1.6.jar"/>
@@ -134,7 +133,6 @@
            <pathelement location="${src.java.impl.dir}"/>
        </path>
 
-
       <property name="javac.optimize" value="false"/>
       <property name="javac.debug" value="true"/>
       <property name="javac.deprecation" value="true"/>
@@ -155,6 +153,21 @@
                </manifest>
            </jar>
        </presetdef>
+
+       <!-- define Maven coordinates (publishing only) -->
+       <property name="groupId" value="us.joshuatreesoftware" />
+       <property name="artifactId" value="sentry" />
+
+       <!-- defined maven snapshots and staging repository id and url (publishing only) -->
+       <property name="maven-snapshots-repository-id" value="sonatype-nexus-snapshots" />
+       <property name="maven-snapshots-repository-url" value="https://oss.sonatype.org/content/repositories/snapshots" />
+       <property name="maven-staging-repository-id" value="sonatype-nexus-staging" />
+       <property name="maven-staging-repository-url" value="https://oss.sonatype.org/service/local/staging/deploy/maven2" />
+
+       <!-- define artifacts' name, which follows the convention of Maven (publishing only) -->
+       <property name="maven-jar" value="${fortressSentryBuilder.zip}" />
+       <property name="maven-javadoc-jar" value="${javadoc.dist.zip}" />
+       <property name="maven-sources-jar" value="${src.dist.zip}" />
 
    </target>
 
@@ -391,6 +404,90 @@
                 <exclude name="WEBSPHERE*"/>
             </zipfileset>
         </zip>
+
+        <antcall target="builder"></antcall>
      </target>
+
+    <!-- =================================
+          create Fortress Sentry Builder distribution package
+         ================================= -->
+    <target name="builder" depends="init" description="--> create the Sentry Builder distribution package">
+        <echo message="###############  Create Sentry package named: ${fortressSentryBuilder.zip} ###############"/>
+        <zip destfile="${fortressSentryBuilder.zip}"
+             update="true">
+
+            <zipfileset dir="${src.dir}" prefix="src">
+                <include name="*/**"/>
+                <exclude name="*.iml"/>
+            </zipfileset>
+
+            <zipfileset dir="${basedir}">
+                <include name="*.xml"/>
+                <include name="*.txt"/>
+                <include name="*.properties"/>
+                <include name="*.sh"/>
+                <include name="*.bat"/>
+                <include name="*.html"/>
+                <exclude name="*.log"/>
+                <exclude name="build.sh"/>
+                <exclude name="READ-ME.txt"/>
+            </zipfileset>
+
+            <zipfileset dir="${config.dir}" prefix="conf">
+                <include name="*/**"/>
+            </zipfileset>
+        </zip>
+
+    </target>
+
+    <!-- =================================
+          Deploy snapshot to remote Maven repository
+         ================================= -->
+    <target name="deploy" depends="dist" description="deploy snapshot version to Maven snapshot repository">
+        <artifact:mvn>
+            <arg value="org.apache.maven.plugins:maven-deploy-plugin:2.6:deploy-file" />
+            <arg value="-Durl=${maven-snapshots-repository-url}" />
+            <arg value="-DrepositoryId=${maven-snapshots-repository-id}" />
+            <arg value="-DpomFile=pom.xml" />
+            <arg value="-Dfile=${maven-jar}" />
+        </artifact:mvn>
+    </target>
+
+    <!-- =================================
+          Update project version (both build.xml and pom.xml) from SNAPSHOT to RELEASE
+         ================================= -->
+	<target name="stage" depends="dist" description="deploy release version to Maven staging repository">
+		<!-- sign and deploy the main artifact -->
+		<artifact:mvn>
+			<arg value="org.apache.maven.plugins:maven-gpg-plugin:1.3:sign-and-deploy-file" />
+			<arg value="-Durl=${maven-staging-repository-url}" />
+			<arg value="-DrepositoryId=${maven-staging-repository-id}" />
+			<arg value="-DpomFile=pom.xml" />
+			<arg value="-Dfile=${maven-jar}" />
+            <arg value="-Pgpg" />
+		</artifact:mvn>
+
+		<!-- sign and deploy the sources artifact -->
+		<artifact:mvn>
+			<arg value="org.apache.maven.plugins:maven-gpg-plugin:1.3:sign-and-deploy-file" />
+			<arg value="-Durl=${maven-staging-repository-url}" />
+			<arg value="-DrepositoryId=${maven-staging-repository-id}" />
+			<arg value="-DpomFile=pom.xml" />
+			<arg value="-Dfile=${maven-sources-jar}" />
+			<arg value="-Dclassifier=sources" />
+            <arg value="-Pgpg" />
+		</artifact:mvn>
+
+		<!-- sign and deploy the javadoc artifact -->
+		<artifact:mvn>
+			<arg value="org.apache.maven.plugins:maven-gpg-plugin:1.3:sign-and-deploy-file" />
+			<arg value="-Durl=${maven-staging-repository-url}" />
+			<arg value="-DrepositoryId=${maven-staging-repository-id}" />
+			<arg value="-DpomFile=pom.xml" />
+			<arg value="-Dfile=${maven-javadoc-jar}" />
+			<arg value="-Dclassifier=javadoc" />
+            <arg value="-Pgpg" />
+		</artifact:mvn>
+	</target>
 
 </project>
