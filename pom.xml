@@ -4,7 +4,7 @@
   <artifactId>sentry</artifactId>
   <packaging>jar</packaging>
   <name>Fortress Sentry</name>
-  <version>1.0-RC18</version>
+  <version>1.0-RC20</version>
   <description>Java EE Security Plug-in uses Fortress IAM.</description>
   <url>https://joshuatreesoftware.us</url>
   <licenses>
@@ -15,12 +15,12 @@
     </license>
   </licenses>
   <scm>
-    <url>http://www.openldap.org/devel/gitweb.cgi?p=openldap-fortress-realm.git;a=summary</url>
-    <connection></connection>
+    <url>http://www.openldap.org/software/repo/openldap-fortress-realm.git</url>
+    <connection>git://git.openldap.org/openldap-fortress-realm.git</connection>
   </scm>
   <developers>
     <developer>
-      <id>smckinn</id>
+      <id>smckinney</id>
       <name>Shawn McKinney</name>
       <email>shawn.mckinney@joshuatreesoftware.us</email>
     </developer>
@@ -30,7 +30,7 @@
     <dependency>
      <groupId>us.joshuatreesoftware</groupId>
       <artifactId>fortress</artifactId>
-      <version>1.0-RC18</version>
+      <version>1.0-RC20</version>
     </dependency>
     <dependency>
        <groupId>org.apache.tomcat</groupId>
