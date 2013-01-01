@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
 package com.jts.fortress.sentry.websphere;
@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
  * This class runs on a URL classloader and provides Fortress runtime security services for the Websphere container.
  *
  * @author Shawn McKinney
- * @created January 13, 2010
  */
 public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
 {
@@ -53,6 +52,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @param props Description of the Parameter
      * @throws CustomRegistryException Description of the Exception
      */
+    @Override
     public void initialize(java.util.Properties props)
         throws CustomRegistryException
     {
@@ -76,6 +76,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException      In the event of system error.
      * @throws java.rmi.RemoteException     In the event of RMI system error.
      */
+    @Override
     public String checkPassword(String userId, String passwd)
         throws PasswordCheckFailedException,
         CustomRegistryException
@@ -116,6 +117,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @throws CertificateMapFailedException Description of the Exception
      * @throws CustomRegistryException       Description of the Exception
      */
+    @Override
     public String mapCertificate(X509Certificate[] cert)
         throws CertificateMapNotSupportedException,
         CertificateMapFailedException, CustomRegistryException
@@ -152,6 +154,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @return The realm value
      * @throws CustomRegistryException Description of the Exception
      */
+    @Override
     public String getRealm()
         throws CustomRegistryException
     {
@@ -167,6 +170,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @return The users value
      * @throws CustomRegistryException Description of the Exception
      */
+    @Override
     public Result getUsers(String pattern, int limit)
         throws CustomRegistryException
     {
@@ -199,6 +203,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @return The usersForGroup value
      * @throws CustomRegistryException Description of the Exception
      */
+    @Override
     public Result getUsersForGroup(String groupSecurityName, int limit)
         throws CustomRegistryException
     {
@@ -231,6 +236,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException Description of the Exception
      * @throws EntryNotFoundException  Description of the Exception
      */
+    @Override
     public String getUserDisplayName(String userName)
         throws CustomRegistryException,
         EntryNotFoundException
@@ -251,6 +257,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException Description of the Exception
      * @throws EntryNotFoundException  Description of the Exception
      */
+    @Override
     public String getUniqueUserId(String userName)
         throws CustomRegistryException,
         EntryNotFoundException
@@ -271,6 +278,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException Description of the Exception
      * @throws EntryNotFoundException  Description of the Exception
      */
+    @Override
     public String getUserSecurityName(String uniqueUserId)
         throws CustomRegistryException,
         EntryNotFoundException
@@ -290,6 +298,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @return The validUser value
      * @throws CustomRegistryException Description of the Exception
      */
+    @Override
     public boolean isValidUser(String userName)
         throws CustomRegistryException
     {
@@ -331,6 +340,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @return The groups value
      * @throws CustomRegistryException Description of the Exception
      */
+    @Override
     public Result getGroups(String pattern, int limit)
         throws CustomRegistryException
     {
@@ -363,6 +373,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException Description of the Exception
      * @throws EntryNotFoundException  Description of the Exception
      */
+    @Override
     public List getGroupsForUser(String userName)
         throws CustomRegistryException,
         EntryNotFoundException
@@ -403,6 +414,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException Description of the Exception
      * @throws EntryNotFoundException  Description of the Exception
      */
+    @Override
     public String getGroupDisplayName(String groupName)
         throws CustomRegistryException,
         EntryNotFoundException
@@ -423,6 +435,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException Description of the Exception
      * @throws EntryNotFoundException  Description of the Exception
      */
+    @Override
     public String getUniqueGroupId(String groupName)
         throws CustomRegistryException,
         EntryNotFoundException
@@ -443,6 +456,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException Description of the Exception
      * @throws EntryNotFoundException  Description of the Exception
      */
+    @Override
     public List getUniqueGroupIds(String uniqueUserId)
         throws CustomRegistryException,
         EntryNotFoundException
@@ -463,6 +477,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException Description of the Exception
      * @throws EntryNotFoundException  Description of the Exception
      */
+    @Override
     public String getGroupSecurityName(String uniqueGroupId)
         throws CustomRegistryException,
         EntryNotFoundException
@@ -482,6 +497,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @return The validGroup value
      * @throws CustomRegistryException Description of the Exception
      */
+    @Override
     public boolean isValidGroup(String groupName)
         throws CustomRegistryException
     {
@@ -521,6 +537,7 @@ public class WsAccessMgrImpl implements com.ibm.websphere.security.UserRegistry
      * @throws NotImplementedException Description of the Exception
      * @throws EntryNotFoundException  Description of the Exception
      */
+    @Override
 	public com.ibm.websphere.security.cred.WSCredential createCredential(String userSecurityName)
 		throws CustomRegistryException, NotImplementedException, EntryNotFoundException
 	{

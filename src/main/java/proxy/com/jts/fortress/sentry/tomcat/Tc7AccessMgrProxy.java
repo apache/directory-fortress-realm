@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
 package com.jts.fortress.sentry.tomcat;
@@ -21,7 +21,6 @@ import com.jts.fortress.sentry.util.ChildFirstUrlClassLoader;
  * runtime environment by loading the implementation on a URLClassLoader.
  *
  * @author Shawn McKinney
- * @created June 4, 2011
  */
 public class Tc7AccessMgrProxy extends RealmBase
 {

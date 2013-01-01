@@ -1,5 +1,5 @@
 <!--
-  Copyright © 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
+  Copyright (C) 2009-2013, JoshuaTree. All Rights Reserved.
   Licensed to Joshua Tree Software, LLC under New BSD license agreements.  See the NOTICE file distributed with
   this work for additional information regarding copyright ownership.
   JTS licenses this file to You under the New BSD License
@@ -14,7 +14,6 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-
 <project name="fortress-sentry" default="build" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
    <target name="init">
@@ -131,7 +130,7 @@
       <!-- Javadoc vars -->
       <property name="javadoc.dir" value="${dist.dir}/docs/api"/>
       <property name="javadoc.images.dir" value="${javadoc.dir}/images"/>
-      <property name="javadoc.bottom" value="&lt;small&gt;Copyright &amp;copy; 2009-2011 Joshua Tree Software, LLC. All Rights Reserved."/>
+      <property name="javadoc.bottom" value="&lt;small&gt;Copyright &amp;copy; 2009-2013, JoshuaTree. All Rights Reserved."/>
       <property name="javadoc.overview" value="${src.java.dir}/overview.html" />
       <property name="javadoc.stylesheet" value="${src.java.dir}/fortress-javadoc.css" />
 
@@ -198,8 +197,6 @@
     <!-- ###############  create javadoc ############################### -->
     <target name="javadoc" depends="init" description="generates javadocs">
        <mkdir dir="${javadoc.dir}"/>
-       <mkdir dir="${javadoc.images.dir}"/>
-
         <javadoc packagenames="${package}"
                  sourcepathref="javadoc.source.path"
                  destdir="${javadoc.dir}"
@@ -207,7 +204,6 @@
                  doctitle="${title} "
                  bottom="${javadoc.bottom}"
                  overview="${javadoc.overview}"
-                 stylesheetfile="${javadoc.stylesheet}"
                  public="true"
                  version="true"
                  author="true"
@@ -218,6 +214,7 @@
                  noindex="false"
                  nohelp="true"
                  nonavbar="false"
+                 classpathref="build.impl.class.path"
                  serialwarn="false">
         </javadoc>
 

@@ -1,5 +1,5 @@
 <!--
-  Copyright © 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
+  Copyright © 2009-2013, JoshuaTree. All Rights Reserved.
   Licensed to Joshua Tree Software, LLC under New BSD license agreements.  See the NOTICE file distributed with
   this work for additional information regarding copyright ownership.
   JTS licenses this file to You under the New BSD License
@@ -84,6 +84,8 @@
        <property name="slf4j-api.jar" value="${lib.dir}/slf4j-api-1.6.1.jar"/>
        <property name="slf4j-jcl.jar" value="${lib.dir}/slf4j-jcl-1.6.1.jar"/>
 
+       <property name="ws_runtime.jar" value="${lib.dir}/ws_runtime.jar"/>
+
        <!-- ########### Define classpaths ########################### -->
        <path id="build.proxy.class.path">
            <!-- J2EE JARs -->
@@ -98,6 +100,7 @@
        <path id="build.impl.class.path">
            <!-- J2EE JARs -->
            <pathelement location="${catalina.jar}"/>
+           <pathelement location="${ws_runtime.jar}"/>
            <!-- Fortress JARs -->
            <pathelement location="${build.classes.proxy.dir}"/>
            <pathelement location="${fortress.jar}"/>
@@ -123,7 +126,7 @@
       <!-- Javadoc vars -->
       <property name="javadoc.dir" value="${dist.dir}/docs/api"/>
       <property name="javadoc.images.dir" value="${javadoc.dir}/images"/>
-      <property name="javadoc.bottom" value="&lt;small&gt;Copyright &amp;copy; 2009-2012 Joshua Tree Software, LLC. All Rights Reserved."/>
+      <property name="javadoc.bottom" value="&lt;small&gt;Copyright &amp;copy; 2009-2013, JoshuaTree. All Rights Reserved."/>
       <property name="javadoc.overview" value="${src.java.dir}/overview.html" />
       <property name="javadoc.stylesheet" value="${src.java.dir}/fortress-javadoc.css" />
 
@@ -203,30 +206,28 @@
     <!-- ###############  create javadoc ############################### -->
     <target name="javadoc" depends="init" description="generates javadocs">
        <mkdir dir="${javadoc.dir}"/>
-       <mkdir dir="${javadoc.images.dir}"/>
+       <javadoc packagenames="${package}"
+                sourcepathref="javadoc.source.path"
+                destdir="${javadoc.dir}"
+                windowtitle="${title}"
+                doctitle="${title} "
+                bottom="${javadoc.bottom}"
+                overview="${javadoc.overview}"
+                public="true"
+                version="true"
+                author="true"
+                splitindex="false"
+                nodeprecated="true"
+                nodeprecatedlist="true"
+                notree="true"
+                noindex="false"
+                nohelp="true"
+                nonavbar="false"
+                classpathref="build.impl.class.path"
+                serialwarn="false">
+       </javadoc>
 
-        <javadoc packagenames="${package}"
-                 sourcepathref="javadoc.source.path"
-                 destdir="${javadoc.dir}"
-                 windowtitle="${title}"
-                 doctitle="${title} "
-                 bottom="${javadoc.bottom}"
-                 overview="${javadoc.overview}"
-                 stylesheetfile="${javadoc.stylesheet}"
-                 public="true"
-                 version="true"
-                 author="true"
-                 splitindex="false"
-                 nodeprecated="true"
-                 nodeprecatedlist="true"
-                 notree="true"
-                 noindex="false"
-                 nohelp="true"
-                 nonavbar="false"
-                 serialwarn="false">
-        </javadoc>
-
-   </target>
+    </target>
 
     <!-- ###############  compile packages ############################### -->
     <target name="compile-proxy" depends="init,resolve" description="compiles proxy source files">

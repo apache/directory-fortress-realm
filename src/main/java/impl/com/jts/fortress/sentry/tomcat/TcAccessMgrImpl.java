@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
 package com.jts.fortress.sentry.tomcat;
@@ -16,7 +16,6 @@ import java.security.Principal;
  * This class runs on a URL classloader and provides Fortress runtime security services for the Tomcat container.
  *
  * @author Shawn McKinney
- * @created January 13, 2010
  */
 public class TcAccessMgrImpl implements TcAccessMgr
 {

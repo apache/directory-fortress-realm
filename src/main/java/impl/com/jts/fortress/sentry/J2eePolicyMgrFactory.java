@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
 package com.jts.fortress.sentry;
@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
  * <p/>
  *
  * @author Shawn McKinney
- * @created February 13, 2010
  */
 public class J2eePolicyMgrFactory
 {

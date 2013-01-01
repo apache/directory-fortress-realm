@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
 package com.jts.fortress.sentry.websphere;
@@ -22,11 +22,10 @@ import java.util.logging.Logger;
 
 /**
  * This class implements the Websphere UserRegistry class and provides Java EE security services within the Websphere container.
- * This class is a "proxy" for the {@link WsAccessMgrImpl} class which isolates dependencies from the Websphere
+ * This class is a "proxy" for the {@code com.jts.fortress.sentry.websphere.WsAccessMgrImpl} class which isolates dependencies from the Websphere
  * runtime environment by loading the implementation on a URLClassLoader.
  *
  * @author Shawn McKinney
- * @created January 13, 2010
  */
 public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
 {
@@ -45,6 +44,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException  In the event of system error.
      * @throws java.rmi.RemoteException In the event of RMI system error.
      */
+    @Override
     public void initialize(java.util.Properties props)
         throws CustomRegistryException, java.rmi.RemoteException
     {
@@ -154,6 +154,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException      In the event of system error.
      * @throws java.rmi.RemoteException     In the event of RMI system error.
      */
+    @Override
     public String checkPassword(String userId, String passwd)
         throws PasswordCheckFailedException, CustomRegistryException, java.rmi.RemoteException
     {
@@ -173,6 +174,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException       Description of the Exception
      * @throws java.rmi.RemoteException      Description of the Exception
      */
+    @Override
     public String mapCertificate(X509Certificate[] cert)
         throws CertificateMapNotSupportedException,
         CertificateMapFailedException, CustomRegistryException, java.rmi.RemoteException
@@ -188,6 +190,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException  Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public String getRealm()
         throws CustomRegistryException, java.rmi.RemoteException
     {
@@ -204,6 +207,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException  Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public Result getUsers(String pattern, int limit)
         throws CustomRegistryException, java.rmi.RemoteException
     {
@@ -221,6 +225,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws EntryNotFoundException  Description of the Exception
      * @throws CustomRegistryException Description of the Exception
      */
+    @Override
     public Result getUsersForGroup(String groupSecurityName, int limit)
         throws NotImplementedException,
         EntryNotFoundException,
@@ -239,6 +244,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws EntryNotFoundException   Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public String getUserDisplayName(String userName)
         throws CustomRegistryException, EntryNotFoundException, java.rmi.RemoteException
     {
@@ -255,6 +261,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws EntryNotFoundException   Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public String getUniqueUserId(String userName)
         throws CustomRegistryException, EntryNotFoundException, java.rmi.RemoteException
     {
@@ -271,6 +278,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws EntryNotFoundException   Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public String getUserSecurityName(String uniqueUserId)
         throws CustomRegistryException, EntryNotFoundException, java.rmi.RemoteException
     {
@@ -286,6 +294,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException  Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public boolean isValidUser(String userName)
         throws CustomRegistryException, java.rmi.RemoteException
     {
@@ -302,6 +311,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException  Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public Result getGroups(String pattern, int limit)
         throws CustomRegistryException, java.rmi.RemoteException
     {
@@ -318,6 +328,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws EntryNotFoundException   Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public List getGroupsForUser(String userName)
         throws CustomRegistryException, EntryNotFoundException, java.rmi.RemoteException
     {
@@ -334,6 +345,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws EntryNotFoundException   Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public String getGroupDisplayName(String groupName)
         throws CustomRegistryException, EntryNotFoundException, java.rmi.RemoteException
     {
@@ -350,6 +362,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws EntryNotFoundException   Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public String getUniqueGroupId(String groupName)
         throws CustomRegistryException, EntryNotFoundException, java.rmi.RemoteException
     {
@@ -366,6 +379,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws EntryNotFoundException   Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public List getUniqueGroupIds(String uniqueUserId)
         throws CustomRegistryException, EntryNotFoundException, java.rmi.RemoteException
     {
@@ -382,6 +396,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws EntryNotFoundException   Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public String getGroupSecurityName(String uniqueGroupId)
         throws CustomRegistryException, EntryNotFoundException, java.rmi.RemoteException
     {
@@ -397,6 +412,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws CustomRegistryException  Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
     public boolean isValidGroup(String groupName)
         throws CustomRegistryException, java.rmi.RemoteException
     {
@@ -414,11 +430,10 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
      * @throws EntryNotFoundException   Description of the Exception
      * @throws java.rmi.RemoteException Description of the Exception
      */
+    @Override
 	public com.ibm.websphere.security.cred.WSCredential createCredential(String userSecurityName)
 		throws CustomRegistryException, NotImplementedException, EntryNotFoundException, java.rmi.RemoteException
 	{
 		return realmImpl.createCredential(userSecurityName);
 	}
 }
-
-

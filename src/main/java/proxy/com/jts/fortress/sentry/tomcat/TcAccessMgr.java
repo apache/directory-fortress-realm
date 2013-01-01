@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
 package com.jts.fortress.sentry.tomcat;
@@ -12,7 +12,6 @@ import java.security.Principal;
  * runtime dependencies from Tomcat's system classpath..
  *
  * @author Shawn McKinney
- * @created January 13, 2010
  */
 public interface TcAccessMgr
 {

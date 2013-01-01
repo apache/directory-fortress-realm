@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2012. Joshua Tree Software, LLC.  All Rights Reserved.
+ * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
 package com.jts.fortress.sentry.util;
@@ -13,7 +13,6 @@ import java.net.URLClassLoader;
  * before going to parent to search.  This inversion is needed in JBoss to allow isolation of Fortress code from the server and application classpaths.
  *
  * @author Shawn McKinney
- * @created January 13, 2010
  */
 public class ChildFirstUrlClassLoader extends URLClassLoader
 {
