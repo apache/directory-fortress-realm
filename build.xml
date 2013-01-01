@@ -84,8 +84,6 @@
        <property name="slf4j-api.jar" value="${lib.dir}/slf4j-api-1.6.1.jar"/>
        <property name="slf4j-jcl.jar" value="${lib.dir}/slf4j-jcl-1.6.1.jar"/>
 
-       <property name="ws_runtime.jar" value="${lib.dir}/ws_runtime.jar"/>
-
        <!-- ########### Define classpaths ########################### -->
        <path id="build.proxy.class.path">
            <!-- J2EE JARs -->
@@ -100,7 +98,6 @@
        <path id="build.impl.class.path">
            <!-- J2EE JARs -->
            <pathelement location="${catalina.jar}"/>
-           <pathelement location="${ws_runtime.jar}"/>
            <!-- Fortress JARs -->
            <pathelement location="${build.classes.proxy.dir}"/>
            <pathelement location="${fortress.jar}"/>
