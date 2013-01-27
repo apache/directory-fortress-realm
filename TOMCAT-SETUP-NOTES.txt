@@ -110,7 +110,7 @@ b. Edit the Tomcat server.xml in the /conf.
 c. Comment out existing "UserDatabase" config (if present)
 d. Add the following to Tomcat's server.xml file:
 
-<sentry className="com.jts.fortress.sentry.tomcat.TcAccessMgrProxy"
+<sentry className="us.jts.sentry.tomcat.TcAccessMgrProxy"
     debug="0"
     resourceName="UserDatabase"
     containerType="Tomcat6"
@@ -131,11 +131,11 @@ f. verify that sentry started successfully by viewing following message in catal
 smckinn@smckinnlt-lr01:/opt/apache-tomcat-6.0.24/bin$ tail -f -n10000 ../logs/catalina.out
 
 ...
-INFO: com.jts.fortress.sentry.tomcat.TcAccessMgrProxy J2EE policy agent initialization successful
+INFO: us.jts.sentry.tomcat.TcAccessMgrProxy J2EE policy agent initialization successful
 
 If Tomcat 7 and beyond:
 
-INFO: com.jts.fortress.sentry.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
+INFO: us.jts.sentry.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
 
 -------------------------------------------
 Common troubleshooting tips:
@@ -144,22 +144,22 @@ Common troubleshooting tips:
 -------------------------------------------------------------------------------------------
 i. - Server can't find config files (realmClasspath="/fortressSentry-1.0.0/conf/")
 -------------------------------------------------------------------------------------------
-Jul 15, 2011 8:21:16 PM com.jts.fortress.sentry.tomcat.Tc7AccessMgrProxy initialize
-INFO: com.jts.fortress.sentry.tomcat.Tc7AccessMgrProxy.initialize - instantiate policy agent name: com.jts.fortress.sentry.tomcat.TcAccessMgrImpl
-2011-07-15 20:21:17,053 (FATAL) com.jts.fortress.configuration.Config static init: Error, null configuration file: fortress.properties
-Jul 15, 2011 8:21:17 PM com.jts.fortress.sentry.tomcat.Tc7AccessMgrProxy startInternal
-SEVERE: com.jts.fortress.sentry.tomcat.Tc7AccessMgrProxy.startInternal caught Throwable=java.lang.ExceptionInInitializerError
+Jul 15, 2011 8:21:16 PM us.jts.sentry.tomcat.Tc7AccessMgrProxy initialize
+INFO: us.jts.sentry.tomcat.Tc7AccessMgrProxy.initialize - instantiate policy agent name: us.jts.sentry.tomcat.TcAccessMgrImpl
+2011-07-15 20:21:17,053 (FATAL) us.jts.configuration.Config static init: Error, null configuration file: fortress.properties
+Jul 15, 2011 8:21:17 PM us.jts.sentry.tomcat.Tc7AccessMgrProxy startInternal
+SEVERE: us.jts.sentry.tomcat.Tc7AccessMgrProxy.startInternal caught Throwable=java.lang.ExceptionInInitializerError
 java.lang.ExceptionInInitializerError
-        at com.jts.fortress.sentry.J2eePolicyMgrFactory.<clinit>(J2eePolicyMgrFactory.java:32)
-        at com.jts.fortress.sentry.tomcat.TcAccessMgrImpl.<init>(TcAccessMgrImpl.java:35)
+        at us.jts.sentry.J2eePolicyMgrFactory.<clinit>(J2eePolicyMgrFactory.java:32)
+        at us.jts.sentry.tomcat.TcAccessMgrImpl.<init>(TcAccessMgrImpl.java:35)
         at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
         at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
         at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
         at java.lang.reflect.Constructor.newInstance(Constructor.java:513)
         at java.lang.Class.newInstance0(Class.java:355)
         at java.lang.Class.newInstance(Class.java:308)
-        at com.jts.fortress.sentry.tomcat.Tc7AccessMgrProxy.initialize(Tc7AccessMgrProxy.java:112)
-        at com.jts.fortress.sentry.tomcat.Tc7AccessMgrProxy.startInternal(Tc7AccessMgrProxy.java:236)
+        at us.jts.sentry.tomcat.Tc7AccessMgrProxy.initialize(Tc7AccessMgrProxy.java:112)
+        at us.jts.sentry.tomcat.Tc7AccessMgrProxy.startInternal(Tc7AccessMgrProxy.java:236)
         at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:145)
         at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:1026)
         at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:291)
@@ -175,8 +175,8 @@ java.lang.ExceptionInInitializerError
         at java.lang.reflect.Method.invoke(Method.java:597)
         at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:303)
         at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:431)
-Caused by: java.lang.RuntimeException: com.jts.fortress.configuration.Config static init: Error, null configuration file: fortress.properties
-        at com.jts.fortress.configuration.Config.<clinit>(Config.java:51)
+Caused by: java.lang.RuntimeException: us.jts.configuration.Config static init: Error, null configuration file: fortress.properties
+        at us.jts.configuration.Config.<clinit>(Config.java:51)
         ... 25 more
 
 ACTION:
@@ -184,12 +184,12 @@ ACTION:
 Ensure step 3c points to Fortress sentry configuration folder.
 
 -------------------------------------------------------------------------------------------
-ii. - Server can't find proxy jar (Realm className="com.jts.fortress.sentry.tomcat.TcAccessMgrProxy")
+ii. - Server can't find proxy jar (Realm className="us.jts.sentry.tomcat.TcAccessMgrProxy")
 -------------------------------------------------------------------------------------------
 INFO: The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/i386/server:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/i386:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/../lib/i386:/usr/java/packages/lib/i386:/lib:/usr/lib
 Apr 22, 2011 10:24:04 PM org.apache.tomcat.util.digester.Digester startElement
 SEVERE: Begin event threw exception
-java.lang.ClassNotFoundException: com.jts.fortress.sentry.tomcat.TcAccessMgrProxy
+java.lang.ClassNotFoundException: us.jts.sentry.tomcat.TcAccessMgrProxy
 
 ACTION:
 
@@ -198,12 +198,12 @@ Ensure step 1c copied the Fortress sentry proxy jar to TOMCAT_HOME/lib folder.
 -------------------------------------------------------------------------------------------
 iii. - Server can't find binaries (realmClasspath="...FORTRESS_HOME/lib/fortressSentry-[version].jar")
 -------------------------------------------------------------------------------------------
-Apr 22, 2011 10:22:25 PM com.jts.fortress.sentry.tomcat.TcAccessMgrProxy initialize
-SEVERE: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.sentry.tomcat.TcAccessMgrImpl
-Apr 22, 2011 10:22:25 PM com.jts.fortress.sentry.tomcat.TcAccessMgrProxy start
-SEVERE: Fortress Tomcat Realm.start caught Exception=java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.sentry.tomcat.TcAccessMgrImpl
-java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: com.jts.fortress.sentry.tomcat.TcAccessMgrImpl
-        at com.jts.fortress.sentry.tomcat.TcAccessMgrProxy.initialize(TcAccessMgrProxy.java:118)
+Apr 22, 2011 10:22:25 PM us.jts.sentry.tomcat.TcAccessMgrProxy initialize
+SEVERE: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: us.jts.sentry.tomcat.TcAccessMgrImpl
+Apr 22, 2011 10:22:25 PM us.jts.sentry.tomcat.TcAccessMgrProxy start
+SEVERE: Fortress Tomcat Realm.start caught Exception=java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: us.jts.sentry.tomcat.TcAccessMgrImpl
+java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: us.jts.sentry.tomcat.TcAccessMgrImpl
+        at us.jts.sentry.tomcat.TcAccessMgrProxy.initialize(TcAccessMgrProxy.java:118)
 
 ACTION:
 
@@ -217,7 +217,7 @@ The Tomcat realm base class changed between Tomcat version's 6 and 7.  If you ar
 
 Jun 4, 2011 3:01:41 PM org.apache.tomcat.util.digester.Digester startElement
 SEVERE: Begin event threw error
-java.lang.VerifyError: class com.jts.fortress.sentry.tomcat.TcAccessMgrProxy overrides final method start.()V
+java.lang.VerifyError: class us.jts.sentry.tomcat.TcAccessMgrProxy overrides final method start.()V
         at java.lang.ClassLoader.defineClass1(Native Method)
         at java.lang.ClassLoader.defineClassCond(ClassLoader.java:632)
         at java.lang.ClassLoader.defineClass(ClassLoader.java:616)
@@ -264,8 +264,8 @@ v. - Incompatible Tomcat Proxy jar loaded for Tomcat 6 and before
 The Tomcat realm base class changed between Tomcat version's 6 and 7.  If you are running Tomcat 4, 5 or 6 and see error that looks like this:
 
 SEVERE: An exception or error occurred in the container during the request processing
-java.lang.RuntimeException: com.jts.fortress.sentry.tomcat.Tc7AccessMgrProxyauthenticate detected Fortress Tomcat7 Realm not initialized correctly.  Check your Fortress Realm configuration
-        at com.jts.fortress.sentry.tomcat.Tc7AccessMgrProxy.authenticate(Tc7AccessMgrProxy.java:161)
+java.lang.RuntimeException: us.jts.sentry.tomcat.Tc7AccessMgrProxyauthenticate detected Fortress Tomcat7 Realm not initialized correctly.  Check your Fortress Realm configuration
+        at us.jts.sentry.tomcat.Tc7AccessMgrProxy.authenticate(Tc7AccessMgrProxy.java:161)
         at org.apache.catalina.authenticator.FormAuthenticator.authenticate(FormAuthenticator.java:259)
         at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:449)
         at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)

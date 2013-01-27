@@ -2,7 +2,7 @@
  * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
-package com.jts.fortress.sentry;
+package us.jts.sentry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,26 +10,26 @@ import java.util.List;
 import java.security.Principal;
 import java.util.Set;
 
-import com.jts.fortress.GlobalIds;
-import com.jts.fortress.ReviewMgr;
-import com.jts.fortress.ReviewMgrFactory;
-import com.jts.fortress.AccessMgr;
-import com.jts.fortress.AccessMgrFactory;
-import com.jts.fortress.SecurityException;
-import com.jts.fortress.GlobalErrIds;
-import com.jts.fortress.rbac.User;
-import com.jts.fortress.rbac.Role;
-import com.jts.fortress.rbac.Session;
-import com.jts.fortress.sentry.tomcat.TcPrincipal;
-import com.jts.fortress.util.attr.VUtil;
-import com.jts.fortress.util.time.CUtil;
+import us.jts.fortress.GlobalIds;
+import us.jts.fortress.ReviewMgr;
+import us.jts.fortress.ReviewMgrFactory;
+import us.jts.fortress.AccessMgr;
+import us.jts.fortress.AccessMgrFactory;
+import us.jts.fortress.SecurityException;
+import us.jts.fortress.GlobalErrIds;
+import us.jts.fortress.rbac.User;
+import us.jts.fortress.rbac.Role;
+import us.jts.fortress.rbac.Session;
+import us.jts.sentry.tomcat.TcPrincipal;
+import us.jts.fortress.util.attr.VUtil;
+import us.jts.fortress.util.time.CUtil;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 /**
  * This class is for components that use Websphere and Tomcat Container SPI's to provide
  * Java EE Security capabilities.  These APIs may be called by external programs as needed though the recommended
- * practice is to use Fortress Core APIs like {@link com.jts.fortress.AccessMgr} and {@link com.jts.fortress.ReviewMgr}.
+ * practice is to use Fortress Core APIs like {@link us.jts.fortress.AccessMgr} and {@link us.jts.fortress.ReviewMgr}.
  *
  * @author Shawn McKinney
  */
@@ -63,7 +63,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      * @param userId   Contains the userid of the user signing on.
      * @param password Contains the user's password.
      * @return boolean true if succeeds, false otherwise.
-     * @throws com.jts.fortress.SecurityException
+     * @throws us.jts.fortress.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
     @Override
@@ -93,26 +93,26 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
 
 
     /**
-     * Perform user authentication {@link com.jts.fortress.rbac.User#password} and role activations.<br />
+     * Perform user authentication {@link us.jts.fortress.rbac.User#password} and role activations.<br />
      * This method must be called once per user prior to calling other methods within this class.
-     * The successful result is {@link com.jts.fortress.rbac.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
-     * In addition to checking user password validity it will apply configured password policy checks {@link com.jts.fortress.rbac.User#pwPolicy}..<br />
-     * Method may also store parms passed in for audit trail {@link com.jts.fortress.rbac.FortEntity}.
+     * The successful result is {@link us.jts.fortress.rbac.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
+     * In addition to checking user password validity it will apply configured password policy checks {@link us.jts.fortress.rbac.User#pwPolicy}..<br />
+     * Method may also store parms passed in for audit trail {@link us.jts.fortress.rbac.FortEntity}.
      * <h4> This API will...</h4>
      * <ul>
      * <li> authenticate user password if trusted == false.
      * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>.
-     * <li> fail for any user who is locked by OpenLDAP's policies {@link com.jts.fortress.rbac.User#isLocked()}, regardless of trusted flag being set as parm on API.
-     * <li> evaluate temporal {@link com.jts.fortress.util.time.Constraint}(s) on {@link com.jts.fortress.rbac.User}, {@link com.jts.fortress.rbac.UserRole} and {@link com.jts.fortress.rbac.UserAdminRole} entities.
+     * <li> fail for any user who is locked by OpenLDAP's policies {@link us.jts.fortress.rbac.User#isLocked()}, regardless of trusted flag being set as parm on API.
+     * <li> evaluate temporal {@link us.jts.fortress.util.time.Constraint}(s) on {@link us.jts.fortress.rbac.User}, {@link us.jts.fortress.rbac.UserRole} and {@link us.jts.fortress.rbac.UserAdminRole} entities.
      * <li> process selective role activations into User RBAC Session {@link User#roles}.
-     * <li> check Dynamic Separation of Duties {@link com.jts.fortress.rbac.DSDChecker#validate(com.jts.fortress.rbac.Session, com.jts.fortress.util.time.Constraint, com.jts.fortress.util.time.Time)} on {@link com.jts.fortress.rbac.User#roles}.
+     * <li> check Dynamic Separation of Duties {@link us.jts.fortress.rbac.DSDChecker#validate(us.jts.fortress.rbac.Session, us.jts.fortress.util.time.Constraint, us.jts.fortress.util.time.Time)} on {@link us.jts.fortress.rbac.User#roles}.
      * <li> process selective administrative role activations {@link User#adminRoles}.
-     * <li> return a {@link com.jts.fortress.rbac.Session} containing {@link com.jts.fortress.rbac.Session#getUser()}, {@link com.jts.fortress.rbac.Session#getRoles()} and {@link com.jts.fortress.rbac.Session#getAdminRoles()} if everything checks out good.
-     * <li> throw a checked exception that will be {@link com.jts.fortress.SecurityException} or its derivation.
+     * <li> return a {@link us.jts.fortress.rbac.Session} containing {@link us.jts.fortress.rbac.Session#getUser()}, {@link us.jts.fortress.rbac.Session#getRoles()} and {@link us.jts.fortress.rbac.Session#getAdminRoles()} if everything checks out good.
+     * <li> throw a checked exception that will be {@link us.jts.fortress.SecurityException} or its derivation.
      * <li> throw a {@link SecurityException} for system failures.
-     * <li> throw a {@link com.jts.fortress.PasswordException} for authentication and password policy violations.
-     * <li> throw a {@link com.jts.fortress.ValidationException} for data validation errors.
-     * <li> throw a {@link com.jts.fortress.FinderException} if User id not found.
+     * <li> throw a {@link us.jts.fortress.PasswordException} for authentication and password policy violations.
+     * <li> throw a {@link us.jts.fortress.ValidationException} for data validation errors.
+     * <li> throw a {@link us.jts.fortress.FinderException} if User id not found.
      * </ul>
      * <h4>
      * The function is valid if and only if:
@@ -126,10 +126,10 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      * The following attributes may be set when calling this method
      * </h4>
      * <ul>
-     * <li> {@link com.jts.fortress.rbac.User#userId} - required
-     * <li> {@link com.jts.fortress.rbac.User#password}
-     * <li> {@link com.jts.fortress.rbac.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
-     * <li> {@link com.jts.fortress.rbac.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
+     * <li> {@link us.jts.fortress.rbac.User#userId} - required
+     * <li> {@link us.jts.fortress.rbac.User#password}
+     * <li> {@link us.jts.fortress.rbac.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
+     * <li> {@link us.jts.fortress.rbac.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
      * <li> {@link User#props} collection of name value pairs collected on behalf of User during signon.  For example hostname:myservername or ip:192.168.1.99
      * </ul>
      * <h4>
@@ -137,14 +137,14 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      * </h4>
      * <ul>
      * <li> roles that violate Dynamic Separation of Duty Relationships will not be activated into session.
-     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link com.jts.fortress.rbac.User#setRole(String)}.
+     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link us.jts.fortress.rbac.User#setRole(String)}.
      * </ul>
      * </p>
      *
-     * @param userId   maps to {@link com.jts.fortress.rbac.User#userId}.
-     * @param password maps to {@link com.jts.fortress.rbac.User#password}.
+     * @param userId   maps to {@link us.jts.fortress.rbac.User#userId}.
+     * @param password maps to {@link us.jts.fortress.rbac.User#password}.
      * @return TcPrincipal which contains the User's RBAC Session data formatted into a java.security.Principal that is used by Tomcat runtime.
-     * @throws com.jts.fortress.SecurityException
+     * @throws us.jts.fortress.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
     @Override
@@ -163,26 +163,26 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
 
 
     /**
-     * Perform user authentication {@link com.jts.fortress.rbac.User#password} and role activations.<br />
+     * Perform user authentication {@link us.jts.fortress.rbac.User#password} and role activations.<br />
      * This method must be called once per user prior to calling other methods within this class.
-     * The successful result is {@link com.jts.fortress.rbac.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
-     * In addition to checking user password validity it will apply configured password policy checks {@link com.jts.fortress.rbac.User#pwPolicy}..<br />
-     * Method may also store parms passed in for audit trail {@link com.jts.fortress.rbac.FortEntity}.
+     * The successful result is {@link us.jts.fortress.rbac.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
+     * In addition to checking user password validity it will apply configured password policy checks {@link us.jts.fortress.rbac.User#pwPolicy}..<br />
+     * Method may also store parms passed in for audit trail {@link us.jts.fortress.rbac.FortEntity}.
      * <h4> This API will...</h4>
      * <ul>
      * <li> authenticate user password if trusted == false.
      * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>.
-     * <li> fail for any user who is locked by OpenLDAP's policies {@link com.jts.fortress.rbac.User#isLocked()}, regardless of trusted flag being set as parm on API.
-     * <li> evaluate temporal {@link com.jts.fortress.util.time.Constraint}(s) on {@link com.jts.fortress.rbac.User}, {@link com.jts.fortress.rbac.UserRole} and {@link com.jts.fortress.rbac.UserAdminRole} entities.
+     * <li> fail for any user who is locked by OpenLDAP's policies {@link us.jts.fortress.rbac.User#isLocked()}, regardless of trusted flag being set as parm on API.
+     * <li> evaluate temporal {@link us.jts.fortress.util.time.Constraint}(s) on {@link us.jts.fortress.rbac.User}, {@link us.jts.fortress.rbac.UserRole} and {@link us.jts.fortress.rbac.UserAdminRole} entities.
      * <li> process selective role activations into User RBAC Session {@link User#roles}.
-     * <li> check Dynamic Separation of Duties {@link com.jts.fortress.rbac.DSDChecker#validate(com.jts.fortress.rbac.Session, com.jts.fortress.util.time.Constraint, com.jts.fortress.util.time.Time)} on {@link com.jts.fortress.rbac.User#roles}.
+     * <li> check Dynamic Separation of Duties {@link us.jts.fortress.rbac.DSDChecker#validate(us.jts.fortress.rbac.Session, us.jts.fortress.util.time.Constraint, us.jts.fortress.util.time.Time)} on {@link us.jts.fortress.rbac.User#roles}.
      * <li> process selective administrative role activations {@link User#adminRoles}.
-     * <li> return a {@link com.jts.fortress.rbac.Session} containing {@link com.jts.fortress.rbac.Session#getUser()}, {@link com.jts.fortress.rbac.Session#getRoles()} and {@link com.jts.fortress.rbac.Session#getAdminRoles()} if everything checks out good.
-     * <li> throw a checked exception that will be {@link com.jts.fortress.SecurityException} or its derivation.
+     * <li> return a {@link us.jts.fortress.rbac.Session} containing {@link us.jts.fortress.rbac.Session#getUser()}, {@link us.jts.fortress.rbac.Session#getRoles()} and {@link us.jts.fortress.rbac.Session#getAdminRoles()} if everything checks out good.
+     * <li> throw a checked exception that will be {@link us.jts.fortress.SecurityException} or its derivation.
      * <li> throw a {@link SecurityException} for system failures.
-     * <li> throw a {@link com.jts.fortress.PasswordException} for authentication and password policy violations.
-     * <li> throw a {@link com.jts.fortress.ValidationException} for data validation errors.
-     * <li> throw a {@link com.jts.fortress.FinderException} if User id not found.
+     * <li> throw a {@link us.jts.fortress.PasswordException} for authentication and password policy violations.
+     * <li> throw a {@link us.jts.fortress.ValidationException} for data validation errors.
+     * <li> throw a {@link us.jts.fortress.FinderException} if User id not found.
      * </ul>
      * <h4>
      * The function is valid if and only if:
@@ -196,25 +196,25 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      * The following attributes may be set when calling this method
      * </h4>
      * <ul>
-     * <li> {@link com.jts.fortress.rbac.User#userId} - required
-     * <li> {@link com.jts.fortress.rbac.User#password}
-     * <li> {@link com.jts.fortress.rbac.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
-     * <li> {@link com.jts.fortress.rbac.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
-     * <li> {@link com.jts.fortress.rbac.User#props} collection of name value pairs collected on behalf of User during signon.  For example hostname:myservername or ip:192.168.1.99
+     * <li> {@link us.jts.fortress.rbac.User#userId} - required
+     * <li> {@link us.jts.fortress.rbac.User#password}
+     * <li> {@link us.jts.fortress.rbac.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
+     * <li> {@link us.jts.fortress.rbac.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
+     * <li> {@link us.jts.fortress.rbac.User#props} collection of name value pairs collected on behalf of User during signon.  For example hostname:myservername or ip:192.168.1.99
      * </ul>
      * <h4>
      * Notes:
      * </h4>
      * <ul>
      * <li> roles that violate Dynamic Separation of Duty Relationships will not be activated into session.
-     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link com.jts.fortress.rbac.User#setRole(String)}.
+     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link us.jts.fortress.rbac.User#setRole(String)}.
      * </ul>
      * </p>
      *
-     * @param user      Contains {@link com.jts.fortress.rbac.User#userId}, {@link com.jts.fortress.rbac.User#password} (optional if {@code isTrusted} is 'true'), optional {@link com.jts.fortress.rbac.User#roles}, optional {@link com.jts.fortress.rbac.User#adminRoles}
+     * @param user      Contains {@link us.jts.fortress.rbac.User#userId}, {@link us.jts.fortress.rbac.User#password} (optional if {@code isTrusted} is 'true'), optional {@link us.jts.fortress.rbac.User#roles}, optional {@link us.jts.fortress.rbac.User#adminRoles}
      * @param isTrusted if true password is not required.
-     * @return Session object will contain authentication result code {@link com.jts.fortress.rbac.Session#errorId}, RBAC role activations {@link com.jts.fortress.rbac.Session#getRoles()}, Admin Role activations {@link com.jts.fortress.rbac.Session#getAdminRoles()},OpenLDAP pw policy codes {@link com.jts.fortress.rbac.Session#warningId}, {@link com.jts.fortress.rbac.Session#expirationSeconds}, {@link com.jts.fortress.rbac.Session#graceLogins} and more.
-     * @throws com.jts.fortress.SecurityException
+     * @return Session object will contain authentication result code {@link us.jts.fortress.rbac.Session#errorId}, RBAC role activations {@link us.jts.fortress.rbac.Session#getRoles()}, Admin Role activations {@link us.jts.fortress.rbac.Session#getAdminRoles()},OpenLDAP pw policy codes {@link us.jts.fortress.rbac.Session#warningId}, {@link us.jts.fortress.rbac.Session#expirationSeconds}, {@link us.jts.fortress.rbac.Session#graceLogins} and more.
+     * @throws us.jts.fortress.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
     @Override
@@ -231,12 +231,12 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
 
     /**
      * Determine if given Role is contained within User's Tomcat Principal object.  This method does not need to hit
-     * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
+     * the ldap server as the User's activated Roles are loaded into {@link us.jts.sentry.tomcat.TcPrincipal#setContext(java.util.HashMap)}
      *
      * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
-     * @param roleName  Maps to {@link com.jts.fortress.rbac.Role#name}.
+     * @param roleName  Maps to {@link us.jts.fortress.rbac.Role#name}.
      * @return True if Role is found in TcPrincipal, false otherwise.
-     * @throws com.jts.fortress.SecurityException
+     * @throws us.jts.fortress.SecurityException
      *          data validation failure or system error..
      */
     @Override
@@ -299,9 +299,9 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     /**
      * Method reads Role entity from the role container in directory.
      *
-     * @param roleName maps to {@link com.jts.fortress.rbac.Role#name}, to be read.
+     * @param roleName maps to {@link us.jts.fortress.rbac.Role#name}, to be read.
      * @return Role entity that corresponds with role name.
-     * @throws com.jts.fortress.SecurityException
+     * @throws us.jts.fortress.SecurityException
      *          will be thrown if role not found or system error occurs.
      */
     @Override
@@ -315,10 +315,10 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     /**
      * Search for Roles assigned to given User.
      *
-     * @param searchString Maps to {@link com.jts.fortress.rbac.User#userId}.
+     * @param searchString Maps to {@link us.jts.fortress.rbac.User#userId}.
      * @param limit        controls the size of ldap result set returned.
-     * @return List of type String containing the {@link com.jts.fortress.rbac.Role#name} of all assigned Roles.
-     * @throws com.jts.fortress.SecurityException
+     * @return List of type String containing the {@link us.jts.fortress.rbac.Role#name} of all assigned Roles.
+     * @throws us.jts.fortress.SecurityException
      *          in the event of data validation failure or DAO error.
      */
     @Override
@@ -332,7 +332,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     /**
      * Method returns matching User entity that is contained within the people container in the directory.
      *
-     * @param userId maps to {@link com.jts.fortress.rbac.User#userId} that matches record in the directory.  userId is globally unique in
+     * @param userId maps to {@link us.jts.fortress.rbac.User#userId} that matches record in the directory.  userId is globally unique in
      *               people container.
      * @return entity containing matching user data.
      * @throws SecurityException if record not found or system error occurs.
@@ -368,10 +368,10 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      * The max number of users returned is constrained by limit argument.
      * This method is used by the Websphere sentry component.  This method does NOT use hierarchical rbac.
      *
-     * @param roleName maps to {@link com.jts.fortress.rbac.Role#name} of Role entity assigned to user.
+     * @param roleName maps to {@link us.jts.fortress.rbac.Role#name} of Role entity assigned to user.
      * @param limit    integer value sets the max returned records.
      * @return List of type String containing userIds assigned to a particular role.
-     * @throws com.jts.fortress.SecurityException
+     * @throws us.jts.fortress.SecurityException
      *          in the event of data validation or system error.
      */
     @Override
@@ -386,7 +386,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      * This function returns the set of roles authorized for a given user. The function is valid if
      * and only if the user is a member of the USERS data set.
      *
-     * @param userId maps to {@link com.jts.fortress.rbac.User#userId} matching User entity stored in the directory.
+     * @param userId maps to {@link us.jts.fortress.rbac.User#userId} matching User entity stored in the directory.
      * @return Set of type String containing the roles assigned and roles inherited.
      * @throws SecurityException If user not found or system error occurs.
      */

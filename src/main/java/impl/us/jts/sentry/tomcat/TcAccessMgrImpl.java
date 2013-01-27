@@ -2,11 +2,11 @@
  * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
-package com.jts.fortress.sentry.tomcat;
+package us.jts.sentry.tomcat;
 
-import com.jts.fortress.SecurityException;
-import com.jts.fortress.sentry.J2eePolicyMgr;
-import com.jts.fortress.sentry.J2eePolicyMgrFactory;
+import us.jts.fortress.SecurityException;
+import us.jts.sentry.J2eePolicyMgr;
+import us.jts.sentry.J2eePolicyMgrFactory;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -76,7 +76,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
      * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
      *
      * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
-     * @param roleName  Maps to {@code com.jts.fortress.rbac.Role#name}.
+     * @param roleName  Maps to {@code us.jts.fortress.rbac.Role#name}.
      * @return True if Role is found in TcPrincipal, false otherwise.
      */
     public boolean hasRole(Principal principal, String roleName)

@@ -2,13 +2,13 @@
  * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
-package com.jts.fortress.sentry.websphere;
+package us.jts.sentry.websphere;
 
-import com.jts.fortress.SecurityException;
-import com.jts.fortress.GlobalErrIds;
-import com.jts.fortress.rbac.User;
-import com.jts.fortress.sentry.J2eePolicyMgrFactory;
-import com.jts.fortress.sentry.J2eePolicyMgr;
+import us.jts.fortress.SecurityException;
+import us.jts.fortress.GlobalErrIds;
+import us.jts.fortress.rbac.User;
+import us.jts.sentry.J2eePolicyMgrFactory;
+import us.jts.sentry.J2eePolicyMgr;
 
 import java.security.cert.X509Certificate;
 import java.util.List;

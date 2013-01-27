@@ -6,7 +6,7 @@
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
 
-       https://joshuatreesoftware.us/
+       http://jts.us/License
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,13 +20,13 @@
   <artifactId>sentry</artifactId>
   <packaging>jar</packaging>
   <name>Fortress Sentry</name>
-  <version>1.0-RC21</version>
+  <version>1.0-RC22</version>
   <description>Java EE Security Plug-in uses Fortress IAM.</description>
-  <url>https://joshuatreesoftware.us</url>
+  <url>https://jts.us</url>
   <licenses>
     <license>
       <name>BSD</name>
-      <url>https://www.joshuatreesoftware.us/License</url>
+      <url>https://jts.us/License</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -38,7 +38,7 @@
     <developer>
       <id>smckinney</id>
       <name>Shawn McKinney</name>
-      <email>shawn.mckinney@joshuatreesoftware.us</email>
+      <email>shawn.mckinney@jts.us</email>
     </developer>
   </developers>
   <dependencies>
@@ -46,7 +46,7 @@
     <dependency>
      <groupId>us.joshuatreesoftware</groupId>
       <artifactId>fortress</artifactId>
-      <version>1.0-RC21</version>
+      <version>1.0-RC22</version>
     </dependency>
     <dependency>
        <groupId>org.apache.tomcat</groupId>

@@ -82,7 +82,7 @@ g. Enter "Primary administrative user name": wasadmin
 h. Select Radio button: "Server identity that is stored in the repository"
 i. Enter in field: "Server user ID or administrative user on a Version 6.0.x node": wasadmin  (or whatever you choose as your default console userId).
 j. Enter in field: "Password": @dmin123  (or whatever you choose as your default consle user's password)
-k. Enter in field: "Information required Custom registry class name": com.jts.fortress.sentry.websphere.WsAccessMgrProxy
+k. Enter in field: "Information required Custom registry class name": us.jts.sentry.websphere.WsAccessMgrProxy
 l. Enable checkbox: "Ignore case for authorization"
 m. Enter in field: "Custom properties":
     "Name" REALM_CLASSPATH   "Value" /home/smckinn/JavaTools/sentry/fortressSentryDist-[version]/conf:/home/smckinn/JavaTools/sentry/fortressSentryDist-[version]/lib/fortressSentry-[version].jar
@@ -108,10 +108,10 @@ w. verify that sentry started successfully by viewing following message in Websp
 /opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/server1$ tail -f -n10000 SystemOut.log
 
 ...
-[6/5/11 18:46:16:745 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,744 (INFO ) com.jts.fortress.sentry.J2eePolicyMgrImpl - Initialized successfully
-[6/5/11 18:46:16:745 CDT] 00000000 WsAccessMgrPr I   com.jts.fortress.sentry.websphere.WsAccessMgrProxy.initialize - Fortress UserRegistry initialized no errors.
-[6/5/11 18:46:16:748 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,748 (INFO ) com.jts.fortress.sentry.websphere.WsAccessMgrImpl. J2EE policy agent initialization successful
-[6/5/11 18:46:16:759 CDT] 00000000 UserRegistryI A   SECJ0136I: Custom Registry:com.jts.fortress.sentry.websphere.WsAccessMgrProxy has been initialized
+[6/5/11 18:46:16:745 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,744 (INFO ) us.jts.sentry.J2eePolicyMgrImpl - Initialized successfully
+[6/5/11 18:46:16:745 CDT] 00000000 WsAccessMgrPr I   us.jts.sentry.websphere.WsAccessMgrProxy.initialize - Fortress UserRegistry initialized no errors.
+[6/5/11 18:46:16:748 CDT] 00000000 SystemOut     O 2011-06-05 18:46:16,748 (INFO ) us.jts.sentry.websphere.WsAccessMgrImpl. J2EE policy agent initialization successful
+[6/5/11 18:46:16:759 CDT] 00000000 UserRegistryI A   SECJ0136I: Custom Registry:us.jts.sentry.websphere.WsAccessMgrProxy has been initialized
 
 
 -------------------------------------------
@@ -127,7 +127,7 @@ ACTION:
 Ensure step 3c points to Fortress sentry configuration folder.
 
 -------------------------------------------------------------------------------------------
-ii. - Server can't find proxy jar (Sentry className="com.jts.fortress.sentry.tomcat.TcAccessMgrProxy")
+ii. - Server can't find proxy jar (Sentry className="us.jts.sentry.tomcat.TcAccessMgrProxy")
 -------------------------------------------------------------------------------------------
 
 ACTION:

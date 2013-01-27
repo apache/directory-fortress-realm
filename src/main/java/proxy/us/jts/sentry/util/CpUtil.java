@@ -2,7 +2,7 @@
  * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
-package com.jts.fortress.sentry.util;
+package us.jts.sentry.util;
 
 import java.util.logging.Logger;
 import java.io.File;

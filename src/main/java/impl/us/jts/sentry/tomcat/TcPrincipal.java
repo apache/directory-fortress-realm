@@ -2,9 +2,9 @@
  * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
-package com.jts.fortress.sentry.tomcat;
+package us.jts.sentry.tomcat;
 
-import com.jts.fortress.rbac.Session;
+import us.jts.fortress.rbac.Session;
 
 import java.util.HashMap;
 

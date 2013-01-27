@@ -2,9 +2,9 @@
  * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
-package com.jts.fortress.sentry.tomcat;
+package us.jts.sentry.tomcat;
 
-import com.jts.fortress.sentry.util.CpUtil;
+import us.jts.sentry.util.CpUtil;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.realm.RealmBase;
@@ -13,11 +13,11 @@ import java.security.Principal;
 import java.net.URLClassLoader;
 import java.util.logging.Logger;
 
-import com.jts.fortress.sentry.util.ChildFirstUrlClassLoader;
+import us.jts.sentry.util.ChildFirstUrlClassLoader;
 
 /**
  * This class extends the Tomcat 7 and beyond RealmBase class and provides Java EE security services within the Tomcat container.
- * This class is a "proxy" for the {@link TcAccessMgrImpl} class which isolates dependencies from the Tomcat
+ * This class is a "proxy" for the {@link us.jts.sentry.tomcat.TcAccessMgrImpl} class which isolates dependencies from the Tomcat
  * runtime environment by loading the implementation on a URLClassLoader.
  *
  * @author Shawn McKinney
@@ -26,7 +26,7 @@ public class Tc7AccessMgrProxy extends RealmBase
 {
     private static final String CLS_NM = Tc7AccessMgrProxy.class.getName();
     private static final Logger log = Logger.getLogger(CLS_NM);
-    private static final String REALM_IMPL = "com.jts.fortress.sentry.tomcat.TcAccessMgrImpl";
+    private static final String REALM_IMPL = "us.jts.sentry.tomcat.TcAccessMgrImpl";
     private static final String REALM_CLASSPATH = "REALM_CLASSPATH";
     private static final String JBOSS_AGENT = "jboss";
     private static String container = "Catalina7";
@@ -165,10 +165,10 @@ public class Tc7AccessMgrProxy extends RealmBase
 
     /**
      * Determine if given Role is contained within User's Tomcat Principal object.  This method does not need to hit
-     * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
+     * the ldap server as the User's activated Roles are loaded into {@link us.jts.sentry.tomcat.TcPrincipal#setContext(java.util.HashMap)}
      *
      * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
-     * @param role  Maps to {@code com.jts.fortress.rbac.Role#name}.
+     * @param role  Maps to {@code us.jts.fortress.rbac.Role#name}.
      * @return True if Role is found in TcPrincipal, false otherwise.
      */
     @Override

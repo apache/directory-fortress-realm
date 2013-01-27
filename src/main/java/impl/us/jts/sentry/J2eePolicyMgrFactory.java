@@ -2,11 +2,11 @@
  * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
-package com.jts.fortress.sentry;
+package us.jts.sentry;
 
-import com.jts.fortress.cfg.Config;
-import com.jts.fortress.SecurityException;
-import com.jts.fortress.GlobalErrIds;
+import us.jts.fortress.cfg.Config;
+import us.jts.fortress.SecurityException;
+import us.jts.fortress.GlobalErrIds;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -22,10 +22,10 @@ import org.apache.log4j.Logger;
 public class J2eePolicyMgrFactory
 {
     /**
-     * When this optional tag, {@code realmImplementation}, is placed in Fortress properties, its class name will be the default {@code com.jts.fortress.security.RealmMgr} instance used.
+     * When this optional tag, {@code realmImplementation}, is placed in Fortress properties, its class name will be the default {@code us.jts.fortress.security.RealmMgr} instance used.
      */
     private static final String J2EE_POLICYMGR_IMPLEMENTATION = "realmImplementation";
-    private static final String J2EE_POLICYMGR_DEFAULT_CLASS = "com.jts.fortress.sentry.J2eePolicyMgrImpl";
+    private static final String J2EE_POLICYMGR_DEFAULT_CLASS = J2eePolicyMgrImpl.class.getName();
     private static final String CLS_NM = J2eePolicyMgrFactory.class.getName();
     private static final Logger log = Logger.getLogger(CLS_NM);
     private static String j2eeClassName = Config.getProperty(J2EE_POLICYMGR_IMPLEMENTATION);
@@ -34,7 +34,7 @@ public class J2eePolicyMgrFactory
      * Create and return a reference to {@link J2eePolicyMgr} object.
      *
      * @return instance of {@link J2eePolicyMgr}.
-     * @throws com.jts.fortress.SecurityException in the event of failure during instantiation.
+     * @throws us.jts.fortress.SecurityException in the event of failure during instantiation.
      */
     public static J2eePolicyMgr createInstance()
         throws SecurityException

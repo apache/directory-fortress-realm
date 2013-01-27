@@ -2,9 +2,9 @@
  * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
-package com.jts.fortress.sentry.websphere;
+package us.jts.sentry.websphere;
 
-import com.jts.fortress.sentry.util.CpUtil;
+import us.jts.sentry.util.CpUtil;
 
 import com.ibm.websphere.security.CertificateMapFailedException;
 import com.ibm.websphere.security.CertificateMapNotSupportedException;
@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 /**
  * This class implements the Websphere UserRegistry class and provides Java EE security services within the Websphere container.
- * This class is a "proxy" for the {@code com.jts.fortress.sentry.websphere.WsAccessMgrImpl} class which isolates dependencies from the Websphere
+ * This class is a "proxy" for the {@code us.jts.sentry.websphere.WsAccessMgrImpl} class which isolates dependencies from the Websphere
  * runtime environment by loading the implementation on a URLClassLoader.
  *
  * @author Shawn McKinney
@@ -32,7 +32,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
     private UserRegistry realmImpl = null;
     private static String REALM_PROP_NAME = "REALM_CLASSPATH";
     private static String REALM_IMPL_PROP_NAME = "REALM_PROP";
-    private static String DEFAULT_REALM_IMPLEMENTATION = "com.jts.fortress.sentry.websphere.WsAccessMgrImpl";
+    private static String DEFAULT_REALM_IMPLEMENTATION = "us.jts.sentry.websphere.WsAccessMgrImpl";
     private static Logger log = Logger.getLogger(WsAccessMgrProxy.class.getName());
 
 

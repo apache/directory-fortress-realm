@@ -6,7 +6,7 @@
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
 
-       https://joshuatreesoftware.us/
+       http://jts.us/License
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +18,7 @@
     <info organisation="org.apache" module="openldap-fortress-realm"/>
 
     <dependencies>
-        <dependency org="us.joshuatreesoftware" name="fortress" rev="1.0-RC21"  conf="default->master"/>
+        <dependency org="us.joshuatreesoftware" name="fortress" rev="1.0-RC22"  conf="default->master"/>
         <dependency org="commons-lang" name="commons-lang" rev="2.4" conf="default->master"/>
         <dependency org="commons-configuration" name="commons-configuration" rev="1.6" conf="default->master"/>
         <dependency org="commons-lang" name="commons-lang" rev="2.4" conf="default->master"/>

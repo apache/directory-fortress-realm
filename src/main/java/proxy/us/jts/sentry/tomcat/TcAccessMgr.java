@@ -2,7 +2,7 @@
  * Copyright (c) 2009-2013, JoshuaTree. All Rights Reserved.
  */
 
-package com.jts.fortress.sentry.tomcat;
+package us.jts.sentry.tomcat;
 
 import java.security.Principal;
 
@@ -17,10 +17,10 @@ public interface TcAccessMgr
 {
     /**
      * Determine if given Role is contained within User's Tomcat Principal object.  This method does not need to hit
-     * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
+     * the ldap server as the User's activated Roles are loaded into {@link us.jts.sentry.tomcat.TcPrincipal#setContext(java.util.HashMap)}
      *
      * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
-     * @param role  Maps to {@code com.jts.fortress.rbac.Role#name}.
+     * @param role  Maps to {@code us.jts.fortress.rbac.Role#name}.
      * @return True if Role is found in TcPrincipal, false otherwise.
      */
     public boolean hasRole(Principal principal, String role);
