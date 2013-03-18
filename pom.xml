@@ -20,7 +20,7 @@
   <artifactId>sentry</artifactId>
   <packaging>jar</packaging>
   <name>Fortress Sentry</name>
-  <version>1.0-RC23</version>
+  <version>1.0-RC24</version>
   <description>Java EE Security Plug-in uses Fortress IAM.</description>
   <url>https://jts.us</url>
   <licenses>
@@ -42,11 +42,10 @@
     </developer>
   </developers>
   <dependencies>
-
     <dependency>
      <groupId>us.joshuatreesoftware</groupId>
       <artifactId>fortress</artifactId>
-      <version>1.0-RC23</version>
+      <version>1.0-RC24</version>
     </dependency>
     <dependency>
        <groupId>org.apache.tomcat</groupId>
@@ -58,7 +57,6 @@
        <artifactId>tomcat-catalina</artifactId>
        <version>7.0.22</version>
     </dependency>
-
 	<dependency>
 	  <groupId>commons-lang</groupId>
 	  <artifactId>commons-lang</artifactId>
@@ -99,15 +97,15 @@
 	   <artifactId>jasypt</artifactId>
 	   <version>1.8</version>
 	</dependency>
-	<dependency>
-	   <groupId>jgrapht</groupId>
-	   <artifactId>jgrapht</artifactId>
-	   <version>0.7.3</version>
-	</dependency>
+    <dependency>
+       <groupId>org.jgrapht</groupId>
+       <artifactId>jgrapht-jdk1.5</artifactId>
+       <version>0.7.3</version>
+    </dependency>
 	<dependency>
 		<groupId>net.sf.ehcache</groupId>
 		<artifactId>ehcache-core</artifactId>
-		<version>2.5.1</version>
+        <version>2.6.5</version>
 	</dependency>
 	<dependency>
 		<groupId>org.slf4j</groupId>
