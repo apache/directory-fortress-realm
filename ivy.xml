@@ -17,7 +17,7 @@
 <ivy-module version="2.0">
     <info organisation="org.apache" module="openldap-fortress-realm"/>
     <dependencies>
-        <dependency org="us.joshuatreesoftware" name="fortress" rev="1.0-RC26"  conf="default->master"/>
+        <dependency org="us.joshuatreesoftware" name="fortress" rev="1.0-RC27"  conf="default->master"/>
         <dependency org="commons-lang" name="commons-lang" rev="2.4" conf="default->master"/>
         <dependency org="commons-configuration" name="commons-configuration" rev="1.6" conf="default->master"/>
         <dependency org="commons-lang" name="commons-lang" rev="2.4" conf="default->master"/>
@@ -26,12 +26,12 @@
         <dependency org="commons-logging" name="commons-logging" rev="1.1.1" conf="default->master"/>
         <dependency org="com.unboundid" name="unboundid-ldapsdk" rev="2.1.0" conf="default->master"/>
         <dependency org="junit" name="junit" rev="4.9" conf="default->master"/>
-        <dependency org="log4j" name="log4j" rev="1.2.16" conf="default->master"/>
+        <dependency org="log4j" name="log4j" rev="1.2.17" conf="default->master"/>
         <dependency org="org.jasypt" name="jasypt" rev="1.8" conf="default->master"/>
         <dependency org="org.jgrapht" name="jgrapht-jdk1.5" rev="0.7.3" conf="default->master"/>
         <dependency org="net.sf.ehcache" name="ehcache-core" rev="2.6.5" conf="default->master"/>
-        <dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" conf="default->master"/>
-        <dependency org="org.slf4j" name="slf4j-jcl" rev="1.6.1" conf="default->master"/>
+        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.5" conf="default->master"/>
+        <dependency org="org.slf4j" name="slf4j-jcl" rev="1.7.5" conf="default->master"/>
         <dependency org="org.apache.tomcat" name="tomcat-catalina" rev="7.0.22" conf="default->master">
             <artifact name="tomcat-catalina" type="jar" />
         </dependency>
