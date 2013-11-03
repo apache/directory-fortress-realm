@@ -190,8 +190,7 @@
     <!-- =================================
           target: resolve
          ================================= -->
-    <target name="resolve" depends="init,download-ivy" description="--> retreive dependencies with ivy"
-            unless="local.mode">
+    <target name="resolve" depends="init,download-ivy" description="--> retreive dependencies with ivy">
         <ivy:retrieve pattern="${lib.dir}/[artifact]-[revision].[ext]"/>
     </target>
 
