@@ -229,7 +229,7 @@
               debug="${javac.debug}"
               deprecation="${javac.deprecation}"
               destdir="${build.classes.proxy.dir}">
-              <exclude name="com/jts/fortress/sentry/tomcat/Tc7AccessMgrProxy.java"/>
+              <exclude name="us/jts/sentry/tomcat/Tc7AccessMgrProxy.java"/>
              <classpath refid="build.proxy.class.path"/>
          </javac>
     </target>
@@ -239,7 +239,7 @@
               debug="${javac.debug}"
               deprecation="${javac.deprecation}"
               destdir="${build.classes.proxy.dir}">
-              <exclude name="com/jts/fortress/sentry/tomcat/TcAccessMgrProxy.java"/>
+              <exclude name="us/jts/sentry/tomcat/TcAccessMgrProxy.java"/>
              <classpath refid="build.proxy.tc7.class.path"/>
          </javac>
     </target>
@@ -258,12 +258,12 @@
        <mkdir dir="${dist.dir}"/>
        <fortressSentry.jar destfile="${fortressTomcatSentry.jar}">
           <fileset dir="${build.classes.proxy.dir}">
-              <include name="com/jts/fortress/sentry/tomcat/**"/>
-              <include name="com/jts/fortress/sentry/util/**"/>
-              <exclude name="com/jts/fortress/sentry/tomcat/Tc7AccessMgrProxy.class"/>
+              <include name="us/jts/sentry/tomcat/**"/>
+              <include name="us/jts/sentry/util/**"/>
+              <exclude name="us/jts/sentry/tomcat/Tc7AccessMgrProxy.class"/>
           </fileset>
            <fileset dir="${build.classes.impl.dir}">
-               <include name="com/jts/fortress/sentry/tomcat/TcPrincipal.class"/>
+               <include name="us/jts/sentry/tomcat/TcPrincipal.class"/>
            </fileset>
           <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
        </fortressSentry.jar>
@@ -273,12 +273,12 @@
        <mkdir dir="${dist.dir}"/>
        <fortressSentry.jar destfile="${fortressTomcat7Sentry.jar}">
           <fileset dir="${build.classes.proxy.dir}">
-              <include name="com/jts/fortress/sentry/tomcat/**"/>
-              <include name="com/jts/fortress/sentry/util/**"/>
-              <exclude name="com/jts/fortress/sentry/tomcat/TcAccessMgrProxy.class"/>
+              <include name="us/jts/sentry/tomcat/**"/>
+              <include name="us/jts/sentry/util/**"/>
+              <exclude name="us/jts/sentry/tomcat/TcAccessMgrProxy.class"/>
           </fileset>
            <fileset dir="${build.classes.impl.dir}">
-               <include name="com/jts/fortress/sentry/tomcat/TcPrincipal.class"/>
+               <include name="us/jts/sentry/tomcat/TcPrincipal.class"/>
            </fileset>
           <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
        </fortressSentry.jar>
@@ -288,8 +288,8 @@
        <mkdir dir="${dist.dir}"/>
        <fortressSentry.jar destfile="${fortressUserRegistry.jar}">
           <fileset dir="${build.classes.proxy.dir}">
-              <include name="com/jts/fortress/sentry/websphere/**"/>
-              <include name="com/jts/fortress/sentry/util/**"/>
+              <include name="us/jts/sentry/websphere/**"/>
+              <include name="us/jts/sentry/util/**"/>
           </fileset>
           <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
        </fortressSentry.jar>
