@@ -17,7 +17,7 @@
 <ivy-module version="2.0">
     <info organisation="org.apache" module="openldap-fortress-realm"/>
     <dependencies>
-        <dependency org="us.joshuatreesoftware" name="fortress" rev="1.0-RC34"  conf="default->master"/>
+        <dependency org="us.joshuatreesoftware" name="fortress" rev="1.0-RC35"  conf="default->master"/>
         <dependency org="commons-lang" name="commons-lang" rev="2.4" conf="default->master"/>
         <dependency org="commons-configuration" name="commons-configuration" rev="1.6" conf="default->master"/>
         <dependency org="commons-lang" name="commons-lang" rev="2.4" conf="default->master"/>
