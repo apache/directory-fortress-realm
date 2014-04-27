@@ -1,12 +1,23 @@
 /*
- * Copyright (c) 2009-2014, JoshuaTree. All Rights Reserved.
+ * This work is part of OpenLDAP Software <http://www.openldap.org/>.
+ *
+ * Copyright 1998-2014 The OpenLDAP Foundation.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted only as authorized by the OpenLDAP
+ * Public License.
+ *
+ * A copy of this license is available in the file LICENSE in the
+ * top-level directory of the distribution or, alternatively, at
+ * <http://www.OpenLDAP.org/license.html>.
  */
 
-package us.jts.sentry;
+package org.openldap.sentry;
 
-import us.jts.fortress.cfg.Config;
-import us.jts.fortress.SecurityException;
-import us.jts.fortress.GlobalErrIds;
+import org.openldap.fortress.cfg.Config;
+import org.openldap.fortress.SecurityException;
+import org.openldap.fortress.GlobalErrIds;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -22,7 +33,7 @@ import org.apache.log4j.Logger;
 public class J2eePolicyMgrFactory
 {
     /**
-     * When this optional tag, {@code realmImplementation}, is placed in Fortress properties, its class name will be the default {@code us.jts.fortress.security.RealmMgr} instance used.
+     * When this optional tag, {@code realmImplementation}, is placed in Fortress properties, its class name will be the default {@code org.openldap.fortress.security.RealmMgr} instance used.
      */
     private static final String J2EE_POLICYMGR_IMPLEMENTATION = "realmImplementation";
     private static final String J2EE_POLICYMGR_DEFAULT_CLASS = J2eePolicyMgrImpl.class.getName();
@@ -34,7 +45,7 @@ public class J2eePolicyMgrFactory
      * Create and return a reference to {@link J2eePolicyMgr} object.
      *
      * @return instance of {@link J2eePolicyMgr}.
-     * @throws us.jts.fortress.SecurityException in the event of failure during instantiation.
+     * @throws org.openldap.fortress.SecurityException in the event of failure during instantiation.
      */
     public static J2eePolicyMgr createInstance()
         throws SecurityException

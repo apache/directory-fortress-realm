@@ -1,10 +1,21 @@
 /*
- * Copyright (c) 2009-2014, JoshuaTree. All Rights Reserved.
+ * This work is part of OpenLDAP Software <http://www.openldap.org/>.
+ *
+ * Copyright 1998-2014 The OpenLDAP Foundation.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted only as authorized by the OpenLDAP
+ * Public License.
+ *
+ * A copy of this license is available in the file LICENSE in the
+ * top-level directory of the distribution or, alternatively, at
+ * <http://www.OpenLDAP.org/license.html>.
  */
 
-package us.jts.sentry.websphere;
+package org.openldap.sentry.websphere;
 
-import us.jts.sentry.util.CpUtil;
+import org.openldap.sentry.util.CpUtil;
 
 import com.ibm.websphere.security.CertificateMapFailedException;
 import com.ibm.websphere.security.CertificateMapNotSupportedException;
@@ -22,7 +33,7 @@ import java.util.logging.Logger;
 
 /**
  * This class implements the Websphere UserRegistry class and provides Java EE security services within the Websphere container.
- * This class is a "proxy" for the {@code us.jts.sentry.websphere.WsAccessMgrImpl} class which isolates dependencies from the Websphere
+ * This class is a "proxy" for the {@code org.openldap.sentry.websphere.WsAccessMgrImpl} class which isolates dependencies from the Websphere
  * runtime environment by loading the implementation on a URLClassLoader.
  *
  * @author Shawn McKinney
@@ -32,7 +43,7 @@ public class WsAccessMgrProxy implements com.ibm.websphere.security.UserRegistry
     private UserRegistry realmImpl = null;
     private static String REALM_PROP_NAME = "REALM_CLASSPATH";
     private static String REALM_IMPL_PROP_NAME = "REALM_PROP";
-    private static String DEFAULT_REALM_IMPLEMENTATION = "us.jts.sentry.websphere.WsAccessMgrImpl";
+    private static String DEFAULT_REALM_IMPLEMENTATION = "org.openldap.sentry.websphere.WsAccessMgrImpl";
     private static Logger log = Logger.getLogger(WsAccessMgrProxy.class.getName());
 
 

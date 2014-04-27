@@ -1,12 +1,23 @@
 /*
- * Copyright (c) 2009-2014, JoshuaTree. All Rights Reserved.
+ * This work is part of OpenLDAP Software <http://www.openldap.org/>.
+ *
+ * Copyright 1998-2014 The OpenLDAP Foundation.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted only as authorized by the OpenLDAP
+ * Public License.
+ *
+ * A copy of this license is available in the file LICENSE in the
+ * top-level directory of the distribution or, alternatively, at
+ * <http://www.OpenLDAP.org/license.html>.
  */
 
-package us.jts.sentry.tomcat;
+package org.openldap.sentry.tomcat;
 
-import us.jts.fortress.SecurityException;
-import us.jts.sentry.J2eePolicyMgr;
-import us.jts.sentry.J2eePolicyMgrFactory;
+import org.openldap.fortress.SecurityException;
+import org.openldap.sentry.J2eePolicyMgr;
+import org.openldap.sentry.J2eePolicyMgrFactory;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -76,7 +87,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
      * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
      *
      * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
-     * @param roleName  Maps to {@code us.jts.fortress.rbac.Role#name}.
+     * @param roleName  Maps to {@code org.openldap.fortress.rbac.Role#name}.
      * @return True if Role is found in TcPrincipal, false otherwise.
      */
     public boolean hasRole(Principal principal, String roleName)

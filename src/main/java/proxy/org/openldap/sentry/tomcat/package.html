@@ -1,19 +1,17 @@
 <!--
-  Copyright (C) 2009-2014, JoshuaTree. All Rights Reserved.
-  Licensed to Joshua Tree Software, LLC under New BSD license agreements.  See the NOTICE file distributed with
-  this work for additional information regarding copyright ownership.
-  JTS licenses this file to You under the New BSD License
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-       https://joshuatreesoftware.us/
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
--->
+  ~ This work is part of OpenLDAP Software <http://www.openldap.org/>.
+  ~
+  ~ Copyright 1998-2014 The OpenLDAP Foundation.
+  ~ All rights reserved.
+  ~
+  ~ Redistribution and use in source and binary forms, with or without
+  ~ modification, are permitted only as authorized by the OpenLDAP
+  ~ Public License.
+  ~
+  ~ A copy of this license is available in the file LICENSE in the
+  ~ top-level directory of the distribution or, alternatively, at
+  ~ <http://www.OpenLDAP.org/license.html>.
+  -->
 <body>
    <p>
       This package is the component that allows security checks to be performed within a
@@ -120,7 +118,7 @@ maxConn=10
                  </pre></font>
            </li>
            <li>Add the following to Tomcat's server.xml file:</li>
-            <font size="3" color="#000000"><pre>&lt;Realm className="us.jts.fortress.realm.tomcat.TcAccessMgrProxy"
+            <font size="3" color="#000000"><pre>&lt;Realm className="org.openldap.fortress.realm.tomcat.TcAccessMgrProxy"
                     debug="0"
                     resourceName="UserDatabase"
                     containerType="Tomcat7"
@@ -134,11 +132,11 @@ maxConn=10
             <font size="3" color="#000000"><pre>
 >/opt/apache-tomcat-6.0.24/bin$ tail -f -n10000 ../logs/catalina.out
 ...
-INFO: us.jts.sentry.tomcat.TcAccessMgrProxy J2EE policy agent initialization successful
+INFO: org.openldap.sentry.tomcat.TcAccessMgrProxy J2EE policy agent initialization successful
 
 If Tomcat 7 and beyond:
 
-INFO: us.jts.sentry.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
+INFO: org.openldap.sentry.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
 
             </pre></font>
            <em>Note: If you experience problems check out the Common Troubleshooting Tips section at the end of this document.</em><br><br>
@@ -193,7 +191,7 @@ INFO: us.jts.sentry.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initializ
 <font size="3" color="#000000">               <pre>
     Jul 15, 2011 8:21:16 PM Tc7AccessMgrProxy initialize
     INFO: Tc7AccessMgrProxy.initialize - instantiate policy agent name: TcAccessMgrImpl
-    2011-07-15 20:21:17,053 (FATAL) us.jts.fortress.configuration.Config static init: Error, null configuration file: fortress.properties
+    2011-07-15 20:21:17,053 (FATAL) org.openldap.fortress.configuration.Config static init: Error, null configuration file: fortress.properties
     Jul 15, 2011 8:21:17 PM Tc7AccessMgrProxy startInternal
     SEVERE: Tc7AccessMgrProxy.startInternal caught Throwable=java.lang.ExceptionInInitializerError
     java.lang.ExceptionInInitializerError
@@ -222,8 +220,8 @@ INFO: us.jts.sentry.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initializ
             at java.lang.reflect.Method.invoke(Method.java:597)
             at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:303)
             at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:431)
-    Caused by: java.lang.RuntimeException: us.jts.fortress.configuration.Config static init: Error, null configuration file: fortress.properties
-            at us.jts.fortress.configuration.Config.<clinit>(Config.java:51)
+    Caused by: java.lang.RuntimeException: org.openldap.fortress.configuration.Config static init: Error, null configuration file: fortress.properties
+            at org.openldap.fortress.configuration.Config.<clinit>(Config.java:51)
             ... 25 more
                </pre>
 </font>               <h4>Corrective Action</h4>
@@ -237,7 +235,7 @@ INFO: us.jts.sentry.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initializ
 INFO: The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/i386/server:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/i386:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/../lib/i386:/usr/java/packages/lib/i386:/lib:/usr/lib
 Apr 22, 2011 10:24:04 PM org.apache.tomcat.util.digester.Digester startElement
 SEVERE: Begin event threw exception
-java.lang.ClassNotFoundException: us.jts.sentry.tomcat.TcAccessMgrProxy
+java.lang.ClassNotFoundException: org.openldap.sentry.tomcat.TcAccessMgrProxy
                 </pre>
 </font>
                 <h4>Corrective Action</h4>
@@ -248,12 +246,12 @@ java.lang.ClassNotFoundException: us.jts.sentry.tomcat.TcAccessMgrProxy
             <li>Server can't find binaries (realmClasspath="...FORTRESS_HOME/lib/fortressSentry-[version].jar")
                 <h4>Error</h4>
 <font size="3" color="#000000">                <pre>
-Apr 22, 2011 10:22:25 PM us.jts.sentry.tomcat.TcAccessMgrProxy initialize
+Apr 22, 2011 10:22:25 PM org.openldap.sentry.tomcat.TcAccessMgrProxy initialize
 SEVERE: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: TcAccessMgrImpl
-Apr 22, 2011 10:22:25 PM us.jts.sentry.tomcat.TcAccessMgrProxy start
+Apr 22, 2011 10:22:25 PM org.openldap.sentry.tomcat.TcAccessMgrProxy start
 SEVERE: Fortress Tomcat Realm.start caught Exception=java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: TcAccessMgrImpl
 java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: TcAccessMgrImpl
-        at us.jts.sentry.tomcat.TcAccessMgrProxy.initialize(TcAccessMgrProxy.java:118)
+        at org.openldap.sentry.tomcat.TcAccessMgrProxy.initialize(TcAccessMgrProxy.java:118)
                 </pre>
 </font>
                 <h4>Corrective Action</h4>
@@ -268,7 +266,7 @@ i.e. FORTRESS_HOME/lib/fortressProxyTomcat[version].jar.</em>
 <font size="3" color="#000000">                <pre>
 Jun 4, 2011 3:01:41 PM org.apache.tomcat.util.digester.Digester startElement
 SEVERE: Begin event threw error
-java.lang.VerifyError: class us.jts.sentry.tomcat.TcAccessMgrProxy overrides final method start.()V
+java.lang.VerifyError: class org.openldap.sentry.tomcat.TcAccessMgrProxy overrides final method start.()V
         at java.lang.ClassLoader.defineClass1(Native Method)
         at java.lang.ClassLoader.defineClassCond(ClassLoader.java:632)
         at java.lang.ClassLoader.defineClass(ClassLoader.java:616)
@@ -317,8 +315,8 @@ i.e. FORTRESS_HOME/lib/fortressProxyTomcat7-[version].jar.</em>
                 <h4>Error</h4>
 <font size="3" color="#000000">                <pre>
 SEVERE: An exception or error occurred in the container during the request processing
-java.lang.RuntimeException: us.jts.sentry.tomcat.Tc7AccessMgrProxyauthenticate detected Fortress Tomcat7 Realm not initialized correctly.  Check your Fortress Realm configuration
-        at us.jts.sentry.tomcat.Tc7AccessMgrProxy.authenticate(Tc7AccessMgrProxy.java:161)
+java.lang.RuntimeException: org.openldap.sentry.tomcat.Tc7AccessMgrProxyauthenticate detected Fortress Tomcat7 Realm not initialized correctly.  Check your Fortress Realm configuration
+        at org.openldap.sentry.tomcat.Tc7AccessMgrProxy.authenticate(Tc7AccessMgrProxy.java:161)
         at org.apache.catalina.authenticator.FormAuthenticator.authenticate(FormAuthenticator.java:259)
         at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:449)
         at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)

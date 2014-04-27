@@ -1,14 +1,25 @@
 /*
- * Copyright (c) 2009-2014, JoshuaTree. All Rights Reserved.
+ * This work is part of OpenLDAP Software <http://www.openldap.org/>.
+ *
+ * Copyright 1998-2014 The OpenLDAP Foundation.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted only as authorized by the OpenLDAP
+ * Public License.
+ *
+ * A copy of this license is available in the file LICENSE in the
+ * top-level directory of the distribution or, alternatively, at
+ * <http://www.OpenLDAP.org/license.html>.
  */
 
-package us.jts.sentry.websphere;
+package org.openldap.sentry.websphere;
 
-import us.jts.fortress.SecurityException;
-import us.jts.fortress.GlobalErrIds;
-import us.jts.fortress.rbac.User;
-import us.jts.sentry.J2eePolicyMgrFactory;
-import us.jts.sentry.J2eePolicyMgr;
+import org.openldap.fortress.SecurityException;
+import org.openldap.fortress.GlobalErrIds;
+import org.openldap.fortress.rbac.User;
+import org.openldap.sentry.J2eePolicyMgrFactory;
+import org.openldap.sentry.J2eePolicyMgr;
 
 import java.security.cert.X509Certificate;
 import java.util.List;

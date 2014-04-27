@@ -1,19 +1,17 @@
 <!--
-  Copyright © 2009-2013, JoshuaTree. All Rights Reserved.
-  Licensed to Joshua Tree Software, LLC under New BSD license agreements.  See the NOTICE file distributed with
-  this work for additional information regarding copyright ownership.
-  JTS licenses this file to You under the New BSD License
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-       http://jts.us/License
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
--->
+  ~ This work is part of OpenLDAP Software <http://www.openldap.org/>.
+  ~
+  ~ Copyright 1998-2014 The OpenLDAP Foundation.
+  ~ All rights reserved.
+  ~
+  ~ Redistribution and use in source and binary forms, with or without
+  ~ modification, are permitted only as authorized by the OpenLDAP
+  ~ Public License.
+  ~
+  ~ A copy of this license is available in the file LICENSE in the
+  ~ top-level directory of the distribution or, alternatively, at
+  ~ <http://www.OpenLDAP.org/license.html>.
+  -->
 
 <project name="fortress-sentry" default="build" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant"
          xmlns:artifact="antlib:org.apache.maven.artifact.ant">
@@ -32,7 +30,7 @@
         <property name="name" value="fortressSentry"/>
         <property name="title" value="Fortress Java Sentry ${version}"/>
         <property name="vendor" value="Joshua Tree Software"/>
-        <property name="package" value="us.jts.sentry.*"/>
+        <property name="package" value="org.openldap.sentry.*"/>
         <property name="ivy.install.version" value="2.2.0"/>
 
         <!-- Env vars -->
@@ -128,7 +126,7 @@
         <property name="javadoc.dir" value="${dist.dir}/docs/api"/>
         <property name="javadoc.images.dir" value="${javadoc.dir}/images"/>
         <property name="javadoc.bottom"
-                  value="&lt;small&gt;Copyright &amp;copy; 2009-2013, JoshuaTree. All Rights Reserved."/>
+                  value="&lt;small&gt;Copyright &amp;copy; 1998-2014, The OpenLDAP Foundation. All Rights Reserved."/>
         <property name="javadoc.overview" value="${src.java.dir}/overview.html"/>
         <property name="javadoc.stylesheet" value="${src.java.dir}/fortress-javadoc.css"/>
 
@@ -159,7 +157,7 @@
         </presetdef>
 
         <!-- define Maven coordinates (publishing only) -->
-        <property name="groupId" value="us.jts"/>
+        <property name="groupId" value="org.openldap"/>
         <property name="artifactId" value="sentry"/>
 
         <!-- defined maven snapshots and staging repository id and url (publishing only) -->
@@ -240,8 +238,8 @@
                debug="${javac.debug}"
                deprecation="${javac.deprecation}"
                destdir="${build.classes.proxy.dir}">
-            <exclude name="us/jts/sentry/tomcat/Tc7AccessMgrProxy.java"/>
-            <exclude name="us/jts/sentry/websphere/**"/>
+            <exclude name="org/openldap/sentry/tomcat/Tc7AccessMgrProxy.java"/>
+            <exclude name="org/openldap/sentry/websphere/**"/>
             <classpath refid="build.proxy.class.path"/>
         </javac>
     </target>
@@ -251,8 +249,8 @@
                debug="${javac.debug}"
                deprecation="${javac.deprecation}"
                destdir="${build.classes.proxy.dir}">
-            <exclude name="us/jts/sentry/tomcat/TcAccessMgrProxy.java"/>
-            <exclude name="us/jts/sentry/websphere/**"/>
+            <exclude name="org/openldap/sentry/tomcat/TcAccessMgrProxy.java"/>
+            <exclude name="org/openldap/sentry/websphere/**"/>
             <classpath refid="build.proxy.tc7.class.path"/>
         </javac>
     </target>
@@ -263,7 +261,7 @@
                debug="${javac.debug}"
                deprecation="${javac.deprecation}"
                destdir="${build.classes.impl.dir}">
-            <exclude name="us/jts/sentry/websphere/**"/>
+            <exclude name="org/openldap/sentry/websphere/**"/>
             <classpath refid="build.impl.class.path"/>
         </javac>
     </target>
@@ -272,12 +270,12 @@
         <mkdir dir="${dist.dir}"/>
         <fortressSentry.jar destfile="${fortressTomcatSentry.jar}">
             <fileset dir="${build.classes.proxy.dir}">
-                <include name="us/jts/sentry/tomcat/**"/>
-                <include name="us/jts/sentry/util/**"/>
-                <exclude name="us/jts/sentry/tomcat/Tc7AccessMgrProxy.class"/>
+                <include name="org/openldap/sentry/tomcat/**"/>
+                <include name="org/openldap/sentry/util/**"/>
+                <exclude name="org/openldap/sentry/tomcat/Tc7AccessMgrProxy.class"/>
             </fileset>
             <fileset dir="${build.classes.impl.dir}">
-                <include name="us/jts/sentry/tomcat/TcPrincipal.class"/>
+                <include name="org/openldap/sentry/tomcat/TcPrincipal.class"/>
             </fileset>
             <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
         </fortressSentry.jar>
@@ -287,12 +285,12 @@
         <mkdir dir="${dist.dir}"/>
         <fortressSentry.jar destfile="${fortressTomcat7Sentry.jar}">
             <fileset dir="${build.classes.proxy.dir}">
-                <include name="us/jts/sentry/tomcat/**"/>
-                <include name="us/jts/sentry/util/**"/>
-                <exclude name="us/jts/sentry/tomcat/TcAccessMgrProxy.class"/>
+                <include name="org/openldap/sentry/tomcat/**"/>
+                <include name="org/openldap/sentry/util/**"/>
+                <exclude name="org/openldap/sentry/tomcat/TcAccessMgrProxy.class"/>
             </fileset>
             <fileset dir="${build.classes.impl.dir}">
-                <include name="us/jts/sentry/tomcat/TcPrincipal.class"/>
+                <include name="org/openldap/sentry/tomcat/TcPrincipal.class"/>
             </fileset>
             <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
         </fortressSentry.jar>
