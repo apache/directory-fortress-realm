@@ -18,7 +18,7 @@
     <artifactId>sentry</artifactId>
     <packaging>jar</packaging>
     <name>Fortress Sentry</name>
-    <version>1.0-RC35</version>
+    <version>1.0-RC36</version>
     <description>Sentry is an ANSI RBAC INCITS 359 compliant policy enforcement engine.</description>
     <url>http://www.openldap.org/fortress/</url>
     <licenses>
@@ -41,9 +41,9 @@
     </developers>
     <dependencies>
         <dependency>
-            <groupId>us.joshuatreesoftware</groupId>
+            <groupId>org.openldap</groupId>
             <artifactId>fortress</artifactId>
-            <version>1.0-RC35</version>
+            <version>1.0-RC36</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
