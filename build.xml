@@ -18,6 +18,7 @@
 
     <target name="init">
 
+
         <!-- read properties from the build.properties, if any -->
         <property name="component-propfile" value="${basedir}/build.properties"/>
         <property file="${component-propfile}"/>
