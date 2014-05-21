@@ -84,9 +84,9 @@ public class TcPrincipal implements java.security.Principal, java.io.Serializabl
 
 
     /**
-     * This method will return a simple string containing the name of class concatenated with the userId.
+     * This method returns a string containing the serialized instance of this object.
      *
-     * @return Return the concatenated value of Principal class name + userId.
+     * @return Return this object in serialized format.
      */
     public final String toString()
     {

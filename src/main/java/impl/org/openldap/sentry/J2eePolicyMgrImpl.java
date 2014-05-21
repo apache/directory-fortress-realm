@@ -272,37 +272,16 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         }
         HashMap context = new HashMap<String, Session>();
         context.put( SESSION, session );
+
+        // now serialize the principal:
         String ser = serialize( session );
-        context.put( TcPrincipal.SERIALIZED, ( Object ) ser );
+
+        // Store the serialized principal inside the context hashmap
+        // which allows overriden toString to return it later, from within an application thread.
+        // This facilitates assertion of rbac session from the tomcat realm into the web application session.
+        context.put( TcPrincipal.SERIALIZED, ser );
         return new TcPrincipal( user.getUserId(), context );
     }
-
-    /**
-     * Write the object to a Base64 string.
-     */
-    private String serialize( Object obj ) throws SecurityException
-    {
-        String szRetVal = null;
-        if( obj != null )
-        {
-            try
-            {
-                ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                ObjectOutputStream so = new ObjectOutputStream( bo );
-                so.writeObject( obj );
-                so.flush();
-                // This encoding induces a bijection between byte[] and String (unlike UTF-8)
-                szRetVal = bo.toString( "ISO-8859-1" );
-            }
-            catch ( IOException ioe )
-            {
-                String error = "serialize caught IOException: " + ioe;
-                throw new SecurityException(CONTEXT_SERIALIZATION_FAILED, error);
-            }
-        }
-        return szRetVal;
-    }
-
 
     /**
      * Perform user authentication {@link org.openldap.fortress.rbac.User#password} and role activations.<br />
@@ -566,6 +545,32 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
             list = new ArrayList<String>( authZRoleSet );
         }
         return list;
+    }
+
+    /**
+     * Utility to write any object into a Base64 string.  Used by this class to serialize {@link TcPrincipal} object to be returned by its toString method..
+     */
+    private String serialize( Object obj ) throws SecurityException
+    {
+        String szRetVal = null;
+        if( obj != null )
+        {
+            try
+            {
+                ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                ObjectOutputStream so = new ObjectOutputStream( bo );
+                so.writeObject( obj );
+                so.flush();
+                // This encoding induces a bijection between byte[] and String (unlike UTF-8)
+                szRetVal = bo.toString( "ISO-8859-1" );
+            }
+            catch ( IOException ioe )
+            {
+                String error = "serialize caught IOException: " + ioe;
+                throw new SecurityException(CONTEXT_SERIALIZATION_FAILED, error);
+            }
+        }
+        return szRetVal;
     }
 }
 
