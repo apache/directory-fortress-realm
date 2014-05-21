@@ -45,6 +45,12 @@ public interface TcAccessMgr
      * @return Principal which contains the Fortress RBAC session data.
      */
     public Principal authenticate(String userId, char[] password);
+
+    /**
+     * When the 'defaultRoles' parameter is set on realm proxy config (e.g. in server.xml or context.xml) it will be used to pass into
+     * createSession calls into Fortress.  This will scope the roles to be considered for activation to this particular set.
+     *
+     * @param roles contains a String containing comma delimited roles names.
+     */
+    public void setDefaultRoles(String roles);
 }
-
-

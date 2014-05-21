@@ -16,12 +16,15 @@
 package org.openldap.sentry.tomcat;
 
 import org.openldap.fortress.SecurityException;
+import org.openldap.fortress.util.attr.VUtil;
 import org.openldap.sentry.J2eePolicyMgr;
 import org.openldap.sentry.J2eePolicyMgrFactory;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * This class runs on a URL classloader and provides Fortress runtime security services for the Tomcat container.
@@ -34,6 +37,8 @@ public class TcAccessMgrImpl implements TcAccessMgr
     private static final Logger log = Logger.getLogger(CLS_NM);
     private static int count = 0;
     private J2eePolicyMgr j2eeMgr;
+    // If this field gets set, use for all subsequent calls to authenticate:
+    private List<String> defaultRoles;
 
     /**
      * Constructor for the TcAccessMgrImpl object
@@ -54,7 +59,6 @@ public class TcAccessMgrImpl implements TcAccessMgr
         }
     }
 
-
     /**
      * Perform user authentication and evaluate password policies.
      *
@@ -67,10 +71,22 @@ public class TcAccessMgrImpl implements TcAccessMgr
         TcPrincipal prin = null;
         try
         {
-            prin = j2eeMgr.createSession(userId, password);
-            if (log.isEnabledFor(Level.DEBUG))
+            // If a 'default.roles' property set in config, user them
+            if( VUtil.isNotNullOrEmpty( defaultRoles ))
             {
-                log.debug(CLS_NM + ".authenticate userId <" + userId + "> successful");
+                prin = j2eeMgr.createSession( userId, password, defaultRoles );
+                if (log.isEnabledFor(Level.DEBUG))
+                {
+                    log.debug(CLS_NM + ".authenticate userId [" + userId + "], with default roles [" + defaultRoles + "], successful");
+                }
+            }
+            else
+            {
+                prin = j2eeMgr.createSession(userId, password);
+                if (log.isEnabledFor(Level.DEBUG))
+                {
+                    log.debug(CLS_NM + ".authenticate userId [" + userId + "] successful");
+                }
             }
         }
         catch (SecurityException se)
@@ -80,7 +96,6 @@ public class TcAccessMgrImpl implements TcAccessMgr
         }
         return prin;
     }
-
 
     /**
      * Determine if given Role is contained within User's Tomcat Principal object.  This method does not need to hit
@@ -119,4 +134,19 @@ public class TcAccessMgrImpl implements TcAccessMgr
 		}
 		return result;
 	}
+
+    /**
+     * When the 'defaultRoles' parameter is set on realm proxy config (e.g. in server.xml or context.xml) it will be used to pass into
+     * createSession calls into Fortress.  This will scope the roles to be considered for activation to this particular set.
+     *
+     * @param szDefaultRoles contains a String containing comma delimited roles names.
+     */
+    public void setDefaultRoles(String szDefaultRoles)
+    {
+        if( VUtil.isNotNullOrEmpty( szDefaultRoles ))
+        {
+            defaultRoles = Arrays.asList(szDefaultRoles.split("\\s*,\\s*"));
+            log.info( "DEFAULT ROLES: " + defaultRoles );
+        }
+    }
 }

@@ -91,14 +91,14 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
             result = true;
             if ( log.isEnabledFor( Level.DEBUG ) )
             {
-                log.debug( CLS_NM + ".authenticate userId <" + userId + "> successful" );
+                log.debug( CLS_NM + ".authenticate userId [" + userId + "] successful" );
             }
         }
         else
         {
             if ( log.isEnabledFor( Level.DEBUG ) )
             {
-                log.debug( CLS_NM + ".authenticate userId <" + userId + "> failed" );
+                log.debug( CLS_NM + ".authenticate userId [" + userId + "] failed" );
             }
         }
 
@@ -179,18 +179,103 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     @Override
     public TcPrincipal createSession( String userId, char[] password ) throws SecurityException
     {
-        Session session = accessMgr.createSession( new User( userId, password ), false );
+        User user = new User( userId, password );
+        return createSession( user );
+    }
+
+
+    /**
+     * Perform user authentication {@link User#password} and role activations.<br />
+     * This method must be called once per user prior to calling other methods within this class.
+     * The successful result is {@link org.openldap.fortress.rbac.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
+     * In addition to checking user password validity it will apply configured password policy checks {@link org.openldap.fortress.rbac.User#pwPolicy}..<br />
+     * Method may also store parms passed in for audit trail {@link org.openldap.fortress.rbac.FortEntity}.
+     * <h4> This API will...</h4>
+     * <ul>
+     * <li> authenticate user password if trusted == false.
+     * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>.
+     * <li> fail for any user who is locked by OpenLDAP's policies {@link org.openldap.fortress.rbac.User#isLocked()}, regardless of trusted flag being set as parm on API.
+     * <li> evaluate temporal {@link org.openldap.fortress.util.time.Constraint}(s) on {@link User}, {@link org.openldap.fortress.rbac.UserRole} and {@link org.openldap.fortress.rbac.UserAdminRole} entities.
+     * <li> process selective role activations into User RBAC Session {@link User#roles}.
+     * <li> check Dynamic Separation of Duties {@link org.openldap.fortress.rbac.DSDChecker#validate(org.openldap.fortress.rbac.Session, org.openldap.fortress.util.time.Constraint, org.openldap.fortress.util.time.Time)} on {@link org.openldap.fortress.rbac.User#roles}.
+     * <li> process selective administrative role activations {@link User#adminRoles}.
+     * <li> return a {@link org.openldap.fortress.rbac.Session} containing {@link org.openldap.fortress.rbac.Session#getUser()}, {@link org.openldap.fortress.rbac.Session#getRoles()} and {@link org.openldap.fortress.rbac.Session#getAdminRoles()} if everything checks out good.
+     * <li> throw a checked exception that will be {@link org.openldap.fortress.SecurityException} or its derivation.
+     * <li> throw a {@link SecurityException} for system failures.
+     * <li> throw a {@link org.openldap.fortress.PasswordException} for authentication and password policy violations.
+     * <li> throw a {@link org.openldap.fortress.ValidationException} for data validation errors.
+     * <li> throw a {@link org.openldap.fortress.FinderException} if User id not found.
+     * </ul>
+     * <h4>
+     * The function is valid if and only if:
+     * </h4>
+     * <ul>
+     * <li> the user is a member of the USERS data set
+     * <li> the password is supplied (unless trusted).
+     * <li> the (optional) active role set is a subset of the roles authorized for that user.
+     * </ul>
+     * <h4>
+     * The following attributes may be set when calling this method
+     * </h4>
+     * <ul>
+     * <li> {@link User#userId} - required
+     * <li> {@link org.openldap.fortress.rbac.User#password}
+     * <li> {@link org.openldap.fortress.rbac.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
+     * <li> {@link org.openldap.fortress.rbac.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
+     * <li> {@link User#props} collection of name value pairs collected on behalf of User during signon.  For example hostname:myservername or ip:192.168.1.99
+     * </ul>
+     * <h4>
+     * Notes:
+     * </h4>
+     * <ul>
+     * <li> roles that violate Dynamic Separation of Duty Relationships will not be activated into session.
+     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link User#setRole(String)}.
+     * </ul>
+     * </p>
+     *
+     * @param userId   maps to {@link org.openldap.fortress.rbac.User#userId}.
+     * @param password maps to {@link org.openldap.fortress.rbac.User#password}.
+     * @param roles constains list of role names to activate.
+     * @return TcPrincipal which contains the User's RBAC Session data formatted into a java.security.Principal that is used by Tomcat runtime.
+     * @throws org.openldap.fortress.SecurityException
+     *          in the event of data validation failure, security policy violation or DAO error.
+     */
+    public TcPrincipal createSession(String userId, char[] password, List<String> roles)
+        throws SecurityException
+    {
+        User user = new User( userId, password );
+        // Load the passed in role list into list of User requested roles:
+        if(VUtil.isNotNullOrEmpty( roles ))
+        {
+            for(String role : roles)
+            {
+                user.setRole( role );
+            }
+        }
+        return createSession( user );
+    }
+
+
+    /**
+     * Utility function to call Fortress createSession, build the principal on behalf of caller.
+     *
+     * @param user
+     * @return
+     * @throws SecurityException
+     */
+    private TcPrincipal createSession( User user ) throws SecurityException
+    {
+        Session session = accessMgr.createSession( user, false );
         if ( log.isEnabledFor( Level.DEBUG ) )
         {
-            log.debug( CLS_NM + ".createSession userId <" + userId + "> successful" );
+            log.debug( CLS_NM + ".createSession userId [" + user.getUserId() + "] successful" );
         }
         HashMap context = new HashMap<String, Session>();
         context.put( SESSION, session );
         String ser = serialize( session );
         context.put( TcPrincipal.SERIALIZED, ( Object ) ser );
-        return new TcPrincipal( userId, context );
+        return new TcPrincipal( user.getUserId(), context );
     }
-
 
     /**
      * Write the object to a Base64 string.
@@ -299,7 +384,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     {
         if ( log.isDebugEnabled() )
         {
-            log.debug( CLS_NM + ".createSession userId <" + user.getUserId() + "> " );
+            log.debug( CLS_NM + ".createSession userId [" + user.getUserId() + "] " );
         }
         return accessMgr.createSession( user, isTrusted );
     }
@@ -322,7 +407,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         String fullMethodName = CLS_NM + ".hasRole";
         if ( log.isDebugEnabled() )
         {
-            log.debug( fullMethodName + " userId <" + principal.getName() + "> role <" + roleName + ">" );
+            log.debug( fullMethodName + " userId [" + principal.getName() + "] role [" + roleName + "]" );
         }
 
         // Fail closed
@@ -350,7 +435,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
                 // Yes, we have a match.
                 if ( log.isEnabledFor( Level.DEBUG ) )
                 {
-                    log.debug( fullMethodName + " userId <" + principal.getName() + "> role <" + roleName + "> " +
+                    log.debug( fullMethodName + " userId [" + principal.getName() + "] role [" + roleName + "] " +
                         "successful" );
                 }
                 result = true;
@@ -360,15 +445,15 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
                 if ( log.isEnabledFor( Level.DEBUG ) )
                 {
                     // User is not authorized in their Session..
-                    log.debug( fullMethodName + " userId <" + principal.getName() + "> is not authorized role <" +
-                        roleName + ">" );
+                    log.debug( fullMethodName + " userId [" + principal.getName() + "] is not authorized role [" +
+                        roleName + "]" );
                 }
             }
         }
         else
         {
             // User does not have any authorized Roles in their Session..
-            log.info( fullMethodName + " userId <" + principal.getName() + "> has no authorized roles" );
+            log.info( fullMethodName + " userId [" + principal.getName() + "], role [" + roleName + "], has no authorized roles" );
         }
         return result;
     }
