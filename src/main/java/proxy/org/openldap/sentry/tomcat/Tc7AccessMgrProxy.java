@@ -20,6 +20,7 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.realm.RealmBase;
 
+import java.net.URL;
 import java.security.Principal;
 import java.net.URLClassLoader;
 import java.util.logging.Logger;
@@ -41,55 +42,9 @@ public class Tc7AccessMgrProxy extends RealmBase
     private static final String REALM_CLASSPATH = "REALM_CLASSPATH";
     private static final String JBOSS_AGENT = "jboss";
     private static String container = "Catalina7";
+    private static String defaultRoles;
     private String realmClasspath;
     private TcAccessMgr realm;
-
-    /**
-     * Gets the containerType attribute of the TcAccessMgrProxy object
-     *
-     * @return The containerType value
-     */
-    public String getContainerType()
-    {
-        return container;
-    }
-
-
-    /**
-     * Sets the containerType attribute of the TcAccessMgrProxy object
-     *
-     * @param container The new containerType value
-     */
-    public void setContainerType(String container)
-    {
-        log.info(CLS_NM + ".setContainerType <" + container + ">");
-        this.container = container;
-    }
-
-
-    /**
-     * Gets the realmClasspath attribute of the TcAccessMgrProxy object
-     *
-     * @return The realmClasspath value
-     */
-    public String getRealmClasspath()
-    {
-        log.info(CLS_NM + ".getRealmClasspath <" + realmClasspath + ">");
-        return realmClasspath;
-    }
-
-
-    /**
-     * Sets the realmClasspath attribute of the TcAccessMgrProxy object
-     *
-     * @param rCpth The new realmClasspath value
-     */
-    public void setRealmClasspath(String rCpth)
-    {
-        log.info(CLS_NM + ".setRealmClasspath <" + rCpth + ">");
-        this.realmClasspath = rCpth;
-    }
-
 
     /**
      * This method will load the Fortress Tomcat implementation on a URL classloader.  Methods on the implementation are
@@ -99,27 +54,71 @@ public class Tc7AccessMgrProxy extends RealmBase
     {
         try
         {
-            URLClassLoader ucl = null;
+            URLClassLoader ucl;
             if (container.equalsIgnoreCase(JBOSS_AGENT))
             {
                 log.info(CLS_NM + ".initialize JBoss policy agent");
-                ucl = new ChildFirstUrlClassLoader(CpUtil.getRealmClasspath(REALM_CLASSPATH), this.getClass().getClassLoader());
+                URL[] cp = CpUtil.getRealmClasspath(REALM_CLASSPATH);
+                if( cp != null )
+                {
+                   ucl = new ChildFirstUrlClassLoader(cp, this.getClass().getClassLoader());
+                }
+                else
+                {
+                    String error = CLS_NM + ".initialize invalid realm classpath setup";
+                    log.severe(error);
+                    throw new java.lang.RuntimeException(error);
+                }
+            }
+            else if (container.equalsIgnoreCase("TomcatContext"))
+            {
+                log.info(CLS_NM + ".initialize Tomcat7 Context-based policy agent");
+                if ( realmClasspath != null && realmClasspath.length() > 0 )
+                {
+                    ucl = new URLClassLoader(CpUtil.parseRealmClasspath(realmClasspath), Thread.currentThread().getContextClassLoader());
+                }
+                else
+                {
+                    URL[] cp = CpUtil.getRealmClasspath(REALM_CLASSPATH);
+                    if(cp != null)
+                    {
+                        ucl = new URLClassLoader(cp, Thread.currentThread().getContextClassLoader());
+                    }
+                    else
+                    {
+                        String error = CLS_NM + ".initialize could not resolve realm classpath";
+                        log.severe(error);
+                        throw new java.lang.RuntimeException(error);
+                    }
+                }
             }
             else
             {
                 log.info(CLS_NM + ".initialize Tomcat7 policy agent");
-                if (realmClasspath != null && realmClasspath.length() > 0)
+                if ( realmClasspath != null && realmClasspath.length() > 0 )
                 {
                     ucl = new URLClassLoader(CpUtil.parseRealmClasspath(realmClasspath), this.getClass().getClassLoader());
                 }
                 else
                 {
-                    ucl = new URLClassLoader(CpUtil.getRealmClasspath(REALM_CLASSPATH), this.getClass().getClassLoader());
+                    URL[] cp = CpUtil.getRealmClasspath(REALM_CLASSPATH);
+                    if(cp != null)
+                    {
+                        ucl = new URLClassLoader(cp, this.getClass().getClassLoader());
+                    }
+                    else
+                    {
+                        String error = CLS_NM + ".initialize could not resolve realm classpath";
+                        log.severe(error);
+                        throw new java.lang.RuntimeException(error);
+                    }
                 }
             }
+
             log.info(CLS_NM + ".initialize - instantiate policy agent name: " + REALM_IMPL);
             Class sc = ucl.loadClass(REALM_IMPL);
             realm = (TcAccessMgr) sc.newInstance();
+            realm.setDefaultRoles( defaultRoles );
             log.info(CLS_NM + " J2EE Tomcat7 policy agent initialization successful");
         }
         catch (java.lang.ClassNotFoundException e)
@@ -273,5 +272,70 @@ public class Tc7AccessMgrProxy extends RealmBase
         // Release reference to our sentry impl
         realm = null;
 
+    }
+
+    /**
+     * Gets the containerType attribute of the TcAccessMgrProxy object
+     *
+     * @return The containerType value
+     */
+    public String getContainerType()
+    {
+        return container;
+    }
+
+    /**
+     * Sets the containerType attribute of the TcAccessMgrProxy object
+     *
+     * @param container The new containerType value
+     */
+    public void setContainerType(String container)
+    {
+        log.info(CLS_NM + ".setContainerType <" + container + ">");
+        this.container = container;
+    }
+
+    /**
+     * Gets the realmClasspath attribute of the TcAccessMgrProxy object
+     *
+     * @return The realmClasspath value
+     */
+    public String getRealmClasspath()
+    {
+        log.info(CLS_NM + ".getRealmClasspath <" + realmClasspath + ">");
+        return realmClasspath;
+    }
+
+    /**
+     * Sets the realmClasspath attribute of the TcAccessMgrProxy object
+     *
+     * @param rCpth The new realmClasspath value
+     */
+    public void setRealmClasspath(String rCpth)
+    {
+        log.info(CLS_NM + ".setRealmClasspath <" + rCpth + ">");
+        this.realmClasspath = rCpth;
+    }
+
+    /**
+     * Gets the defaultRoles attribute of the TcAccessMgrProxy object.  When set, it will be passed into all subsequent calls to Fortress createSession.
+     *
+     * @return String containing comma delimited list of role names.
+     */
+    public static String getDefaultRoles()
+    {
+        log.info(CLS_NM + ".getDefaultRoles <" + defaultRoles + ">");
+        return defaultRoles;
+    }
+
+    /**
+     * Sets the defaultRoles attribute of the TcAccessMgrProxy object.  When set, it will be passed into all subsequent calls to Fortress createSession.
+     *
+     * @param defaultRoles containing comma delimited list of role names.
+     */
+    public static void setDefaultRoles( String defaultRoles )
+    {
+        log.info(CLS_NM + ".setDefaultRoles <" + defaultRoles + ">");
+        Tc7AccessMgrProxy.defaultRoles = defaultRoles;
     }
 }

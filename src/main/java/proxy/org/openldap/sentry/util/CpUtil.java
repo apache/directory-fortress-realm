@@ -102,6 +102,20 @@ public class CpUtil
             String filePrefix = FILE_PREFIX;
             String classpath = System.getProperty(cpProp);
             String pathSeparator = System.getProperty(PATH_SEPARATOR);
+
+            if(classpath == null || classpath.length() == 0)
+            {
+                String error = CLS_NM + ".parseRealmClasspath invalid realm classpath detected";
+                log.severe(error);
+                throw new java.lang.RuntimeException(error);
+            }
+            else if(pathSeparator == null || pathSeparator.length() == 0)
+            {
+                String error = CLS_NM + ".parseRealmClasspath invalid classpath detected";
+                log.severe(error);
+                throw new java.lang.RuntimeException(error);
+            }
+
             // Is this a Unix machine?
             if (pathSeparator.compareTo(UNIX_SEPARATOR) == 0)
             {
@@ -130,8 +144,7 @@ public class CpUtil
         {
             String error = CLS_NM + ".parseRealmClasspath caught MalformedURLException=" + me;
             log.severe(error);
-            error = CLS_NM + ".parseRealmClasspath check your Fortress REALM_CLASSPATH setting.";
-            log.severe(error);
+            throw new java.lang.RuntimeException(error);
         }
         return urls;
     }

@@ -80,7 +80,7 @@
         <property name="jgraph.jar" value="${lib.dir}/jgrapht-jdk1.5-0.7.3.jar"/>
         <property name="log4j.jar" value="${lib.dir}/log4j-1.2.17.jar"/>
         <property name="jasypt.jar" value="${lib.dir}/jasypt-1.8.jar"/>
-        <property name="ehcache-core.jar" value="${lib.dir}/ehcache-core-2.6.5.jar"/>
+        <property name="ehcache-core.jar" value="${lib.dir}/ehcache-core-2.6.9.jar"/>
         <property name="slf4j-api.jar" value="${lib.dir}/slf4j-api-1.7.5.jar"/>
         <property name="slf4j-jcl.jar" value="${lib.dir}/slf4j-jcl-1.7.5.jar"/>
         <property name="apacheds-all.jar" value="${lib.dir}/apacheds-all-2.0.0-M15.jar"/>
