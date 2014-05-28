@@ -65,6 +65,8 @@
         <property name="fortressSentryImpl.jar" value="${dist.dir}/fortressSentryImpl-${version}.jar"/>
         <property name="javadoc.dist.zip" value="${dist.dir}/fortressSentryDoc-${version}.zip"/>
         <property name="fortressSentryBuilder.zip" value="${dist.dir}/fortressSentryBuilder-${version}.zip"/>
+        <property name="realm-impl.jar" value="${dist.dir}/fortressSentryImpl-${version}.jar"/>
+        <property name="realm-proxy.jar" value="${dist.dir}/fortressProxyTomcat7-${version}.jar"/>
         <property name="config.dir" value="${basedir}/conf"/>
 
         <!-- Dependent LIBs in maven -->
@@ -573,6 +575,28 @@
           Update project version (both build.xml and pom.xml) from SNAPSHOT to RELEASE
          ================================= -->
     <target name="stage" depends="dist" description="deploy release version to Maven staging repository">
+
+        <!-- sign and deploy the impl jar -->
+        <artifact:mvn>
+            <arg value="org.apache.maven.plugins:maven-gpg-plugin:1.3:sign-and-deploy-file"/>
+            <arg value="-Durl=${maven-staging-repository-url}"/>
+            <arg value="-DrepositoryId=${maven-staging-repository-id}"/>
+            <arg value="-DpomFile=pom.xml"/>
+            <arg value="-Dfile=${realm-impl.jar}"/>
+            <arg value="-Pgpg"/>
+        </artifact:mvn>
+
+        <!-- sign and deploy the impl jar -->
+        <artifact:mvn>
+            <arg value="org.apache.maven.plugins:maven-gpg-plugin:1.3:sign-and-deploy-file"/>
+            <arg value="-Durl=${maven-staging-repository-url}"/>
+            <arg value="-DrepositoryId=${maven-staging-repository-id}"/>
+            <arg value="-DpomFile=pom.xml"/>
+            <arg value="-Dfile=${realm-proxy.jar}"/>
+            <arg value="-Dclassifier=proxy"/>
+            <arg value="-Pgpg"/>
+        </artifact:mvn>
+
         <!-- sign and deploy the main artifact -->
         <artifact:mvn>
             <arg value="org.apache.maven.plugins:maven-gpg-plugin:1.3:sign-and-deploy-file"/>
@@ -580,6 +604,7 @@
             <arg value="-DrepositoryId=${maven-staging-repository-id}"/>
             <arg value="-DpomFile=pom.xml"/>
             <arg value="-Dfile=${maven-jar}"/>
+            <arg value="-Dclassifier=dist"/>
             <arg value="-Pgpg"/>
         </artifact:mvn>
 
@@ -604,6 +629,7 @@
             <arg value="-Dclassifier=javadoc"/>
             <arg value="-Pgpg"/>
         </artifact:mvn>
+
     </target>
 
 </project>
