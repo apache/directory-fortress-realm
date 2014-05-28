@@ -73,24 +73,7 @@ public class Tc7AccessMgrProxy extends RealmBase
             else if (container.equalsIgnoreCase("TomcatContext"))
             {
                 log.info(CLS_NM + ".initialize Tomcat7 Context-based policy agent");
-                if ( realmClasspath != null && realmClasspath.length() > 0 )
-                {
-                    ucl = new URLClassLoader(CpUtil.parseRealmClasspath(realmClasspath), Thread.currentThread().getContextClassLoader());
-                }
-                else
-                {
-                    URL[] cp = CpUtil.getRealmClasspath(REALM_CLASSPATH);
-                    if(cp != null)
-                    {
-                        ucl = new URLClassLoader(cp, Thread.currentThread().getContextClassLoader());
-                    }
-                    else
-                    {
-                        String error = CLS_NM + ".initialize could not resolve realm classpath";
-                        log.severe(error);
-                        throw new java.lang.RuntimeException(error);
-                    }
-                }
+                ucl = new URLClassLoader(new URL[]{}, Thread.currentThread().getContextClassLoader());
             }
             else
             {
