@@ -400,11 +400,6 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         Session session = context.get( SESSION );
         VUtil.assertNotNull( session, GlobalErrIds.USER_SESS_NULL, fullMethodName );
 
-        // Check User temporal constraints in the Session:
-        CUtil.validateConstraints( session, CUtil.ConstraintType.USER, false );
-        // Check Roles temporal constraints; don't check DSD:
-        CUtil.validateConstraints( session, CUtil.ConstraintType.ROLE, false );
-        // Get the set of authorized roles from the Session:
         Set<String> authZRoles = accessMgr.authorizedRoles( session );
         if ( authZRoles != null && authZRoles.size() > 0 )
         {
