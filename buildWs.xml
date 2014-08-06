@@ -353,6 +353,11 @@
         <replace file="${dst.remote.conf}" token="@ADM_MIN_CONN@" value="${admin.min.conn}"/>
         <replace file="${dst.remote.conf}" token="@ADM_MAX_CONN@" value="${admin.max.conn}"/>
         <replace file="${dst.remote.conf}" token="@CFG_CRYPTO_PROP@" value="${crypto.prop}"/>
+        <replace file="${dst.remote.conf}" token="@ENABLE_LDAP_SSL@" value="${enable.ldap.ssl}"/>
+        <replace file="${dst.remote.conf}" token="@ENABLE_LDAP_SSL_DEBUG@" value="${enable.ldap.ssl.debug}"/>
+        <replace file="${dst.remote.conf}" token="@TRUST_STORE@" value="${trust.store}"/>
+        <replace file="${dst.remote.conf}" token="@TRUST_STORE_PW@" value="${trust.store.password}"/>
+        <replace file="${dst.remote.conf}" token="@TRUST_STORE_SET_PROPW@" value="${trust.store.set.prop}"/>
 
         <!-- Break up the install binary packages by platform:  -->
         <zip destfile="${fortressSentry.zip}">

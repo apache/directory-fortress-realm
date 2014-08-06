@@ -15,6 +15,13 @@ admin.pw=@CFG_ROOT_PW@
 min.admin.conn=@ADM_MIN_CONN@
 max.admin.conn=@ADM_MAX_CONN@
 
+# Used for SSL Connection to LDAP Server:
+enable.ldap.ssl=@ENABLE_LDAP_SSL@
+enable.ldap.ssl.debug=@ENABLE_LDAP_SSL_DEBUG@
+trust.store=@TRUST_STORE@
+trust.store.password=@TRUST_STORE_PW@
+trust.store.set.prop=@TRUST_STORE_SET_PROPW@
+
 # This node contains fortress properties stored on behalf of connecting LDAP clients (in this case specific to Tomcat Realm connectivity):
 config.realm=TOMCAT
 config.root=ou=Config,@SUFFIX@
