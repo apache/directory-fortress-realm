@@ -460,6 +460,30 @@
     </target>
 
     <!-- =================================
+          Initialize Tomcat SSL Configuration
+         ================================= -->
+    <target name="init-tomcat-ssl" depends="init">
+        <antcall target="enable-tomcat-ssl"></antcall>
+        <antcall target="disable-tomcat-ssl"></antcall>
+    </target>
+
+    <!-- =================================
+          Enable Tomcat SSL
+         ================================= -->
+    <target name="enable-tomcat-ssl" depends="init" if="key.store">
+        <echo message="###############  Enable Tomcat SSL"/>
+        <replace file="${dst.server.xml}" token="@FORTRESS-SSL-CONFIG@" value="${tomcat-ssl.conf}"/>
+    </target>
+
+    <!-- =================================
+          Disable Tomcat SSL
+         ================================= -->
+    <target name="disable-tomcat-ssl" depends="init" unless="key.store">
+        <echo message="###############  Disable Tomcat SSL"/>
+        <replace file="${dst.server.xml}" token="@FORTRESS-SSL-CONFIG@" value=""/>
+    </target>
+
+    <!-- =================================
           Deploy Sentry to Tomcat server to Unix
          ================================= -->
     <target name="deploy-tomcat-nix" depends="build" description="Deploy the security realm to Tomcat on Unix"
@@ -475,6 +499,7 @@
         <delete file="${dst.server.xml}"/>
         <copyfile src="${src.server.xml}" dest="${dst.server.xml}"/>
         <replace file="${dst.server.xml}" token="@FORTRESS-SENTRY-REALM@" value="${tomcat-realm.conf}"/>
+        <antcall target="init-tomcat-ssl"></antcall>
         <copyfile src="${fortressTomcat7Sentry.jar}" dest="${dst.server.xml}"/>
         <copy todir="${tomcat.dir}/lib" file="${fortressTomcat7Sentry.jar}"/>
     </target>
