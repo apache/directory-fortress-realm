@@ -82,7 +82,7 @@
        <property name="ehcache-core.jar" value="${lib.dir}/ehcache-core-2.6.9.jar"/>
        <property name="slf4j-api.jar" value="${lib.dir}/slf4j-api-1.7.5.jar"/>
        <property name="slf4j-jcl.jar" value="${lib.dir}/slf4j-jcl-1.7.5.jar"/>
-       <property name="apacheds-all.jar" value="${lib.dir}/apacheds-all-2.0.0-M15.jar"/>
+       <property name="apacheds-all.jar" value="${lib.dir}/apacheds-all-2.0.0-M16.jar"/>
 
        <!-- ########### Define classpaths ########################### -->
        <path id="build.proxy.class.path">
