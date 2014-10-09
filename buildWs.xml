@@ -73,7 +73,6 @@
        <property name="commons-config.jar" value="${lib.dir}/commons-configuration-1.6.jar"/>
        <property name="commons-lang.jar" value="${lib.dir}/commons-lang-2.4.jar"/>
        <property name="commons-collections.jar" value="${lib.dir}/commons-collections-3.2.1.jar"/>
-       <property name="commons-pool.jar" value="${lib.dir}/commons-pool-1.5.2.jar"/>
        <property name="commons-logging.jar" value="${lib.dir}/commons-logging-1.1.1.jar"/>
        <property name="unboundsdk.jar" value="${lib.dir}/unboundid-ldapsdk-2.1.0.jar"/>
        <property name="jgraph.jar" value="${lib.dir}/jgrapht-jdk1.5-0.7.3.jar"/>
@@ -117,7 +116,6 @@
            <include name="${commons-config.jar}"/>
            <include name="${commons-lang.jar}"/>
            <include name="${commons-logging.jar}"/>
-           <include name="${commons-pool.jar}"/>
            <include name="${jgraph.jar}"/>
            <include name="${jasypt.jar}"/>
            <include name="${ehcache-core.jar}"/>
@@ -306,7 +304,6 @@
         <unjar dest="${work.dir}" src="${commons-collections.jar}"/>
         <unjar dest="${work.dir}" src="${commons-config.jar}"/>
         <unjar dest="${work.dir}" src="${commons-lang.jar}"/>
-        <unjar dest="${work.dir}" src="${commons-pool.jar}"/>
         <unjar dest="${work.dir}" src="${commons-logging.jar}"/>
         <unjar dest="${work.dir}" src="${unboundsdk.jar}"/>
         <unjar dest="${work.dir}" src="${jgraph.jar}"/>
