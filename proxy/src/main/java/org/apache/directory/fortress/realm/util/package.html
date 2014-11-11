@@ -16,18 +16,15 @@
    specific language governing permissions and limitations
    under the License.
 -->
-<project name="fortress-sentry" default="download" basedir="." >
-
-     <target name="init">
-        <property name="ivy.install.version" value="2.2.0"/>
-     </target>
-
-     <target name="download" depends="init">
-        <!-- download from maven into the ant.home/lib folder so it can be used even without any special installation of Ivy -->
-        <echo message="downloading ivy to Ant home: ${ant.home}"/>
-        <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
-              dest="${ant.home}/lib" usetimestamp="true"/>
-     </target>
-
-</project>
-
+<html>
+   <head>
+      <title>Package Documentation for Fortress Java Sentry Utils</title>
+   </head>
+   <body>
+      <p>
+         This package contains utils used by Fortress Proxy to instantiate the Java Sentry implementation within a URL Classloader which
+          isolates dependencies from the application server's system classpath.
+          The APIs are not called directly by outside client programs rather they are called by the Fortress Java Sentry itself.
+      </p>
+   </body>
+</html>

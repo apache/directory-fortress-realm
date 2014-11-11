@@ -1,19 +1,22 @@
 <!--
-  ~ This work is part of OpenLDAP Software <http://www.openldap.org/>.
-  ~
-  ~ Copyright 1998-2014 The OpenLDAP Foundation.
-  ~ All rights reserved.
-  ~
-  ~ Redistribution and use in source and binary forms, with or without
-  ~ modification, are permitted only as authorized by the OpenLDAP
-  ~ Public License.
-  ~
-  ~ A copy of this license is available in the file LICENSE in the
-  ~ top-level directory of the distribution or, alternatively, at
-  ~ <http://www.OpenLDAP.org/license.html>.
-  -->
+   Licensed to the Apache Software Foundation (ASF) under one
+   or more contributor license agreements.  See the NOTICE file
+   distributed with this work for additional information
+   regarding copyright ownership.  The ASF licenses this file
+   to you under the Apache License, Version 2.0 (the
+   "License"); you may not use this file except in compliance
+   with the License.  You may obtain a copy of the License at
 
-<project name="fortress-sentry" default="build" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant"
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.
+-->
+<project name="fortress-realm" default="build" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant"
          xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
     <target name="init">
@@ -27,20 +30,18 @@
         <property name="user-propfile" value="${user.home}/build.properties"/>
         <property file="${user-propfile}"/>
 
-        <property name="project.name" value="Fortress Java Sentry"/>
+        <property name="project.name" value="Fortress Realm"/>
         <property name="name" value="fortressSentry"/>
-        <property name="title" value="Fortress Java Sentry ${version}"/>
-        <property name="vendor" value="Joshua Tree Software"/>
-        <property name="package" value="org.openldap.sentry.*"/>
+        <property name="title" value="Fortress Tomcat Realm ${version}"/>
+        <property name="vendor" value="Apache Software Foundation"/>
+        <property name="package" value="org.apache.directory.fortress.realm.*"/>
         <property name="ivy.install.version" value="2.2.0"/>
 
         <!-- Env vars -->
-        <property name="src.dir" value="${basedir}/src"/>
         <property name="lib.dir" value="${basedir}/lib"/>
         <property name="config.dir" value="${basedir}/conf"/>
-        <property name="src.java.dir" value="${src.dir}/main/java"/>
-        <property name="src.java.proxy.dir" value="${src.java.dir}/proxy"/>
-        <property name="src.java.impl.dir" value="${src.java.dir}/impl"/>
+        <property name="src.java.proxy.dir" value="${basedir}/proxy/src/main/java"/>
+        <property name="src.java.impl.dir" value="${basedir}/impl/src/main/java"/>
         <property name="build.dir" value="${basedir}/build"/>
         <property name="build.classes.dir" value="${build.dir}/classes"/>
         <property name="build.classes.proxy.dir" value="${build.classes.dir}/proxy"/>
@@ -70,7 +71,7 @@
         <property name="config.dir" value="${basedir}/conf"/>
 
         <!-- Dependent LIBs in maven -->
-        <property name="fortress.jar" value="${lib.dir}/fortress-${version}.jar"/>
+        <property name="fortress.jar" value="${lib.dir}/fortress-core-${version}.jar"/>
         <property name="catalina7.jar" value="${lib.dir}/tomcat-catalina-7.0.22.jar"/>
         <property name="catalina.jar" value="${lib.dir}/catalina-6.0.33.jar"/>
         <property name="commons-config.jar" value="${lib.dir}/commons-configuration-1.6.jar"/>
@@ -127,9 +128,9 @@
         <property name="javadoc.dir" value="${dist.dir}/docs/api"/>
         <property name="javadoc.images.dir" value="${javadoc.dir}/images"/>
         <property name="javadoc.bottom"
-                  value="&lt;small&gt;Copyright &amp;copy; 1998-2014, The OpenLDAP Foundation. All Rights Reserved."/>
-        <property name="javadoc.overview" value="${src.java.dir}/overview.html"/>
-        <property name="javadoc.stylesheet" value="${src.java.dir}/fortress-javadoc.css"/>
+                  value="&lt;small&gt;Copyright &amp;copy; 2003-2014, The Apache Software Foundation. All Rights Reserved."/>
+        <property name="javadoc.overview" value="${src.java.proxy.dir}/overview.html"/>
+        <property name="javadoc.stylesheet" value="${src.java.proxy.dir}/fortress-javadoc.css"/>
 
         <path id="javadoc.source.path">
             <pathelement location="${src.java.proxy.dir}"/>
@@ -206,6 +207,7 @@
         <delete dir="${dist.dir}"/>
     </target>
 
+
     <!-- ###############  create javadoc ############################### -->
     <target name="javadoc" depends="init" description="generates javadocs">
         <mkdir dir="${javadoc.dir}"/>
@@ -239,8 +241,12 @@
                debug="${javac.debug}"
                deprecation="${javac.deprecation}"
                destdir="${build.classes.proxy.dir}">
-            <exclude name="org/openldap/sentry/tomcat/Tc7AccessMgrProxy.java"/>
-            <exclude name="org/openldap/sentry/websphere/**"/>
+            <exclude name="org/apache/directory/fortress/realm/tomcat/Tc7AccessMgrProxy.java"/>
+            <exclude name="org/apache/directory/fortress/realm/websphere/**"/>
+            <!--
+                        <exclude name="org/openldap/sentry/tomcat/Tc7AccessMgrProxy.java"/>
+                        <exclude name="org/openldap/sentry/websphere/**"/>
+            -->
             <classpath refid="build.proxy.class.path"/>
         </javac>
     </target>
@@ -250,8 +256,8 @@
                debug="${javac.debug}"
                deprecation="${javac.deprecation}"
                destdir="${build.classes.proxy.dir}">
-            <exclude name="org/openldap/sentry/tomcat/TcAccessMgrProxy.java"/>
-            <exclude name="org/openldap/sentry/websphere/**"/>
+            <exclude name="org/apache/directory/fortress/realm/tomcat/TcAccessMgrProxy.java"/>
+            <exclude name="org/apache/directory/fortress/realm/websphere/**"/>
             <classpath refid="build.proxy.tc7.class.path"/>
         </javac>
     </target>
@@ -262,7 +268,7 @@
                debug="${javac.debug}"
                deprecation="${javac.deprecation}"
                destdir="${build.classes.impl.dir}">
-            <exclude name="org/openldap/sentry/websphere/**"/>
+            <exclude name="org/apache/directory/fortress/realm/websphere/**"/>
             <classpath refid="build.impl.class.path"/>
         </javac>
     </target>
@@ -271,12 +277,12 @@
         <mkdir dir="${dist.dir}"/>
         <fortressSentry.jar destfile="${fortressTomcatSentry.jar}">
             <fileset dir="${build.classes.proxy.dir}">
-                <include name="org/openldap/sentry/tomcat/**"/>
-                <include name="org/openldap/sentry/util/**"/>
-                <exclude name="org/openldap/sentry/tomcat/Tc7AccessMgrProxy.class"/>
+                <include name="org/apache/directory/fortress/realm/tomcat/**"/>
+                <include name="org/apache/directory/fortress/realm/util/**"/>
+                <exclude name="org/apache/directory/fortress/realm/tomcat/Tc7AccessMgrProxy.class"/>
             </fileset>
             <fileset dir="${build.classes.impl.dir}">
-                <include name="org/openldap/sentry/tomcat/TcPrincipal.class"/>
+                <include name="org/apache/directory/fortress/realm/tomcat/TcPrincipal.class"/>
             </fileset>
             <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
         </fortressSentry.jar>
@@ -286,12 +292,12 @@
         <mkdir dir="${dist.dir}"/>
         <fortressSentry.jar destfile="${fortressTomcat7Sentry.jar}">
             <fileset dir="${build.classes.proxy.dir}">
-                <include name="org/openldap/sentry/tomcat/**"/>
-                <include name="org/openldap/sentry/util/**"/>
-                <exclude name="org/openldap/sentry/tomcat/TcAccessMgrProxy.class"/>
+                <include name="org/apache/directory/fortress/realm/tomcat/**"/>
+                <include name="org/apache/directory/fortress/realm/util/**"/>
+                <exclude name="org/apache/directory/fortress/realm/tomcat/TcAccessMgrProxy.class"/>
             </fileset>
             <fileset dir="${build.classes.impl.dir}">
-                <include name="org/openldap/sentry/tomcat/TcPrincipal.class"/>
+                <include name="org/apache/directory/fortress/realm/tomcat/TcPrincipal.class"/>
             </fileset>
             <metainf dir="${basedir}" includes="LICENSE.txt,NOTICE.txt"/>
         </fortressSentry.jar>
@@ -351,7 +357,8 @@
     <target name="dist" depends="build" description="Create source and binary distribution">
 
         <zip destfile='${src.dist.zip}'>
-            <zipfileset dir='${src.java.dir}'/>
+            <zipfileset dir='${src.java.proxy.dir}'/>
+            <zipfileset dir='${src.java.impl.dir}'/>
 
             <zipfileset dir='${dist.dir}' prefix='META-INF'>
                 <include name="*.txt"/>
@@ -423,7 +430,12 @@
         <zip destfile="${fortressSentryBuilder.zip}"
              update="true">
 
-            <zipfileset dir="${src.dir}" prefix="sentry-${version}/src">
+            <zipfileset dir="${src.java.proxy.dir}" prefix="sentry-${version}/src">
+                <include name="*/**"/>
+                <exclude name="*.iml"/>
+            </zipfileset>
+
+            <zipfileset dir="${src.java.impl.dir}" prefix="sentry-${version}/src">
                 <include name="*/**"/>
                 <exclude name="*.iml"/>
             </zipfileset>
