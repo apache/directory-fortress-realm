@@ -23,8 +23,8 @@ import org.apache.directory.fortress.core.SecurityException;
 import org.apache.directory.fortress.core.util.attr.VUtil;
 import org.apache.directory.fortress.realm.J2eePolicyMgr;
 import org.apache.directory.fortress.realm.J2eePolicyMgrFactory;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.Principal;
 import java.util.Arrays;
@@ -38,7 +38,9 @@ import java.util.List;
 public class TcAccessMgrImpl implements TcAccessMgr
 {
     private static final String CLS_NM = TcAccessMgrImpl.class.getName();
-    private static final Logger log = Logger.getLogger(CLS_NM);
+    
+    /** The logger for this class */
+    private static final Logger LOG = LoggerFactory.getLogger( CLS_NM );
     private static int count = 0;
     private J2eePolicyMgr j2eeMgr;
     // If this field gets set, use for all subsequent calls to authenticate:
@@ -52,16 +54,17 @@ public class TcAccessMgrImpl implements TcAccessMgr
         try
         {
             j2eeMgr = J2eePolicyMgrFactory.createInstance();
-            log.info(CLS_NM + " constructor <" + count++ + ">");
+            LOG.info( "{} constructor <{}>", CLS_NM, count++ );
         }
-        catch (SecurityException se)
+        catch ( SecurityException se )
         {
             String error = CLS_NM + " constructor caught SecurityException=" + se;
-            log.fatal(error);
+            LOG.error( error );
             se.printStackTrace();
-            throw new java.lang.RuntimeException(error, se);
+            throw new java.lang.RuntimeException( error, se );
         }
     }
+    
 
     /**
      * Perform user authentication and evaluate password policies.
@@ -70,37 +73,33 @@ public class TcAccessMgrImpl implements TcAccessMgr
      * @param password Contains the user's password.
      * @return Principal which contains the Fortress RBAC session data.
      */
-    public Principal authenticate(String userId, char[] password)
+    public Principal authenticate( String userId, char[] password )
     {
-        TcPrincipal prin = null;
+        TcPrincipal principal = null;
+        
         try
         {
             // If a 'default.roles' property set in config, user them
-            if( VUtil.isNotNullOrEmpty( defaultRoles ))
+            if ( VUtil.isNotNullOrEmpty( defaultRoles ) )
             {
-                prin = j2eeMgr.createSession( userId, password, defaultRoles );
-                if (log.isEnabledFor(Level.DEBUG))
-                {
-                    log.debug(CLS_NM + ".authenticate userId [" + userId + "], with default roles [" + defaultRoles + "], successful");
-                }
+                principal = j2eeMgr.createSession( userId, password, defaultRoles );
+                LOG.debug( "{}.authenticate userId [{}], with default roles[{}], successful", CLS_NM, userId, defaultRoles );
             }
             else
             {
-                prin = j2eeMgr.createSession(userId, password);
-                if (log.isEnabledFor(Level.DEBUG))
-                {
-                    log.debug(CLS_NM + ".authenticate userId [" + userId + "] successful");
-                }
+                principal = j2eeMgr.createSession(userId, password);
+                LOG.debug( "{}.authenticate userId [{}], successful", CLS_NM, userId );
             }
         }
         catch (SecurityException se)
         {
-            String warning = CLS_NM + ".authenticate userId <" + userId + "> caught SecurityException=" + se;
-            log.warn(warning);
+            LOG.warn( "{}.authenticate userId <{}> caught SecurityException=", CLS_NM, userId, se );
         }
-        return prin;
+        
+        return principal;
     }
 
+    
     /**
      * Determine if given Role is contained within User's Tomcat Principal object.  This method does not need to hit
      * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
@@ -109,35 +108,30 @@ public class TcAccessMgrImpl implements TcAccessMgr
      * @param roleName  Maps to {@code org.apache.directory.fortress.core.rbac.Role#name}.
      * @return True if Role is found in TcPrincipal, false otherwise.
      */
-    public boolean hasRole(Principal principal, String roleName)
+    public boolean hasRole( Principal principal, String roleName )
     {
         boolean result = false;
         String userId = principal.getName();
+        
         try
         {
-            if (j2eeMgr.hasRole(principal, roleName))
+            if ( j2eeMgr.hasRole( principal, roleName ) )
             {
-                if (log.isEnabledFor(Level.DEBUG))
-                {
-                    log.debug(CLS_NM + ".hasRole userId <" + principal.getName() + "> role <" + roleName + "> successful");
-                }
+                LOG.debug( "{}.hasRole userId [{}], role[{}], successful", CLS_NM, principal.getName(), roleName );
                 result = true;
             }
             else
             {
-                if (log.isEnabledFor(Level.DEBUG))
-                {
-                    log.debug(CLS_NM + ".hasRole userId <" + principal.getName() + "> role <" + roleName + "> failed");
-                }
+                LOG.debug( "{}.hasRole userId [{}], role[{}], failed", CLS_NM, principal.getName(), roleName );
             }
         }
-        catch (SecurityException se)
+        catch ( SecurityException se )
         {
-            String warning = CLS_NM + ".hasRole userId <" + userId + "> role <" + roleName + "> caught SecurityException=" + se;
-            log.warn(warning);
-		}
-		return result;
-	}
+            LOG.warn( "{}.hasRole userId <{}> role <{}> caught SecurityException= {}", CLS_NM, userId, roleName, se);
+        }
+
+        return result;
+    }
 
     /**
      * When the 'defaultRoles' parameter is set on realm proxy config (e.g. in server.xml or context.xml) it will be used to pass into
@@ -145,12 +139,12 @@ public class TcAccessMgrImpl implements TcAccessMgr
      *
      * @param szDefaultRoles contains a String containing comma delimited roles names.
      */
-    public void setDefaultRoles(String szDefaultRoles)
+    public void setDefaultRoles( String szDefaultRoles )
     {
-        if( VUtil.isNotNullOrEmpty( szDefaultRoles ))
+        if( VUtil.isNotNullOrEmpty( szDefaultRoles ) )
         {
-            defaultRoles = Arrays.asList(szDefaultRoles.split("\\s*,\\s*"));
-            log.info( "DEFAULT ROLES: " + defaultRoles );
+            defaultRoles = Arrays.asList( szDefaultRoles.split( "\\s*,\\s*" ) );
+            LOG.info( "DEFAULT ROLES: {}", defaultRoles );
         }
     }
 }

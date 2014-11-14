@@ -19,17 +19,12 @@
  */
 package org.apache.directory.fortress.realm.tomcat;
 
-import org.apache.directory.fortress.realm.util.CpUtil;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.realm.RealmBase;
 
-import java.net.URL;
 import java.security.Principal;
-import java.net.URLClassLoader;
 import java.util.logging.Logger;
-
-import org.apache.directory.fortress.realm.util.ChildFirstUrlClassLoader;
 
 /**
  * This class extends the Tomcat 7 and beyond RealmBase class and provides Java EE security services within the Tomcat container.
@@ -41,7 +36,7 @@ import org.apache.directory.fortress.realm.util.ChildFirstUrlClassLoader;
 public class TC7AccessMgrFascade extends RealmBase
 {
     private static final String CLS_NM = TC7AccessMgrFascade.class.getName();
-    private static final Logger log = Logger.getLogger(CLS_NM);
+    private static final Logger LOG = Logger.getLogger( CLS_NM );
     private static final String REALM_IMPL = "org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl";
     private static final String REALM_CLASSPATH = "REALM_CLASSPATH";
     private static final String JBOSS_AGENT = "jboss";
@@ -71,13 +66,14 @@ public class TC7AccessMgrFascade extends RealmBase
      * wrapped by methods on this class and are accessed via the {@code realm} instance variable of this class.
      */
     @Override
-    public Principal authenticate(String userId, String password)
+    public Principal authenticate( String userId, String password )
     {
-        if(realm == null)
+        if ( realm == null )
         {
-            throw new RuntimeException(CLS_NM + "authenticate detected Fortress Tomcat7 Realm not initialized correctly.  Check your Fortress Realm configuration");
+            throw new RuntimeException( CLS_NM + "authenticate detected Fortress Tomcat7 Realm not initialized correctly.  Check your Fortress Realm configuration" );
         }
-        return realm.authenticate(userId, password.toCharArray());
+        
+        return realm.authenticate( userId, password.toCharArray()) ;
     }
 
 
@@ -90,14 +86,16 @@ public class TC7AccessMgrFascade extends RealmBase
      * @return True if Role is found in TcPrincipal, false otherwise.
      */
     @Override
-    public boolean hasRole(Wrapper wrapper, Principal principal, String role)
+    public boolean hasRole( Wrapper wrapper, Principal principal, String role )
     {
-        if(realm == null)
+        if ( realm == null )
         {
-            throw new RuntimeException(CLS_NM + "authenticate detected Fortress Tomcat7 Realm not initialized correctly.  Check your Fortress Realm configuration");
+            throw new RuntimeException( CLS_NM + "authenticate detected Fortress Tomcat7 Realm not initialized correctly.  Check your Fortress Realm configuration" );
         }
-        return realm.hasRole(principal, role);
+        
+        return realm.hasRole( principal, role );
     }
+    
 
     /**
      * Gets the name attribute of the TcAccessMgrProxy object
@@ -107,7 +105,7 @@ public class TC7AccessMgrFascade extends RealmBase
     @Override
     protected String getName()
     {
-        return (CLS_NM);
+        return ( CLS_NM );
     }
 
 
@@ -118,9 +116,9 @@ public class TC7AccessMgrFascade extends RealmBase
      * @return The password value
      */
     @Override
-    protected String getPassword(String username)
+    protected String getPassword( String username )
     {
-        return (null);
+        return null;
     }
 
 
@@ -131,9 +129,9 @@ public class TC7AccessMgrFascade extends RealmBase
      * @return The principal value
      */
     @Override
-    protected Principal getPrincipal(String username)
+    protected Principal getPrincipal( String username )
     {
-        return (null);
+        return null;
     }
 
 
@@ -151,6 +149,7 @@ public class TC7AccessMgrFascade extends RealmBase
         super.startInternal();
     }
 
+    
     /**
      * Gracefully terminate the active use of the public methods of this
      * component and implement the requirements of
@@ -171,6 +170,7 @@ public class TC7AccessMgrFascade extends RealmBase
 
     }
 
+    
     /**
      * Gets the containerType attribute of the TcAccessMgrProxy object
      *
@@ -181,16 +181,18 @@ public class TC7AccessMgrFascade extends RealmBase
         return container;
     }
 
+    
     /**
      * Sets the containerType attribute of the TcAccessMgrProxy object
      *
      * @param container The new containerType value
      */
-    public void setContainerType(String container)
+    public void setContainerType( String container )
     {
-        log.info(CLS_NM + ".setContainerType <" + container + ">");
+        LOG.info( CLS_NM + ".setContainerType <" + container + ">" );
         this.container = container;
     }
+    
 
     /**
      * Gets the realmClasspath attribute of the TcAccessMgrProxy object
@@ -199,18 +201,21 @@ public class TC7AccessMgrFascade extends RealmBase
      */
     public String getRealmClasspath()
     {
-        log.info(CLS_NM + ".getRealmClasspath <" + realmClasspath + ">");
+        LOG.info( CLS_NM + ".getRealmClasspath <" + realmClasspath + ">" );
+    
         return realmClasspath;
     }
+    
 
     /**
      * Sets the realmClasspath attribute of the TcAccessMgrProxy object
      *
      * @param rCpth The new realmClasspath value
      */
-    public void setRealmClasspath(String rCpth)
+    public void setRealmClasspath( String rCpth )
     {
-        log.info(CLS_NM + ".setRealmClasspath <" + rCpth + ">");
+        LOG.info( CLS_NM + ".setRealmClasspath <" + rCpth + ">" );
+        
         this.realmClasspath = rCpth;
     }
 
@@ -221,7 +226,8 @@ public class TC7AccessMgrFascade extends RealmBase
      */
     public static String getDefaultRoles()
     {
-        log.info(CLS_NM + ".getDefaultRoles <" + defaultRoles + ">");
+        LOG.info( CLS_NM + ".getDefaultRoles <" + defaultRoles + ">" );
+        
         return defaultRoles;
     }
 
@@ -232,7 +238,7 @@ public class TC7AccessMgrFascade extends RealmBase
      */
     public static void setDefaultRoles( String defaultRoles )
     {
-        log.info(CLS_NM + ".setDefaultRoles <" + defaultRoles + ">");
+        LOG.info( CLS_NM + ".setDefaultRoles <" + defaultRoles + ">"  );
         TC7AccessMgrFascade.defaultRoles = defaultRoles;
     }
 }

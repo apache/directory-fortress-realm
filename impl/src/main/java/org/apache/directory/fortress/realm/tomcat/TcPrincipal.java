@@ -19,8 +19,8 @@
  */
 package org.apache.directory.fortress.realm.tomcat;
 
-import org.apache.directory.fortress.core.rbac.Session;
-
+import java.io.Serializable;
+import java.security.Principal;
 import java.util.HashMap;
 
 /**
@@ -29,10 +29,18 @@ import java.util.HashMap;
  *
  * @author Shawn McKinney
  */
-public class TcPrincipal implements java.security.Principal, java.io.Serializable
+public class TcPrincipal implements Principal, Serializable
 {
+    /** Default serialVersionUID */
+    private static final long serialVersionUID = 1L;
+    
+    /** The key when we store a serialiazed version of a Session into the context */
     public static final String SERIALIZED = "SERIALIZED";
-    private HashMap<String, Session> context;
+    
+    /** The context storing the session */
+    private HashMap<String, Object> context;
+    
+    /** The userId */
     private String name;
 
 
@@ -43,23 +51,24 @@ public class TcPrincipal implements java.security.Principal, java.io.Serializabl
      * @param name    contains the userId of User who signed onto Tomcat.
      * @param context Instantiated HashMap that contains the User's Fortress session data.
      */
-    public TcPrincipal( String name, HashMap<String, Session> context )
+    public TcPrincipal( String name, HashMap<String, Object> context )
     {
-        if ( context == null || name == null )
+        if ( ( context == null ) || ( name == null ) )
         {
-            throw new NullPointerException( TcPrincipal.class.getName() + " Null Map passed to constructor" );
+            throw new IllegalArgumentException( TcPrincipal.class.getName() + " Null Map passed to constructor" );
         }
+        
         this.context = context;
         this.name = name;
     }
 
 
     /**
-     * Return the HashMap to the caller.  This HashMap contains the User's Fortress session data.
+     * Return the HashMap to the caller. This HashMap contains the User's Fortress session data.
      *
      * @return HashMap reference to security session data.
      */
-    public final HashMap<String, Session> getContext()
+    public final HashMap<String, Object> getContext()
     {
         return context;
     }
@@ -81,7 +90,7 @@ public class TcPrincipal implements java.security.Principal, java.io.Serializabl
      *
      * @param context HashMap reference to security session data.
      */
-    public final void setContext( HashMap<String, Session> context )
+    public final void setContext( HashMap<String, Object> context )
     {
         this.context = context;
     }
@@ -95,13 +104,16 @@ public class TcPrincipal implements java.security.Principal, java.io.Serializabl
     public final String toString()
     {
         String ser = null;
-        HashMap context = getContext();
+        HashMap<String, Object> context = getContext();
+        
         if ( context != null )
         {
             ser = (String)context.get( SERIALIZED );
         }
+        
         return ser;
     }
+    
 
     /**
      * Determine if the caller supplied a reference to a security Principal that is equal to the current value.
@@ -115,20 +127,24 @@ public class TcPrincipal implements java.security.Principal, java.io.Serializabl
         {
             return false;
         }
+        
         if ( this == o )
         {
             return true;
         }
+        
         if ( !( o instanceof TcPrincipal ) )
         {
             return false;
         }
+        
         TcPrincipal that = ( TcPrincipal ) o;
 
         if ( this.getName().equals( that.getName() ) )
         {
             return true;
         }
+        
         return false;
     }
 

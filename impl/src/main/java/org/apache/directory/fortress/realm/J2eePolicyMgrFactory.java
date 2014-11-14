@@ -22,8 +22,8 @@ package org.apache.directory.fortress.realm;
 import org.apache.directory.fortress.core.cfg.Config;
 import org.apache.directory.fortress.core.SecurityException;
 import org.apache.directory.fortress.core.GlobalErrIds;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Creates an instance of the J2eePolicyMgr object.
@@ -42,8 +42,8 @@ public class J2eePolicyMgrFactory
     private static final String J2EE_POLICYMGR_IMPLEMENTATION = "realmImplementation";
     private static final String J2EE_POLICYMGR_DEFAULT_CLASS = J2eePolicyMgrImpl.class.getName();
     private static final String CLS_NM = J2eePolicyMgrFactory.class.getName();
-    private static final Logger log = Logger.getLogger(CLS_NM);
-    private static String j2eeClassName = Config.getProperty(J2EE_POLICYMGR_IMPLEMENTATION);
+    private static final Logger LOG = LoggerFactory.getLogger( CLS_NM );
+    private static String j2eeClassName = Config.getProperty( J2EE_POLICYMGR_IMPLEMENTATION );
 
     /**
      * Create and return a reference to {@link J2eePolicyMgr} object.
@@ -51,39 +51,38 @@ public class J2eePolicyMgrFactory
      * @return instance of {@link J2eePolicyMgr}.
      * @throws org.apache.directory.fortress.core.SecurityException in the event of failure during instantiation.
      */
-    public static J2eePolicyMgr createInstance()
-        throws SecurityException
+    public static J2eePolicyMgr createInstance() throws SecurityException
     {
         J2eePolicyMgr realmMgr;
+        
         try
         {
-            if (j2eeClassName == null || j2eeClassName.compareTo("") == 0)
+            if ( ( j2eeClassName == null ) || ( j2eeClassName.length() == 0 ) )
             {
                 j2eeClassName = J2EE_POLICYMGR_DEFAULT_CLASS;
-                if (log.isEnabledFor(Level.DEBUG))
-                {
-                    log.debug(CLS_NM + ".createInstance <" + J2EE_POLICYMGR_IMPLEMENTATION + "> not found.");
-                    log.debug(CLS_NM + ".createInstance use default <" + J2EE_POLICYMGR_DEFAULT_CLASS + ">");
-                }
+                LOG.debug( "{}.createInstance [{}], not found.", CLS_NM, J2EE_POLICYMGR_IMPLEMENTATION );
+                LOG.debug( "{}.createInstance use default [{}], not found.", CLS_NM, J2EE_POLICYMGR_DEFAULT_CLASS );
             }
-            realmMgr = (J2eePolicyMgr) Class.forName(j2eeClassName).newInstance();
+            
+            realmMgr = (J2eePolicyMgr) Class.forName( j2eeClassName ).newInstance();
         }
-        catch (java.lang.ClassNotFoundException e)
+        catch ( ClassNotFoundException e )
         {
             String error = CLS_NM + ".createInstance caught java.lang.ClassNotFoundException=" + e;
-            throw new SecurityException(GlobalErrIds.FT_MGR_CLASS_NOT_FOUND, error, e);
+            throw new SecurityException( GlobalErrIds.FT_MGR_CLASS_NOT_FOUND, error, e );
         }
-        catch (java.lang.InstantiationException e)
+        catch ( InstantiationException e )
         {
             String error = CLS_NM + ".createInstance caught java.lang.InstantiationException=" + e;
-            throw new SecurityException(GlobalErrIds.FT_MGR_INST_EXCEPTION, error, e);
+            throw new SecurityException( GlobalErrIds.FT_MGR_INST_EXCEPTION, error, e );
         }
-        catch (java.lang.IllegalAccessException e)
+        catch ( IllegalAccessException e )
         {
             String error = CLS_NM + ".createInstance caught java.lang.IllegalAccessException=" + e;
-            log.fatal(error);
-            throw new SecurityException(GlobalErrIds.FT_MGR_ILLEGAL_ACCESS, error, e);
+            LOG.error( error );
+            throw new SecurityException( GlobalErrIds.FT_MGR_ILLEGAL_ACCESS, error, e );
         }
+        
         return realmMgr;
     }
 }

@@ -40,9 +40,8 @@ import org.apache.directory.fortress.core.rbac.Role;
 import org.apache.directory.fortress.core.rbac.Session;
 import org.apache.directory.fortress.realm.tomcat.TcPrincipal;
 import org.apache.directory.fortress.core.util.attr.VUtil;
-import org.apache.directory.fortress.core.util.time.CUtil;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is for components that use Websphere and Tomcat Container SPI's to provide
@@ -54,7 +53,7 @@ import org.apache.log4j.Logger;
 public class J2eePolicyMgrImpl implements J2eePolicyMgr
 {
     private static final String CLS_NM = J2eePolicyMgrImpl.class.getName();
-    private static final Logger log = Logger.getLogger( CLS_NM );
+    private static final Logger LOG = LoggerFactory.getLogger( CLS_NM );
     private static AccessMgr accessMgr;
     private static ReviewMgr reviewMgr;
     private static final String SESSION = "session";
@@ -66,12 +65,11 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         {
             accessMgr = AccessMgrFactory.createInstance( GlobalIds.HOME );
             reviewMgr = ReviewMgrFactory.createInstance( GlobalIds.HOME );
-            log.info( J2eePolicyMgrImpl.class.getName() + " - Initialized successfully" );
+            LOG.info( "{} - Initialized successfully", CLS_NM );
         }
         catch ( SecurityException se )
         {
-            String error = CLS_NM + " caught SecurityException=" + se;
-            log.fatal( error );
+            LOG.error( "{} caught SecurityException={}", CLS_NM, se );
         }
     }
 
@@ -90,20 +88,15 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     {
         boolean result = false;
         Session session = accessMgr.authenticate( userId, password );
+        
         if ( session != null )
         {
             result = true;
-            if ( log.isEnabledFor( Level.DEBUG ) )
-            {
-                log.debug( CLS_NM + ".authenticate userId [" + userId + "] successful" );
-            }
+            LOG.debug( "{}.authenticate userId [{}], successful", CLS_NM, userId );
         }
         else
         {
-            if ( log.isEnabledFor( Level.DEBUG ) )
-            {
-                log.debug( CLS_NM + ".authenticate userId [" + userId + "] failed" );
-            }
+            LOG.debug( "{}.authenticate userId [{}], failed", CLS_NM, userId );
         }
 
         return result;
@@ -184,6 +177,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     public TcPrincipal createSession( String userId, char[] password ) throws SecurityException
     {
         User user = new User( userId, password );
+        
         return createSession( user );
     }
 
@@ -244,18 +238,19 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
-    public TcPrincipal createSession(String userId, char[] password, List<String> roles)
-        throws SecurityException
+    public TcPrincipal createSession( String userId, char[] password, List<String> roles ) throws SecurityException
     {
         User user = new User( userId, password );
+        
         // Load the passed in role list into list of User requested roles:
-        if(VUtil.isNotNullOrEmpty( roles ))
+        if ( VUtil.isNotNullOrEmpty( roles ) )
         {
             for(String role : roles)
             {
                 user.setRole( role );
             }
         }
+        
         return createSession( user );
     }
 
@@ -270,11 +265,8 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     private TcPrincipal createSession( User user ) throws SecurityException
     {
         Session session = accessMgr.createSession( user, false );
-        if ( log.isEnabledFor( Level.DEBUG ) )
-        {
-            log.debug( CLS_NM + ".createSession userId [" + user.getUserId() + "] successful" );
-        }
-        HashMap context = new HashMap<String, Session>();
+        LOG.debug( "{}.createSession userId [{}], successful", CLS_NM, user.getUserId() );
+        HashMap<String, Object> context = new HashMap<String, Object>();
         context.put( SESSION, session );
 
         // now serialize the principal:
@@ -284,6 +276,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         // which allows overriden toString to return it later, from within an application thread.
         // This facilitates assertion of rbac session from the tomcat realm into the web application session.
         context.put( TcPrincipal.SERIALIZED, ser );
+        
         return new TcPrincipal( user.getUserId(), context );
     }
 
@@ -365,10 +358,8 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     @Override
     public Session createSession( User user, boolean isTrusted ) throws SecurityException
     {
-        if ( log.isDebugEnabled() )
-        {
-            log.debug( CLS_NM + ".createSession userId [" + user.getUserId() + "] " );
-        }
+        LOG.debug( "{}.createSession userId [{}], isTrusted [{}]", CLS_NM, user.getUserId(), isTrusted );
+        
         return accessMgr.createSession( user, isTrusted );
     }
 
@@ -388,51 +379,42 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     public boolean hasRole( Principal principal, String roleName ) throws SecurityException
     {
         String fullMethodName = CLS_NM + ".hasRole";
-        if ( log.isDebugEnabled() )
-        {
-            log.debug( fullMethodName + " userId [" + principal.getName() + "] role [" + roleName + "]" );
-        }
+        LOG.debug( "{}.hasRole userId [{}], role [{}]", CLS_NM, principal.getName(), roleName );
 
         // Fail closed
         boolean result = false;
 
         // Principal must contain a HashMap that contains a Fortress session object.
-        HashMap<String, Session> context = ( ( TcPrincipal ) principal ).getContext();
+        HashMap<String, Object> context = ( ( TcPrincipal ) principal ).getContext();
         VUtil.assertNotNull( context, GlobalErrIds.SESS_CTXT_NULL, fullMethodName );
 
         // This Map must contain a Fortress Session:
-        Session session = context.get( SESSION );
+        Session session = (Session)context.get( SESSION );
         VUtil.assertNotNull( session, GlobalErrIds.USER_SESS_NULL, fullMethodName );
 
         Set<String> authZRoles = accessMgr.authorizedRoles( session );
-        if ( authZRoles != null && authZRoles.size() > 0 )
+        
+        if ( ( authZRoles != null ) && ( authZRoles.size() > 0 ) )
         {
             // Does the set of authorized roles contain a name matched to the one passed in?
             if ( authZRoles.contains( roleName ) )
             {
                 // Yes, we have a match.
-                if ( log.isEnabledFor( Level.DEBUG ) )
-                {
-                    log.debug( fullMethodName + " userId [" + principal.getName() + "] role [" + roleName + "] " +
-                        "successful" );
-                }
+                LOG.debug( "{} userId [{}], role [{}], successful", fullMethodName, principal.getName(), roleName );
                 result = true;
             }
             else
             {
-                if ( log.isEnabledFor( Level.DEBUG ) )
-                {
-                    // User is not authorized in their Session..
-                    log.debug( fullMethodName + " userId [" + principal.getName() + "] is not authorized role [" +
-                        roleName + "]" );
-                }
+                // User is not authorized in their Session..
+                LOG.debug( "{} userId [{}], is not authorized role [{}]", fullMethodName, principal.getName(), roleName );
             }
         }
         else
         {
             // User does not have any authorized Roles in their Session..
-            log.info( fullMethodName + " userId [" + principal.getName() + "], role [" + roleName + "], has no authorized roles" );
+            LOG.info( "{} userId [{}], role [{}], has no authorized roles", fullMethodName, principal.getName(), roleName );
         }
+        
         return result;
     }
 
@@ -537,14 +519,17 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         Session session = createSession( new User( userId ), true );
         // Get the Set of authorized Roles.
         Set<String> authZRoleSet = accessMgr.authorizedRoles( session );
+        
         // If User has authorized roles.
-        if ( authZRoleSet != null && authZRoleSet.size() > 0 )
+        if ( ( authZRoleSet != null ) && ( authZRoleSet.size() > 0 ) )
         {
             // Convert the Set into a List before returning:
             list = new ArrayList<String>( authZRoleSet );
         }
+        
         return list;
     }
+    
 
     /**
      * Utility to write any object into a Base64 string.  Used by this class to serialize {@link TcPrincipal} object to be returned by its toString method..
@@ -552,7 +537,8 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     private String serialize( Object obj ) throws SecurityException
     {
         String szRetVal = null;
-        if( obj != null )
+        
+        if ( obj != null )
         {
             try
             {
@@ -560,6 +546,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
                 ObjectOutputStream so = new ObjectOutputStream( bo );
                 so.writeObject( obj );
                 so.flush();
+                
                 // This encoding induces a bijection between byte[] and String (unlike UTF-8)
                 szRetVal = bo.toString( "ISO-8859-1" );
             }
@@ -569,7 +556,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
                 throw new SecurityException(CONTEXT_SERIALIZATION_FAILED, error);
             }
         }
+        
         return szRetVal;
     }
 }
-
