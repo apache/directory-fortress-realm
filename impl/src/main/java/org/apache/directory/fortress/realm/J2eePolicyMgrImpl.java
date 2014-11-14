@@ -41,8 +41,8 @@ import org.apache.directory.fortress.core.rbac.Session;
 import org.apache.directory.fortress.realm.tomcat.TcPrincipal;
 import org.apache.directory.fortress.core.util.attr.VUtil;
 import org.apache.directory.fortress.core.util.time.CUtil;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is for components that use Websphere and Tomcat Container SPI's to provide
@@ -54,7 +54,7 @@ import org.apache.log4j.Logger;
 public class J2eePolicyMgrImpl implements J2eePolicyMgr
 {
     private static final String CLS_NM = J2eePolicyMgrImpl.class.getName();
-    private static final Logger log = Logger.getLogger( CLS_NM );
+    private static final Logger log = LoggerFactory.getLogger( CLS_NM );
     private static AccessMgr accessMgr;
     private static ReviewMgr reviewMgr;
     private static final String SESSION = "session";
@@ -71,7 +71,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         catch ( SecurityException se )
         {
             String error = CLS_NM + " caught SecurityException=" + se;
-            log.fatal( error );
+            log.error( error );
         }
     }
 
@@ -93,17 +93,11 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         if ( session != null )
         {
             result = true;
-            if ( log.isEnabledFor( Level.DEBUG ) )
-            {
-                log.debug( CLS_NM + ".authenticate userId [" + userId + "] successful" );
-            }
+            log.debug( ".authenticate userId [{}], successful", userId );
         }
         else
         {
-            if ( log.isEnabledFor( Level.DEBUG ) )
-            {
-                log.debug( CLS_NM + ".authenticate userId [" + userId + "] failed" );
-            }
+            log.debug( ".authenticate userId [{}], failed", userId );
         }
 
         return result;
@@ -270,10 +264,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     private TcPrincipal createSession( User user ) throws SecurityException
     {
         Session session = accessMgr.createSession( user, false );
-        if ( log.isEnabledFor( Level.DEBUG ) )
-        {
-            log.debug( CLS_NM + ".createSession userId [" + user.getUserId() + "] successful" );
-        }
+        log.debug( ".createSession userId [{}], successful", user.getUserId() );
         HashMap context = new HashMap<String, Session>();
         context.put( SESSION, session );
 
@@ -365,10 +356,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     @Override
     public Session createSession( User user, boolean isTrusted ) throws SecurityException
     {
-        if ( log.isDebugEnabled() )
-        {
-            log.debug( CLS_NM + ".createSession userId [" + user.getUserId() + "] " );
-        }
+        log.debug( ".createSession userId [{}], isTrusted [{}]", user.getUserId(), isTrusted );
         return accessMgr.createSession( user, isTrusted );
     }
 
@@ -388,10 +376,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     public boolean hasRole( Principal principal, String roleName ) throws SecurityException
     {
         String fullMethodName = CLS_NM + ".hasRole";
-        if ( log.isDebugEnabled() )
-        {
-            log.debug( fullMethodName + " userId [" + principal.getName() + "] role [" + roleName + "]" );
-        }
+        log.debug( ".hasRole userId [{}], role [{}]", principal.getName(), roleName );
 
         // Fail closed
         boolean result = false;
@@ -411,27 +396,19 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
             if ( authZRoles.contains( roleName ) )
             {
                 // Yes, we have a match.
-                if ( log.isEnabledFor( Level.DEBUG ) )
-                {
-                    log.debug( fullMethodName + " userId [" + principal.getName() + "] role [" + roleName + "] " +
-                        "successful" );
-                }
+                log.debug( "{} userId [{}], role [{}], successful", fullMethodName, principal.getName(), roleName );
                 result = true;
             }
             else
             {
-                if ( log.isEnabledFor( Level.DEBUG ) )
-                {
-                    // User is not authorized in their Session..
-                    log.debug( fullMethodName + " userId [" + principal.getName() + "] is not authorized role [" +
-                        roleName + "]" );
-                }
+                // User is not authorized in their Session..
+                log.debug( "{} userId [{}], is not authorized role [{}]", fullMethodName, principal.getName(), roleName );
             }
         }
         else
         {
             // User does not have any authorized Roles in their Session..
-            log.info( fullMethodName + " userId [" + principal.getName() + "], role [" + roleName + "], has no authorized roles" );
+            log.info( "{} userId [{}], role [{}], has no authorized roles", fullMethodName, principal.getName(), roleName );
         }
         return result;
     }

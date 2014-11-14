@@ -22,8 +22,8 @@ package org.apache.directory.fortress.realm;
 import org.apache.directory.fortress.core.cfg.Config;
 import org.apache.directory.fortress.core.SecurityException;
 import org.apache.directory.fortress.core.GlobalErrIds;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Creates an instance of the J2eePolicyMgr object.
@@ -42,7 +42,7 @@ public class J2eePolicyMgrFactory
     private static final String J2EE_POLICYMGR_IMPLEMENTATION = "realmImplementation";
     private static final String J2EE_POLICYMGR_DEFAULT_CLASS = J2eePolicyMgrImpl.class.getName();
     private static final String CLS_NM = J2eePolicyMgrFactory.class.getName();
-    private static final Logger log = Logger.getLogger(CLS_NM);
+    private static final Logger log = LoggerFactory.getLogger(CLS_NM);
     private static String j2eeClassName = Config.getProperty(J2EE_POLICYMGR_IMPLEMENTATION);
 
     /**
@@ -60,11 +60,8 @@ public class J2eePolicyMgrFactory
             if (j2eeClassName == null || j2eeClassName.compareTo("") == 0)
             {
                 j2eeClassName = J2EE_POLICYMGR_DEFAULT_CLASS;
-                if (log.isEnabledFor(Level.DEBUG))
-                {
-                    log.debug(CLS_NM + ".createInstance <" + J2EE_POLICYMGR_IMPLEMENTATION + "> not found.");
-                    log.debug(CLS_NM + ".createInstance use default <" + J2EE_POLICYMGR_DEFAULT_CLASS + ">");
-                }
+                log.debug( ".createInstance [{}], not found.", J2EE_POLICYMGR_IMPLEMENTATION );
+                log.debug( ".createInstance use default [{}], not found.", J2EE_POLICYMGR_DEFAULT_CLASS );
             }
             realmMgr = (J2eePolicyMgr) Class.forName(j2eeClassName).newInstance();
         }
@@ -81,7 +78,7 @@ public class J2eePolicyMgrFactory
         catch (java.lang.IllegalAccessException e)
         {
             String error = CLS_NM + ".createInstance caught java.lang.IllegalAccessException=" + e;
-            log.fatal(error);
+            log.error(error);
             throw new SecurityException(GlobalErrIds.FT_MGR_ILLEGAL_ACCESS, error, e);
         }
         return realmMgr;

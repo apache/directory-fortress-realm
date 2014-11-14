@@ -23,8 +23,8 @@ import org.apache.directory.fortress.core.SecurityException;
 import org.apache.directory.fortress.core.util.attr.VUtil;
 import org.apache.directory.fortress.realm.J2eePolicyMgr;
 import org.apache.directory.fortress.realm.J2eePolicyMgrFactory;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.Principal;
 import java.util.Arrays;
@@ -38,7 +38,7 @@ import java.util.List;
 public class TcAccessMgrImpl implements TcAccessMgr
 {
     private static final String CLS_NM = TcAccessMgrImpl.class.getName();
-    private static final Logger log = Logger.getLogger(CLS_NM);
+    private static final Logger log = LoggerFactory.getLogger(CLS_NM);
     private static int count = 0;
     private J2eePolicyMgr j2eeMgr;
     // If this field gets set, use for all subsequent calls to authenticate:
@@ -57,7 +57,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
         catch (SecurityException se)
         {
             String error = CLS_NM + " constructor caught SecurityException=" + se;
-            log.fatal(error);
+            log.error( error );
             se.printStackTrace();
             throw new java.lang.RuntimeException(error, se);
         }
@@ -79,18 +79,12 @@ public class TcAccessMgrImpl implements TcAccessMgr
             if( VUtil.isNotNullOrEmpty( defaultRoles ))
             {
                 prin = j2eeMgr.createSession( userId, password, defaultRoles );
-                if (log.isEnabledFor(Level.DEBUG))
-                {
-                    log.debug(CLS_NM + ".authenticate userId [" + userId + "], with default roles [" + defaultRoles + "], successful");
-                }
+                log.debug( ".authenticate userId [{}], with default roles[{}], successful", userId, defaultRoles );
             }
             else
             {
                 prin = j2eeMgr.createSession(userId, password);
-                if (log.isEnabledFor(Level.DEBUG))
-                {
-                    log.debug(CLS_NM + ".authenticate userId [" + userId + "] successful");
-                }
+                log.debug( ".authenticate userId [{}], successful", userId );
             }
         }
         catch (SecurityException se)
@@ -117,18 +111,12 @@ public class TcAccessMgrImpl implements TcAccessMgr
         {
             if (j2eeMgr.hasRole(principal, roleName))
             {
-                if (log.isEnabledFor(Level.DEBUG))
-                {
-                    log.debug(CLS_NM + ".hasRole userId <" + principal.getName() + "> role <" + roleName + "> successful");
-                }
+                log.debug( ".hasRole userId [{}], role[{}], successful", principal.getName(), roleName );
                 result = true;
             }
             else
             {
-                if (log.isEnabledFor(Level.DEBUG))
-                {
-                    log.debug(CLS_NM + ".hasRole userId <" + principal.getName() + "> role <" + roleName + "> failed");
-                }
+                log.debug( ".hasRole userId [{}], role[{}], failed", principal.getName(), roleName );
             }
         }
         catch (SecurityException se)
