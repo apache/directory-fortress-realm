@@ -25,7 +25,7 @@
   <packaging>pom</packaging>
   <name>Apache Fortress Realm</name>
   <description>Fortress Realm is an ANSI RBAC INCITS 359 compliant policy enforcement engine.</description>
-  <url>http://directory.apache.org/foress/</url>
+  <url>http://directory.apache.org/fortress/</url>
   <version>1.0-RC40-SNAPSHOT</version>
 
   <properties>
@@ -54,6 +54,7 @@
       <url>http://www.apache.org/licenses/LICENSE-2.0</url>
     </license>
   </licenses>
+  
   <scm>
     <connection>scm:git:http://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</connection>
     <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</developerConnection>
@@ -62,13 +63,13 @@
 
   <issueManagement>
     <system>jira</system>
-    <url>https://issues.apache.org/jira/browse/DIRREALM</url>
+    <url>https://issues.apache.org/jira/browse/FORTRESS-CORE</url>
   </issueManagement>
 
   <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
+    <groupId>org.apache</groupId>
+    <artifactId>apache</artifactId>
+    <version>15</version>
   </parent>
 
   <mailingLists>
@@ -83,7 +84,7 @@
     <developer>
       <id>elecharny</id>
       <name>Emmanuel Lecharny</name>
-      <email>elecharny@@apache.org</email>
+      <email>elecharny@apache.org</email>
       <roles>
         <role>Developer</role>
       </roles>
@@ -104,8 +105,7 @@
   </modules>
 
   <build>
-
-    <finalName>${project.artifactId}-${version}</finalName>
+    <finalName>${project.artifactId}-${project.version}</finalName>
 
     <pluginManagement>
       <plugins>
@@ -119,6 +119,7 @@
 
       </plugins>
     </pluginManagement>
+    
     <plugins>
       <!-- Assemble a realm distro archive -->
       <plugin>
@@ -164,6 +165,7 @@
             <artifactId>wagon-ssh</artifactId>
             <version>2.1</version>
           </dependency>
+          
           <!-- Add support for 'scpexe' -->
           <dependency>
             <groupId>org.apache.maven.wagon</groupId>
@@ -171,6 +173,7 @@
             <version>2.1</version>
           </dependency>
         </dependencies>
+        
         <configuration>
           <reportPlugins>
             <plugin>
@@ -380,6 +383,7 @@
           <value>true</value>
         </property>
       </activation>
+      
       <build>
         <plugins>
           <plugin>
