@@ -8,7 +8,7 @@
    "License"); you may not use this file except in compliance
    with the License.  You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing,
    software distributed under the License is distributed on an
@@ -18,388 +18,386 @@
    under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.apache.directory</groupId>
-    <artifactId>fortress-realm</artifactId>
-    <packaging>pom</packaging>
-    <name>Apache Fortress Realm</name>
-    <description>Fortress Realm is an ANSI RBAC INCITS 359 compliant policy enforcement engine.</description>
-    <url>http://directory.apache.org/foress/</url>
-    <version>1.0-RC40-SNAPSHOT</version>
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.directory</groupId>
+  <artifactId>fortress-realm</artifactId>
+  <packaging>pom</packaging>
+  <name>Apache Fortress Realm</name>
+  <description>Fortress Realm is an ANSI RBAC INCITS 359 compliant policy enforcement engine.</description>
+  <url>http://directory.apache.org/foress/</url>
+  <version>1.0-RC40-SNAPSHOT</version>
 
-    <properties>
-        <projectName>apache-directory-fortress-realm</projectName>
-        <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/api/gen-docs/${project.version}/
-        </distMgmtSiteUrl>
+  <properties>
+    <projectName>apache-directory-fortress-realm</projectName>
+    <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/api/gen-docs/${project.version}/
+    </distMgmtSiteUrl>
 
-        <!-- Set versions for depending projects -->
-        <skin.version>1.0.2</skin.version>
-        <org.apache.directory.junit.junit-addons.version>0.1</org.apache.directory.junit.junit-addons.version>
-        <org.apache.directory.checkstyle-configuration.version>0.1</org.apache.directory.checkstyle-configuration.version>
-        <slf4j.api.version>1.7.5</slf4j.api.version>
-        <slf4j.log4j12.version>1.7.5</slf4j.log4j12.version>
-        <junit.version>4.11</junit.version>
+    <!-- Set versions for depending projects -->
+    <skin.version>1.0.2</skin.version>
+    <org.apache.directory.junit.junit-addons.version>0.1</org.apache.directory.junit.junit-addons.version>
+    <org.apache.directory.checkstyle-configuration.version>0.1</org.apache.directory.checkstyle-configuration.version>
+    <slf4j.api.version>1.7.7</slf4j.api.version>
+    <slf4j.log4j12.version>1.7.7</slf4j.log4j12.version>
+    <junit.version>4.11</junit.version>
 
-        <!-- Set versions for depending jars -->
-        <fortress-core.version>1.0-RC40-SNAPSHOT</fortress-core.version>
+    <!-- Set versions for depending jars -->
+    <fortress-core.version>1.0-RC40-SNAPSHOT</fortress-core.version>
 
-        <!-- Set versions for depending jars -->
-        <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
-    </properties>
+    <!-- Set versions for depending jars -->
+    <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
+  </properties>
 
-    <licenses>
-        <license>
-            <name>Apache License 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-        </license>
-    </licenses>
-    <scm>
-        <connection>scm:git:http://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</connection>
-        <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
+  <licenses>
+    <license>
+      <name>Apache License 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:git:http://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</connection>
+    <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
 
-    <issueManagement>
-        <system>jira</system>
-        <url>https://issues.apache.org/jira/browse/DIRREALM</url>
-    </issueManagement>
+  <issueManagement>
+    <system>jira</system>
+    <url>https://issues.apache.org/jira/browse/DIRREALM</url>
+  </issueManagement>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
 
-    <mailingLists>
-        <mailingList>
-            <name>Apache Directory -- Fortress List</name>
-            <post>fortress@directory.apache.org</post>
-            <archive>http://mail-archives.apache.org/mod_mbox/directory-fortress/</archive>
-        </mailingList>
-    </mailingLists>
+  <mailingLists>
+    <mailingList>
+      <name>Apache Directory -- Fortress List</name>
+      <post>fortress@directory.apache.org</post>
+      <archive>http://mail-archives.apache.org/mod_mbox/directory-fortress/</archive>
+    </mailingList>
+  </mailingLists>
 
-    <developers>
-        <developer>
-            <id>elecharny</id>
-            <name>Emmanuel Lecharny</name>
-            <email>elecharny@@apache.org</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <organization>Apache Software Foundation</organization>
-            <timezone>+1</timezone>
-        </developer>
-        <developer>
-            <id>smckinney</id>
-            <name>Shawn McKinney</name>
-            <email>smckinney@apache.org</email>
-            <timezone>-6</timezone>
-        </developer>
-    </developers>
+  <developers>
+    <developer>
+      <id>elecharny</id>
+      <name>Emmanuel Lecharny</name>
+      <email>elecharny@@apache.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <organization>Apache Software Foundation</organization>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>smckinney</id>
+      <name>Shawn McKinney</name>
+      <email>smckinney@apache.org</email>
+      <timezone>-6</timezone>
+    </developer>
+  </developers>
 
-    <modules>
-        <module>impl</module>
-        <module>proxy</module>
-    </modules>
+  <modules>
+    <module>impl</module>
+    <module>proxy</module>
+  </modules>
 
-    <build>
+  <build>
 
-        <finalName>${project.artifactId}-${version}</finalName>
+    <finalName>${project.artifactId}-${version}</finalName>
 
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <configuration>
-                        <tagNameFormat>@{project.version}</tagNameFormat>
-                    </configuration>
-                </plugin>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+            <tagNameFormat>@{project.version}</tagNameFormat>
+          </configuration>
+        </plugin>
 
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <!-- Assemble a realm distro archive -->
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.4</version>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/main/assembly/distsrc.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <!-- Assemble a realm distro archive -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/distsrc.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <dependencies>
-                    <!-- Add support for 'scp'/'sftp' -->
-                    <dependency>
-                        <groupId>org.apache.maven.wagon</groupId>
-                        <artifactId>wagon-ssh</artifactId>
-                        <version>2.1</version>
-                    </dependency>
-                    <!-- Add support for 'scpexe' -->
-                    <dependency>
-                        <groupId>org.apache.maven.wagon</groupId>
-                        <artifactId>wagon-ssh-external</artifactId>
-                        <version>2.1</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <reportPlugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-jxr-plugin</artifactId>
-                            <configuration>
-                                <aggregate>true</aggregate>
-                            </configuration>
-                        </plugin>
-
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-surefire-report-plugin</artifactId>
-                            <configuration>
-                                <aggregate>true</aggregate>
-                            </configuration>
-                        </plugin>
-
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-project-info-reports-plugin</artifactId>
-                        </plugin>
-
-                        <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>taglist-maven-plugin</artifactId>
-                            <configuration>
-                                <tags>
-                                    <tag>TODO</tag>
-                                    <tag>@todo</tag>
-                                    <tag>@deprecated</tag>
-                                    <tag>FIXME</tag>
-                                </tags>
-                            </configuration>
-                        </plugin>
-
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-javadoc-plugin</artifactId>
-                            <configuration>
-                                <minmemory>512m</minmemory>
-                                <maxmemory>1g</maxmemory>
-                                <linksource>true</linksource>
-                                <tags>
-                                    <tag>
-                                        <name>todo</name>
-                                        <!-- todo tag for all places -->
-                                        <placement>a</placement>
-                                        <head>To do:</head>
-                                    </tag>
-                                </tags>
-                                <source>1.6</source>
-                            </configuration>
-                            <reportSets>
-                                <reportSet>
-                                    <reports>
-                                        <report>aggregate</report>
-                                        <report>test-aggregate</report>
-                                    </reports>
-                                </reportSet>
-                            </reportSets>
-                        </plugin>
-
-                        <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>versions-maven-plugin</artifactId>
-                            <reportSets>
-                                <reportSet>
-                                    <reports>
-                                        <report>dependency-updates-report</report>
-                                        <report>plugin-updates-report</report>
-                                        <report>property-updates-report</report>
-                                    </reports>
-                                </reportSet>
-                            </reportSets>
-                        </plugin>
-
-                        <plugin>
-                            <groupId>org.apache.rat</groupId>
-                            <artifactId>apache-rat-plugin</artifactId>
-                            <!-- must add configuration here too, it isn't inherited from <pluginConfiguration> :-( -->
-                            <configuration>
-                                <excludeSubProjects>false</excludeSubProjects>
-                                <excludes>
-                                    <!-- MAVEN_DEFAULT_EXCLUDES -->
-                                    <exclude>**/target/**/*</exclude>
-                                    <exclude>**/cobertura.ser</exclude>
-                                    <!-- ECLIPSE_DEFAULT_EXCLUDES -->
-                                    <exclude>**/.classpath</exclude>
-                                    <exclude>**/.project</exclude>
-                                    <exclude>**/.settings/**/*</exclude>
-                                    <!-- IDEA_DEFAULT_EXCLUDES -->
-                                    <exclude>**/*.iml</exclude>
-                                    <exclude>**/*.ipr</exclude>
-                                    <exclude>**/*.iws</exclude>
-                                    <!-- MANIFEST_MF_EXCLUDES -->
-                                    <exclude>**/MANIFEST.MF</exclude>
-                                    <!-- 3RD_PARTY_LICENSES -->
-                                    <exclude>distribution/src/main/release/licenses/*</exclude>
-                                    <exclude>src/main/release/licenses/*</exclude>
-                                    <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
-                                    <exclude>**/dependency-reduced-pom.xml</exclude>
-                                    <!-- Generated ldif files -->
-                                    <exclude>**/src/main/resources/schema/**/*.ldif</exclude>
-                                    <exclude>**/src/main/resources/schema-all.ldif</exclude>
-                                    <exclude>**/src/main/resources/schema/**/*.ldif</exclude>
-                                    <exclude>**/src/main/resources/schema-all.ldif</exclude>
-                                    <!-- Files having a Bouncy Castle license -->
-                                    <exclude>ldap/src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
-                                    <exclude>src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
-                                </excludes>
-                            </configuration>
-                        </plugin>
-
-                        <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>javancss-maven-plugin</artifactId>
-                        </plugin>
-
-                        <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>jdepend-maven-plugin</artifactId>
-                        </plugin>
-
-                        <!--
-                                    <plugin>
-                                      <groupId>org.apache.maven.plugins</groupId>
-                                      <artifactId>maven-changes-plugin</artifactId>
-                                      <configuration>
-                                        <onlyCurrentVersion>true</onlyCurrentVersion>
-                                        <resolutionIds>Fixed</resolutionIds>
-                                        <statusIds>Resolved,Closed</statusIds>
-                                        <columnNames>Type,Key,Summary,Status,Resolution,Fix Version</columnNames>
-                                      </configuration>
-                                      <reportSets>
-                                        <reportSet>
-                                          <reports>
-                                            <report>jira-report</report>
-                                          </reports>
-                                        </reportSet>
-                                      </reportSets>
-                                    </plugin>
-                        -->
-                    </reportPlugins>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <dependencyManagement>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
         <dependencies>
-            <!-- Project sub-modules dependencies -->
-            <dependency>
-                <groupId>org.apache.directory</groupId>
-                <artifactId>fortress-core</artifactId>
-                <version>${fortress-core.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.tomcat</groupId>
-                <artifactId>tomcat-catalina</artifactId>
-                <version>7.0.22</version>
-            </dependency>
-
+          <!-- Add support for 'scp'/'sftp' -->
+          <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-ssh</artifactId>
+            <version>2.1</version>
+          </dependency>
+          <!-- Add support for 'scpexe' -->
+          <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-ssh-external</artifactId>
+            <version>2.1</version>
+          </dependency>
         </dependencies>
-    </dependencyManagement>
+        <configuration>
+          <reportPlugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jxr-plugin</artifactId>
+              <configuration>
+                <aggregate>true</aggregate>
+              </configuration>
+            </plugin>
 
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-report-plugin</artifactId>
+              <configuration>
+                <aggregate>true</aggregate>
+              </configuration>
+            </plugin>
+
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>taglist-maven-plugin</artifactId>
+              <configuration>
+                <tags>
+                  <tag>TODO</tag>
+                  <tag>@todo</tag>
+                  <tag>@deprecated</tag>
+                  <tag>FIXME</tag>
+                </tags>
+              </configuration>
+            </plugin>
+
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <configuration>
+                <minmemory>512m</minmemory>
+                <maxmemory>1g</maxmemory>
+                <linksource>true</linksource>
+                <tags>
+                  <tag>
+                    <name>todo</name>
+                    <!-- todo tag for all places -->
+                    <placement>a</placement>
+                    <head>To do:</head>
+                  </tag>
+                </tags>
+                <source>1.6</source>
+              </configuration>
+              <reportSets>
+                <reportSet>
+                  <reports>
+                    <report>aggregate</report>
+                    <report>test-aggregate</report>
+                  </reports>
+                </reportSet>
+              </reportSets>
+            </plugin>
+
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>versions-maven-plugin</artifactId>
+              <reportSets>
+                <reportSet>
+                  <reports>
+                    <report>dependency-updates-report</report>
+                    <report>plugin-updates-report</report>
+                    <report>property-updates-report</report>
+                  </reports>
+                </reportSet>
+              </reportSets>
+            </plugin>
+
+            <plugin>
+              <groupId>org.apache.rat</groupId>
+              <artifactId>apache-rat-plugin</artifactId>
+              <!-- must add configuration here too, it isn't inherited from <pluginConfiguration> :-( -->
+              <configuration>
+                <excludeSubProjects>false</excludeSubProjects>
+                <excludes>
+                  <!-- MAVEN_DEFAULT_EXCLUDES -->
+                  <exclude>**/target/**/*</exclude>
+                  <exclude>**/cobertura.ser</exclude>
+                  <!-- ECLIPSE_DEFAULT_EXCLUDES -->
+                  <exclude>**/.classpath</exclude>
+                  <exclude>**/.project</exclude>
+                  <exclude>**/.settings/**/*</exclude>
+                  <!-- IDEA_DEFAULT_EXCLUDES -->
+                  <exclude>**/*.iml</exclude>
+                  <exclude>**/*.ipr</exclude>
+                  <exclude>**/*.iws</exclude>
+                  <!-- MANIFEST_MF_EXCLUDES -->
+                  <exclude>**/MANIFEST.MF</exclude>
+                  <!-- 3RD_PARTY_LICENSES -->
+                  <exclude>distribution/src/main/release/licenses/*</exclude>
+                  <exclude>src/main/release/licenses/*</exclude>
+                  <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
+                  <exclude>**/dependency-reduced-pom.xml</exclude>
+                  <!-- Generated ldif files -->
+                  <exclude>**/src/main/resources/schema/**/*.ldif</exclude>
+                  <exclude>**/src/main/resources/schema-all.ldif</exclude>
+                  <exclude>**/src/main/resources/schema/**/*.ldif</exclude>
+                  <exclude>**/src/main/resources/schema-all.ldif</exclude>
+                  <!-- Files having a Bouncy Castle license -->
+                  <exclude>ldap/src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
+                  <exclude>src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
+                </excludes>
+              </configuration>
+            </plugin>
+
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>javancss-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>jdepend-maven-plugin</artifactId>
+            </plugin>
+
+            <!--
+                  <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-changes-plugin</artifactId>
+                    <configuration>
+                    <onlyCurrentVersion>true</onlyCurrentVersion>
+                    <resolutionIds>Fixed</resolutionIds>
+                    <statusIds>Resolved,Closed</statusIds>
+                    <columnNames>Type,Key,Summary,Status,Resolution,Fix Version</columnNames>
+                    </configuration>
+                    <reportSets>
+                    <reportSet>
+                      <reports>
+                      <report>jira-report</report>
+                      </reports>
+                    </reportSet>
+                    </reportSets>
+                  </plugin>
+            -->
+          </reportPlugins>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencyManagement>
     <dependencies>
-        <!-- for Java5 findbugs annotations are required in each module at compile time -->
-        <dependency>
-            <groupId>findbugs</groupId>
-            <artifactId>annotations</artifactId>
-            <scope>provided</scope>
-            <version>1.0.0</version>
-        </dependency>
+      <!-- Project sub-modules dependencies -->
+      <dependency>
+        <groupId>org.apache.directory</groupId>
+        <artifactId>fortress-core</artifactId>
+        <version>${fortress-core.version}</version>
+      </dependency>
 
-        <!-- common logging interface -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.api.version}</version>
-        </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat</groupId>
+        <artifactId>tomcat-catalina</artifactId>
+        <version>7.0.22</version>
+      </dependency>
 
-        <!-- logging implementation used for unit tests -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <scope>test</scope>
-            <version>${slf4j.log4j12.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-            <version>4.11</version>
-        </dependency>
     </dependencies>
+  </dependencyManagement>
 
-    <profiles>
-        <profile>
-            <id>release-sign-artifacts</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.4</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+  <dependencies>
+    <!-- for Java5 findbugs annotations are required in each module at compile time -->
+    <dependency>
+      <groupId>findbugs</groupId>
+      <artifactId>annotations</artifactId>
+      <scope>provided</scope>
+      <version>1.0.0</version>
+    </dependency>
 
+    <!-- common logging interface -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.api.version}</version>
+    </dependency>
 
+    <!-- logging implementation used for unit tests -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <scope>test</scope>
+      <version>${slf4j.log4j12.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+      <version>4.11</version>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>release-sign-artifacts</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

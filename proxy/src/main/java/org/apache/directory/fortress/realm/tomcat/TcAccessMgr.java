@@ -38,7 +38,7 @@ public interface TcAccessMgr
      * @param role  Maps to {@code org.apache.directory.fortress.core.rbac.Role#name}.
      * @return True if Role is found in TcPrincipal, false otherwise.
      */
-    public boolean hasRole(Principal principal, String role);
+    boolean hasRole( Principal principal, String role );
 
 
     /**
@@ -48,7 +48,7 @@ public interface TcAccessMgr
      * @param password Contains the user's password.
      * @return Principal which contains the Fortress RBAC session data.
      */
-    public Principal authenticate(String userId, char[] password);
+    Principal authenticate( String userId, char[] password );
 
     /**
      * When the 'defaultRoles' parameter is set on realm proxy config (e.g. in server.xml or context.xml) it will be used to pass into
@@ -56,5 +56,5 @@ public interface TcAccessMgr
      *
      * @param roles contains a String containing comma delimited roles names.
      */
-    public void setDefaultRoles(String roles);
+    void setDefaultRoles( String roles );
 }

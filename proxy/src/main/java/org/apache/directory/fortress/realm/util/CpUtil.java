@@ -21,6 +21,7 @@ package org.apache.directory.fortress.realm.util;
 
 import java.util.logging.Logger;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.StringTokenizer;
 
@@ -33,7 +34,7 @@ import java.util.StringTokenizer;
 public class CpUtil
 {
     private static final String CLS_NM = CpUtil.class.getName();
-    private static Logger log = Logger.getLogger(CLS_NM);
+    private static Logger LOG = Logger.getLogger(CLS_NM);
     private static final String PATH_SEPARATOR = "path.separator";
     private static final String FILE_PREFIX = "file:/";
     private static final String UNIX_SLASH = "/";
@@ -46,17 +47,18 @@ public class CpUtil
      * @param classpath String contains paths separated by ':' or ';' depending if Unix or Win.
      * @return URL array containing the resource names that comprise the REALM_CLASSPATH.
      */
-    public static URL[] parseRealmClasspath(String classpath)
+    public static URL[] parseRealmClasspath( String classpath )
     {
         URL urls[] = null;
+        
         try
         {
             String slash;
             String filePrefix = FILE_PREFIX;
-            String pathSeparator = System.getProperty(PATH_SEPARATOR);
+            String pathSeparator = System.getProperty( PATH_SEPARATOR );
 
             // Is this a Unix machine?
-            if (pathSeparator.compareTo(UNIX_SEPARATOR) == 0)
+            if ( UNIX_SEPARATOR.compareTo( pathSeparator ) == 0 )
             {
                 // unix requires adding extra forward slash:
                 filePrefix += UNIX_SLASH;
@@ -67,26 +69,28 @@ public class CpUtil
                 slash = WIN_SLASH;
             }
 
-            log.info(CLS_NM + ".parseRealmClasspath <" + classpath + ">");
-            StringTokenizer st = new StringTokenizer(classpath, pathSeparator, false);
+            LOG.info(CLS_NM + ".parseRealmClasspath <" + classpath + ">");
+            StringTokenizer st = new StringTokenizer( classpath, pathSeparator, false );
             int size = st.countTokens();
             urls = new URL[size];
-            for (int i = 0; i < size; i++)
+            
+            for ( int i = 0; i < size; i++ )
             {
                 String resource = st.nextToken();
-                resource = getResource(resource, slash);
+                resource = getResource( resource, slash );
                 String file = filePrefix + resource;
-                urls[i] = new URL(file);
-                log.info(CLS_NM + ".parseRealmClasspath path" + i + " <" + urls[i] + ">");
+                urls[i] = new URL( file );
+                LOG.info( CLS_NM + ".parseRealmClasspath path" + i + " <" + urls[i] + ">" );
             }
         }
-        catch (java.net.MalformedURLException me)
+        catch ( MalformedURLException me )
         {
             String error = CLS_NM + ".parseRealmClasspath caught MalformedURLException=" + me;
-            log.severe(error);
+            LOG.severe( error );
             error = CLS_NM + ".parseRealmClasspath check your Fortress REALM_CLASSPATH setting.";
-            log.severe(error);
+            LOG.severe( error );
         }
+        
         return urls;
     }
 
@@ -97,31 +101,32 @@ public class CpUtil
      * @param cpProp contains paths separated by ':' or ';' depending if Unix or Win.
      * @return URL array containing the resource names that comprise the REALM_CLASSPATH.
      */
-    public static URL[] getRealmClasspath(String cpProp)
+    public static URL[] getRealmClasspath( String cpProp )
     {
         URL urls[] = null;
+        
         try
         {
             String slash;
             String filePrefix = FILE_PREFIX;
-            String classpath = System.getProperty(cpProp);
-            String pathSeparator = System.getProperty(PATH_SEPARATOR);
+            String classpath = System.getProperty( cpProp );
+            String pathSeparator = System.getProperty( PATH_SEPARATOR );
 
-            if(classpath == null || classpath.length() == 0)
+            if ( ( classpath == null ) || ( classpath.length() == 0 ) )
             {
                 String error = CLS_NM + ".parseRealmClasspath invalid realm classpath detected";
-                log.severe(error);
-                throw new java.lang.RuntimeException(error);
+                LOG.severe( error );
+                throw new RuntimeException( error );
             }
-            else if(pathSeparator == null || pathSeparator.length() == 0)
+            else if( ( pathSeparator == null ) || ( pathSeparator.length() == 0 ) )
             {
                 String error = CLS_NM + ".parseRealmClasspath invalid classpath detected";
-                log.severe(error);
-                throw new java.lang.RuntimeException(error);
+                LOG.severe( error );
+                throw new RuntimeException( error );
             }
 
             // Is this a Unix machine?
-            if (pathSeparator.compareTo(UNIX_SEPARATOR) == 0)
+            if ( pathSeparator.compareTo( UNIX_SEPARATOR ) == 0 )
             {
                 // unix requires adding extra forward slash:
                 filePrefix += UNIX_SLASH;
@@ -131,25 +136,28 @@ public class CpUtil
             {
                 slash = WIN_SLASH;
             }
-            log.info(CLS_NM + ".parseRealmClasspath <" + classpath + ">");
-            StringTokenizer st = new StringTokenizer(classpath, pathSeparator, false);
+            
+            LOG.info( CLS_NM + ".parseRealmClasspath <" + classpath + ">" );
+            StringTokenizer st = new StringTokenizer( classpath, pathSeparator, false );
             int size = st.countTokens();
             urls = new URL[size];
-            for (int i = 0; i < size; i++)
+            
+            for ( int i = 0; i < size; i++ )
             {
                 String resource = st.nextToken();
-                resource = getResource(resource, slash);
+                resource = getResource( resource, slash );
                 String file = filePrefix + resource;
-                urls[i] = new URL(file);
-                log.info(CLS_NM + ".parseRealmClasspath path" + i + " <" + urls[i] + ">");
+                urls[i] = new URL( file );
+                LOG.info( CLS_NM + ".parseRealmClasspath path" + i + " <" + urls[i] + ">" );
             }
         }
-        catch (java.net.MalformedURLException me)
+        catch ( MalformedURLException me )
         {
             String error = CLS_NM + ".parseRealmClasspath caught MalformedURLException=" + me;
-            log.severe(error);
-            throw new java.lang.RuntimeException(error);
+            LOG.severe( error );
+            throw new RuntimeException( error );
         }
+        
         return urls;
     }
 
@@ -162,17 +170,19 @@ public class CpUtil
      * @param slash
      * @return String containing resource value
      */
-    private static String getResource(String name, String slash)
+    private static String getResource( String name, String slash )
     {
-        File rFile = new File(name);
-        if (rFile.isDirectory())
+        File rFile = new File( name );
+        
+        if ( rFile.isDirectory() )
         {
-            if (name.lastIndexOf(slash) != (name.length() - 1))
+            if ( name.lastIndexOf( slash ) != ( name.length() - 1 ) )
             {
                 name += slash;
-                log.info(CLS_NM + ".getResource slash added to dir path");
+                LOG.info( CLS_NM + ".getResource slash added to dir path" );
             }
         }
+        
         return name;
     }
 }

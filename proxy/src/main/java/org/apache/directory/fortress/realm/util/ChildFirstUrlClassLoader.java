@@ -37,9 +37,9 @@ public class ChildFirstUrlClassLoader extends URLClassLoader
      * @param urls   Contains a list of value Java classpath entries.
      * @param parent Reference to parent classloader.
      */
-    public ChildFirstUrlClassLoader(URL[] urls, ClassLoader parent)
+    public ChildFirstUrlClassLoader( URL[] urls, ClassLoader parent )
     {
-        super(urls, parent);
+        super( urls, parent );
     }
 
 
@@ -48,9 +48,9 @@ public class ChildFirstUrlClassLoader extends URLClassLoader
      *
      * @param urls   Contains a list of value Java classpath entries.
      */
-    public ChildFirstUrlClassLoader(URL[] urls)
+    public ChildFirstUrlClassLoader( URL[] urls )
     {
-        super(urls);
+        super( urls );
     }
 
 
@@ -62,36 +62,37 @@ public class ChildFirstUrlClassLoader extends URLClassLoader
      * @return Description of the Return Value
      * @throws ClassNotFoundException Description of the Exception
      */
-    protected Class loadClass(String name, boolean resolve)
-        throws ClassNotFoundException
+    protected Class<?> loadClass( String name, boolean resolve ) throws ClassNotFoundException
     {
-
-        Class c = findLoadedClass(name);
-        if (c == null)
+        Class<?> c = findLoadedClass( name );
+        
+        if ( c == null )
         {
             try
             {
-                c = findClass(name);
+                c = findClass( name );
             }
-            catch (ClassNotFoundException ignore)
+            catch ( ClassNotFoundException ignore )
             {
 
             }
-            if (c == null)
+            
+            if ( c == null) 
             {
-                if (getParent() != null)
+                if ( getParent() != null )
                 {
-                    c = getParent().loadClass(name);
+                    c = getParent().loadClass( name );
                 }
                 else
                 {
-                    c = getSystemClassLoader().loadClass(name);
+                    c = getSystemClassLoader().loadClass( name );
                 }
             }
         }
-        if (resolve)
+        
+        if ( resolve )
         {
-            resolveClass(c);
+            resolveClass( c );
         }
 
         return c;
@@ -104,21 +105,23 @@ public class ChildFirstUrlClassLoader extends URLClassLoader
      * @param name Description of the Parameter
      * @return The resource value
      */
-    public URL getResource(String name)
+    public URL getResource( String name )
     {
         URL url;
-        url = findResource(name);
-        if (url == null)
+        url = findResource( name );
+        
+        if ( url == null )
         {
-            if (getParent() != null)
+            if ( getParent() != null )
             {
-                url = getParent().getResource(name);
+                url = getParent().getResource( name );
             }
             else
             {
-                url = getSystemClassLoader().getResource(name);
+                url = getSystemClassLoader().getResource( name );
             }
         }
+        
         return url;
     }
 }
