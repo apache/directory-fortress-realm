@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * This class runs on a URL classloader and provides Fortress runtime security services for the Tomcat container.
  *
- * @author Shawn McKinney
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class TcAccessMgrImpl implements TcAccessMgr
 {

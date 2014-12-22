@@ -29,7 +29,7 @@ import java.util.StringTokenizer;
  * This class interrogates the Java System for properties set on REALM_CLASSPATH by the
  * caller.  The system properties are converted into URL arrays for later URL classloader processing.
  *
- * @author Shawn McKinney
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class CpUtil
 {

@@ -36,7 +36,7 @@ import org.apache.directory.fortress.realm.util.ChildFirstUrlClassLoader;
  * This class is a "proxy" for the {@link org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl} class which isolates dependencies from the Tomcat
  * runtime environment by loading the implementation on a URLClassLoader.
  *
- * @author Shawn McKinney
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class Tc7AccessMgrProxy extends RealmBase
 {

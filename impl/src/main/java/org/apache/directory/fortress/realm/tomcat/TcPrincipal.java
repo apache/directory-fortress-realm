@@ -27,7 +27,7 @@ import java.util.HashMap;
  * Contains the Fortress RBAC session that has been created on behalf of an end user who has
  * signed onto Tomcat system.  The session contains the User's active roles and other security attributes.
  *
- * @author Shawn McKinney
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class TcPrincipal implements Principal, Serializable
 {

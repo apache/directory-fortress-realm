@@ -27,7 +27,7 @@ import java.net.URLClassLoader;
  * JBoss application server is in use.  The child first URLClassloader behaves as one would expect and always looks in child classloader
  * before going to parent to search.  This inversion is needed in JBoss to allow isolation of Fortress code from the server and application classpaths.
  *
- * @author Shawn McKinney
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ChildFirstUrlClassLoader extends URLClassLoader
 {

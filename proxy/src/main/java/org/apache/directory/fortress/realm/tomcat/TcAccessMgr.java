@@ -26,7 +26,7 @@ import java.security.Principal;
  * interface is implemented by Fortress Tomcat Proxy and sentry implementation and allows isolation of
  * runtime dependencies from Tomcat's system classpath..
  *
- * @author Shawn McKinney
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface TcAccessMgr
 {

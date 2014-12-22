@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  * This class is a "proxy" for the {@link org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl} class which isolates dependencies from the Tomcat
  * runtime environment by loading the implementation on a URLClassLoader.
  *
- * @author Shawn McKinney
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class TC7AccessMgrFascade extends RealmBase
 {

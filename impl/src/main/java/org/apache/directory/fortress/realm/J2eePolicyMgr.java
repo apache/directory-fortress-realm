@@ -33,7 +33,7 @@ import org.apache.directory.fortress.realm.tomcat.TcPrincipal;
  * Java EE Security capabilities.  These APIs may be called by external programs as needed though the recommended
  * practice is to use Fortress Core APIs like {@link org.apache.directory.fortress.core.AccessMgr} and {@link org.apache.directory.fortress.core.ReviewMgr}.
  *
- * @author Shawn McKinney
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface J2eePolicyMgr
 {

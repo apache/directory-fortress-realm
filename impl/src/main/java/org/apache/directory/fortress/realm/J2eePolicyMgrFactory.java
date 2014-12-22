@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * adding the {@link #J2EE_POLICYMGR_IMPLEMENTATION} config property.
  * <p/>
  *
- * @author Shawn McKinney
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class J2eePolicyMgrFactory
 {
