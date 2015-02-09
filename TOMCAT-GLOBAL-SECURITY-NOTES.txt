@@ -16,147 +16,120 @@
 #   specific language governing permissions and limitations
 #   under the License.
 #
---------------------------------------------------------------
-Apache Directory Fortress Realm Setup Notes for Tomcat App Sever
-last updated: October 31, 2014
+___________________________________________________________________________________
+###################################################################################
+INSTRUCTIONS TO ENABLE GLOBAL TOMCAT SECURITY WITH FORTRESS REALM
+Last updated: February 8, 2015
+
 --------------------------------------------------------------
 ###################################################################################
 # Guidelines & Tips
 ###################################################################################
 
-- In the document that follows, replace "[version]" with Fortress version label.
-  For example - if Fortress 1.0 release, change fortressProxyTomcat-[version].jar to fortressProxyTomcat-1.0.jar
+- This document describes how to enable Fortress Realm to provide security for
+  Tomcat server.
+
+- In the document that follows, replace "[version]" with Fortress Realm version label.
+  For example - if Fortress Realm 1.0 release, change fortress-realm-proxy-[version].jar to fortress-realm-proxy-1.0.jar
 
 - Restart Tomcat server after any changes to Tomcat config, Fortress config or lib files.
 
-- You (usually) do NOT need to restart Tomcat after changes to the LDAP data, i.e. users, passwords, roles.
-
-- Steps I - III below are mandatory.  
-
-- Step IV is optional, for testing purposes.
-
 - Common misconfiguration issues related to Fortress, LDAP and Tomcat are located in section III.
-
-- Tomcat 7 and beyond uses a different proxy jar.  Take special note of this difference in Step I.C.
-
+___________________________________________________________________________________
 ###################################################################################
-# Summary of installation steps to be completed before Tomcat can use Fortress LDAP
+# SECTION 0.  Prerequisites for Fortress Realm installation and usage with Tomcat
 ###################################################################################
-I. Extract Fortress Java Sentry binaries and config to target server
-a. copy tar or zip to server
-b. unzip tar or zip package
-c. copy fortressProxyTomcat[version].jar to TOMCAT_HOME/lib/
+a. Internet access to retrieve source code from Apache Fortress Realm GIT and binary dependencies from online Maven repo.
 
-II. Configure Fortress Java Sentry for target LDAP server
-a. edit Fortress properties file located in FORTRESS_HOME/conf folder
-b. update ldap host info
-c. update ldap dn info
-d. update ldap admin creds
-e. update ldap connection pool levels
+b. Java SDK Version 7 or beyond installed to target environment
 
-III. Configure Tomcat to use Fortress Java Sentry
+c. LDAP server installed.  (see README in Apache Fortress Core)
+
+d. Apache Tomcat 7 or greater installed to local machine.
+_________________________________________________________________________________
+###################################################################################
+# SECTION 1:  Prepare Machine
+###################################################################################
+a. Follow instructions in README.txt to build and install fortress realm.
+
+b. copy fortress-realm-proxy-[version].jar to TOMCAT_HOME/lib/
+
+c. Configure Fortress Realm for target LDAP server
+
+Copy the fortress.properties, created during [directory-fortress-core] setup, to this package's resource folder.
+
+# cp [directory-fortress-core]/config/fortress.properties [directory-fortress-enmasse]/src/main/resources
+
+Where [directory-fortress-core] is base folder of the fortress core source package and [directory-fortress-enmasse] is the current package's home folder.
+
+_________________________________________________________________________________
+###################################################################################
+# SECTION 2:  Enable Tomcat Realm
+###################################################################################
 a. edit TOMCAT_HOME/conf/server.xml
-b. comment out old UserDatabase config
-c. add Sentry Proxy
-d. restart Tomcat
-e. Verify success
 
-IV. Test Tomcat Security (Optional)
-a. Enable Tomcat Manager Web app
-b. Verify/enable role constraint 
-c. Add role to LDAP
-d. Add test user to LDAP 
-e. Assign test user the Manager role 
-f. logon Manager app
+b. comment out entrt to UserDatabase:
 
-###################################################################################
-# I. Instructions to extract Fortress Java Sentry Package to Target System
-###################################################################################
+    <!--Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" /-->
 
-a. Copy fortressSentryDist-1.0.0[version].zip to hard drive on target server
-env.  
+c. add the following:
 
-b. Extract the zip.  The location for archive can vary according to requirements.  The location
-for package will be referred to as "FORTRESS_HOME" later in these instructions.
+      <Realm className="org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy"
+		debug="0"
+        resourceName="UserDatabase"
+		containerType="Tomcat7"
+        realmClasspath="[directory-fortress-core]/config:[directory-fortress-core]/impl/target/fortress-realm-impl-uber-[version].jar"
+        defaultRoles=""
+		/>
 
-###################################################################################
-# II. Instructions to configure Fortress Java Sentry to use Target System LDAP
-###################################################################################
+Where [directory-fortress-core] is base folder of the fortress core source package.
+Where [directory-fortress-realm] is base folder of the fortress realm source package.
 
-Note: the 'dist' ant target on this project will set these properties using build.properties settings.
+d. restart tomcat
 
-a. Edit the FORTRESS_HOME properties file located in $FORTRESS_HOME/conf/fortress.properties
-
-b. Set the LDAP Host and port properties:
-
-host=localhost  (host or ip)
-port=389
-
-c. Set the LDAP admin creds:
-
-admin=cn=Manager\,dc=jts\,dc=com
-adminPw=secret
-
-d. Set the LDAP connection pool info:
-
-note: the min/max will vary according to anticipated load on your Tomcat server.  For busy systems, the max number of
-ldap connections may be much higher.
-
-minUserConn=1
-maxUserConn=10
-minConn=1
-maxConn=10
-
-###################################################################################
-# III. Instructions to configure Tomcat to use Fortress Java Sentry
-###################################################################################
-
-a. Load the Proxy jar onto server classpath.
-
-if Tomcat 7 and beyond:
-    Copy the proxy jar located, FORTRESS_HOME/proxy/fortressProxyTomcat7-[version].jar to the Tomcat Server's lib folder.
-    /opt/apache-tomcat-7.0.21/lib$ sudo cp /home/smckinn/JavaTools/sentry/fortressSentry[version]/proxy/fortressProxyTomcat7-[version].jar  .
-
-else
-    Copy the proxy jar located, FORTRESS_HOME/proxy/fortressProxyTomcat-[version].jar to the Tomcat Server's lib folder.
-    /opt/apache-tomcat-6.0.24/lib$ sudo cp /home/smckinn/JavaTools/sentry/fortressSentry-[version]/proxy/fortressProxyTomcat-[version].jar  .
-
-note: This is the only Fortress binary or configuration artifact that will reside directly on Tomcat's server classpath.
-
-b. Edit the Tomcat server.xml in the /conf.
-c. Comment out existing "UserDatabase" config (if present)
-d. Add the following to Tomcat's server.xml file:
-
-<sentry className="us.jts.sentry.tomcat.TcAccessMgrProxy"
-    debug="0"
-    resourceName="UserDatabase"
-    containerType="Tomcat6"
-    realmClasspath="/FORTRESS_HOME/conf:/FORTRESS_HOME/lib/fortressSentry-[version].jar"
-    />
-
-note: "FORTRESS_HOME" will point to root folder of Fortress Java sentry package.  i.e. /home/user/fortressSentry-1.0.0 or /usr/local/fortressSentry-1.0.0.  These
-packages will remain off the Tomcat server classpath but must be correct or server will fail to initialize.
-
-save and exit.
-
-e. Restart Tomcat server
-
-smckinn@smckinnlt-lr01:/opt/apache-tomcat-6.0.24/bin$ sudo ./startup.sh
+e. view the server logs to ensure there are no errors.
 
 f. verify that sentry started successfully by viewing following message in catalina.log:
 
-smckinn@smckinnlt-lr01:/opt/apache-tomcat-6.0.24/bin$ tail -f -n10000 ../logs/catalina.out
+org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
+_________________________________________________________________________________
+###################################################################################
+# SECTION 3:  Test with Tomcat Manager App
+###################################################################################
 
-...
-INFO: us.jts.sentry.tomcat.TcAccessMgrProxy J2EE policy agent initialization successful
+Note: this section provides instructions for using the Tomcat Manager application to test Fortress Realm.
+This is not necessary if you have your own Java EE security enabled web application to test with.
 
-If Tomcat 7 and beyond:
+a. Enable Tomcat Manager application. note: check the Tomcat documentation on how to do this.
 
-INFO: us.jts.sentry.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
+b. Verify/enable role name. Edit TOMCAT_HOME/webapps/manager/WEB-INF/web.xml
 
--------------------------------------------
-Common troubleshooting tips:
--------------------------------------------
+    <!-- Security roles referenced by this web application --/>
+                    <security-role/>
+                      <description/>
+                        The role that is required to log in to the Manager Application
+                      </description/>
+                      <role-name/>manager</role-name/>
+                    </security-role/>
+
+c. run fortress-core load file TomcatManagerUser.xml
+
+d. Test logon onto the Tomcat Manager app.
+
+    Enter URL to manager web app:
+    http://localhost:8080/manager/html
+
+    Enter creds (tcmanager, password) into basic logon form
+    Verify authentication/authorization success to web app.
+
+_________________________________________________________________________________
+###################################################################################
+# SECTION 4:  Common troubleshooting tips:
+###################################################################################
 
 -------------------------------------------------------------------------------------------
 i. - Server can't find config files (realmClasspath="/fortressSentry-1.0.0/conf/")
@@ -299,40 +272,3 @@ ACTION:
 
 You have the wrong Tomcat Proxy jar on the server's classpath.  You need to get the proxy jar that is compatible with Tomcat version 6 and before:
 Ensure step 3c configuration points fortressProxyTomcat-[version].jar, i.e. FORTRESS_HOME/lib/fortressProxyTomcat-[version].jar.
-
-
-###################################################################################
-# IV. Instructions to test Tomcat Security
-###################################################################################
-
-a. enable Tomcat Manager application.  note: check the Tomcat documentation on how to do this.
-
-b. verify/enable role name.  Edit TOMCAT_HOME/webapps/manager/WEB-INF/web.xml
-
-  <!-- Security roles referenced by this web application -->
-  <security-role>
-    <description>
-      The role that is required to log in to the Manager Application
-    </description>
-    <role-name>manager</role-name>
-  </security-role>
-
-c. Add Role to access Tomcat Manager application:
-
-Note: If Fortress 'init-slapd' ant task was run this data will already be loaded into the directory.
-
-If Tomcat 7 and beyond:
-    Add Role named "manager-gui":
-else if Tomcat 6 and before:
-    Add Role named "manager":
-
-d. Add User named "tcmanager":  (or whatever you want to nanme it)
-
-e. Assign Test User "tcmanager" Role "manager", (if Tomcat 7 this role is "manager-gui")
-
-f. Test logon onto the Tomcat Manager app.
-
-i. Enter URL to manager web app:
-http://localhost:8080/manager/html
-ii. enter creds (tcmanager, password) into basic logon form
-iii. verify authentication/authorization success to web app.

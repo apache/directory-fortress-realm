@@ -323,9 +323,10 @@
     </plugins>
   </build>
 
+<!--
   <dependencyManagement>
     <dependencies>
-      <!-- Project sub-modules dependencies -->
+      &lt;!&ndash; Project sub-modules dependencies &ndash;&gt;
       <dependency>
         <groupId>org.apache.directory</groupId>
         <artifactId>fortress-core</artifactId>
@@ -340,6 +341,7 @@
 
     </dependencies>
   </dependencyManagement>
+-->
 
   <dependencies>
     <!-- for Java5 findbugs annotations are required in each module at compile time -->

@@ -35,6 +35,9 @@
   </description>
 
   <dependencies>
+
+<!--
+
     <dependency>
       <groupId>org.apache.directory.junit</groupId>
       <artifactId>junit-addons</artifactId>
@@ -45,8 +48,9 @@
     <dependency>
       <groupId>org.apache.directory.api</groupId>
       <artifactId>api-all</artifactId>
-      <version>1.0.0-M26</version>
+      <version>1.0.0-M28</version>
     </dependency>
+-->
 
     <dependency>
       <groupId>org.apache.tomcat</groupId>

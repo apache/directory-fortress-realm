@@ -31,7 +31,6 @@ a. Internet access to retrieve source code from Apache Fortress Rest GIT and bin
 b. Java SDK Version 7 or beyond installed to target environment
 
 c. Apache Maven installed to target environment
-
 _________________________________________________________________________________
 ###################################################################################
 # SECTION 1:  Instructions to clone source from Fortress Realm Git Repo:

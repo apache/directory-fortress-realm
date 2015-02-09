@@ -350,7 +350,7 @@
             depends="clean,build-jar-tcproxy,build-jar-tc7proxy,build-jar-impl, build-jar-distro,build-jar-distro-jboss,javadoc">
         <copy todir="${dist.dir}" file="${basedir}/LICENSE.txt"/>
         <copy todir="${dist.dir}" file="${basedir}/NOTICE.txt"/>
-        <copy todir="${dist.dir}" file="${basedir}/TOMCAT-SETUP-NOTES.txt"/>
+        <copy todir="${dist.dir}" file="/TOMCAT-GLOBAL-SECURITY-NOTES.txt"/>
     </target>
 
     <!-- ###############  create distribution packages ############################ -->
