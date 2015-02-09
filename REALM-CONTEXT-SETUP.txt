@@ -78,11 +78,11 @@ b. Add the following:
            containerType="TomcatContext"
            realmClasspath=""
             />
-
-    </Context>
+</Context>
 
 c. Add security constraints to target web.xml:
 
+        ...
         <security-constraint>
             <display-name>Commander Security Constraint</display-name>
             <web-resource-collection>
@@ -110,17 +110,17 @@ c. Add security constraints to target web.xml:
     </security-role>
     ...
 
-Note:  Fortress Realm is compliant with Java EE security semantics.  The above is a one simple example.
-For more info:
+Note:  Fortress Realm follows standard Java EE security semantics.  The above is a very simple example.
+For more info on how Java EE security is used:
 http://docs.oracle.com/javaee/6/tutorial/doc/bnbwj.html
 
-d. Redeploy web application.
+d. Redeploy web application to Tomcat.
 
-e. Login to the app.  Users that successfully authenticate and have activated at least one role listed in auth-constraints gain access to app resources matching the url-pattern.
+e. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
 
-f. View the server logs to ensure there are no errors.
+f. View the Tomcat server logs to ensure there are no errors.
 
-g. verify that fortress realm is operating properly by viewing the following in catalina.log:
+g. Verify that fortress realm is operating properly by viewing the following in catalina.log:
 
 org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
 _________________________________________________________________________________
