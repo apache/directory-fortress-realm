@@ -64,3 +64,11 @@ f. To view Fortress Realm Setup Notes for Tomcat Container point your browser he
 file:///[package home]/target/site/apidocs/org/apache/directory/fortress/realm/tomcat/package-summary.html
 
 (where [package_home] is location of directory-fortress-realm base package)
+
+___________________________________________________________________________________
+###################################################################################
+# SECTION 3:  Instructions to use Fortress Realm
+###################################################################################
+
+a. For a single web application context under Tomcat: REALM-CONTEXT-SETUP.txt
+b. For all web application contexts under Tomcat: REALM-HOST-SETUP.txt

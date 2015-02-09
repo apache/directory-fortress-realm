@@ -18,19 +18,18 @@
 #
 ___________________________________________________________________________________
 ###################################################################################
-INSTRUCTIONS TO ENABLE FORTRESS REALM for TOMCAT GLOBAL SECURITY
+INSTRUCTIONS TO ENABLE FORTRESS REALM for ALL Web Applications under Tomcat
 Last updated: February 9, 2015
---------------------------------------------------------------
+-----------------------------------------------------------------------------------
 ###################################################################################
 # Guidelines & Tips
 ###################################################################################
-
-- This document describes how to enable Fortress Realm to provide global security for
-  Tomcat server.  Follow these steps and this component will be default security
+- This document describes how to enable Fortress Realm to provide security for
+  Tomcat server virtual host.  Follow these steps and this component will be default security
   provider for all applications within a particular Tomcat server instance.
 
 - It is not necessary to enable Fortress Realm in this way to enable web app to use Java EE security.
-  If you want to only target the application, and not enable for entire container, follow the Tomcat instructions in the 'Fortress Ten Minute Guide'
+  If you want to target a single web application, and not enable for entire host, follow the Tomcat instructions in the 'REALM-CONTEXT-SETUP.txt'
 
 - In the document that follows, replace "[version]" with Fortress Realm version label.
   For example - if Fortress Realm 1.0 release, change fortress-realm-proxy-[version].jar to fortress-realm-proxy-1.0.jar
@@ -99,7 +98,7 @@ d. restart tomcat
 
 e. view the server logs to ensure there are no errors.
 
-f. verify that sentry started successfully by viewing following message in catalina.log:
+f. verify that fortress realm started successfully by viewing following message in catalina.log:
 
 org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
 _________________________________________________________________________________
