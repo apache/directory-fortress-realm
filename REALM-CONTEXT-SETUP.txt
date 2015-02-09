@@ -36,7 +36,7 @@ Last updated: February 9, 2015
 
 - Restart Tomcat server after any changes to Tomcat config, Fortress config or lib files.
 
-- Common misconfiguration issues related to Fortress, LDAP and Tomcat are located in section III.
+- Common misconfiguration issues related to Fortress, LDAP and Tomcat are located at the end of REALM-HOST-SETUP.txt.
 ___________________________________________________________________________________
 ###################################################################################
 # SECTION 0.  Prerequisites for Fortress Realm installation and usage with Tomcat
@@ -52,13 +52,13 @@ ________________________________________________________________________________
 ###################################################################################
 # SECTION 1:  Prepare Machine
 ###################################################################################
-a. Follow instructions in README.txt to build and install fortress realm.
+a. Follow instructions in README.txt to build and install fortress realm component.
 
 b. copy fortress-realm-proxy-[version].jar to TOMCAT_HOME/lib/
 
 # cp [directory-fortress-realm]/proxy/fortress-realm-proxy-[version].jar TOMCAT_HOME/lib
 
-Where [directory-fortress-core] is base folder of the fortress core source package.
+Where [directory-fortress-realm] is base folder of this source package.
 
 c. Restart tomcat server instance for changes to take effect.
 _________________________________________________________________________________
@@ -123,9 +123,3 @@ f. View the Tomcat server logs to ensure there are no errors.
 g. Verify that fortress realm is operating properly by viewing the following in catalina.log:
 
 org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
-_________________________________________________________________________________
-###################################################################################
-# Common troubleshooting tips:
-###################################################################################
-
-Found inside REALM-HOST-SETUP.txt
