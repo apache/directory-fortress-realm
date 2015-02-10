@@ -36,22 +36,6 @@
 
   <dependencies>
 
-<!--
-
-    <dependency>
-      <groupId>org.apache.directory.junit</groupId>
-      <artifactId>junit-addons</artifactId>
-      <scope>test</scope>
-      <version>0.1</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.directory.api</groupId>
-      <artifactId>api-all</artifactId>
-      <version>1.0.0-M28</version>
-    </dependency>
--->
-
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-catalina</artifactId>
