@@ -48,22 +48,18 @@ ________________________________________________________________________________
 
 a. Open a command prompt on target machine in the root folder of the directory-fortress-realm package
 
-b. Set java home:
-# export JAVA_HOME=...
+b. Set java  and maven home
 
-c. Set maven home:
-# export M2_HOME=...
-
-d. Run maven install:
-# $M2_HOME/bin/mvn clean install
+c. Run maven install:
+# mvn clean install
 
 e. Build the javadoc:
-# $M2_HOME/bin/mvn javadoc:javadoc
+# mvn javadoc:javadoc
 
 f. To view Fortress Realm Setup Notes for Tomcat Container point your browser here:
-file:///[package home]/target/site/apidocs/org/apache/directory/fortress/realm/tomcat/package-summary.html
+file:///[directory-fortress-realm]/target/site/apidocs/org/apache/directory/fortress/realm/tomcat/package-summary.html
 
-(where [package_home] is location of directory-fortress-realm base package)
+(where [directory-fortress-realm] is location of current package)
 
 ___________________________________________________________________________________
 ###################################################################################
@@ -71,4 +67,5 @@ ________________________________________________________________________________
 ###################################################################################
 
 a. For a single web application context under Tomcat: REALM-CONTEXT-SETUP.txt
+
 b. For all web application contexts under Tomcat: REALM-HOST-SETUP.txt
