@@ -40,6 +40,7 @@
     <slf4j.api.version>1.7.7</slf4j.api.version>
     <slf4j.log4j12.version>1.7.7</slf4j.log4j12.version>
     <junit.version>4.11</junit.version>
+    <javadoc.version>2.9.1</javadoc.version>
 
     <!-- Set versions for depending jars -->
     <fortress-core.version>1.0-RC40-SNAPSHOT</fortress-core.version>
@@ -153,6 +154,24 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${javadoc.version}</version>
+        <configuration>
+          <additionalparam>-Xdoclint:none</additionalparam>
+          <stylesheet>java</stylesheet>
+          <bottom>&lt;small&gt;Copyright &amp;copy; 2003-2015, The Apache Software Foundation. All Rights Reserved. Generated ${maven.build.timestamp}&lt;/small&gt;</bottom>
+          <overview>proxy/src/main/java/overview.html</overview>
+          <docfilessubdirs>true</docfilessubdirs>
+          <includes></includes>
+          <version>true</version>
+          <author>true</author>
+          <doctitle>Fortress Realm Javadoc ${version}</doctitle>
+          <windowtitle>Apache Fortress Realm Javadoc ${version}</windowtitle>
+        </configuration>
       </plugin>
 
       <plugin>
