@@ -19,8 +19,10 @@
  */
 package org.apache.directory.fortress.realm;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +59,10 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     private static AccessMgr accessMgr;
     private static ReviewMgr reviewMgr;
     private static final String SESSION = "session";
-    private static int CONTEXT_SERIALIZATION_FAILED = 102;
+    private static int CONTEXT_SERIALIZATION_FAILED = 201;
+    private static int CONTEXT_DESERIALIZATION_FAILED_IO = 202;
+    private static int CONTEXT_DESERIALIZATION_FAILED_UNSUPPORTED_ENCODING = 203;
+    private static int CONTEXT_DESERIALIZATION_FAILED_CLASS_NOT_FOUND = 204;
 
     static
     {
@@ -558,5 +563,39 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         }
         
         return szRetVal;
+    }
+
+
+    /**
+     * This utility method deserializes java.security.Principal to Fortress RBAC session object.
+     *
+     * @param str contains String to deserialize
+     * @return deserialization target object
+     */
+    public Session deserialize( String str ) throws SecurityException
+    {
+        // deserialize the object
+        try
+        {
+            // This encoding induces a bijection between byte[] and String (unlike UTF-8)
+            byte b[] = str.getBytes("ISO-8859-1");
+            ByteArrayInputStream bi = new ByteArrayInputStream(b);
+            ObjectInputStream si = new ObjectInputStream(bi);
+            return Session.class.cast(si.readObject());
+        }
+        catch (java.io.UnsupportedEncodingException e)
+        {
+            throw new SecurityException( CONTEXT_DESERIALIZATION_FAILED_UNSUPPORTED_ENCODING, "deserialize caught UnsupportedEncodingException:" + e);
+        }
+        catch (IOException e)
+        {
+            LOG.warn( "deserialize caught IOException:" + e);
+            throw new SecurityException( CONTEXT_DESERIALIZATION_FAILED_IO, "deserialize caught IOException:" + e);
+        }
+        catch (ClassNotFoundException e)
+        {
+            LOG.warn( "deserialize caught ClassNotFoundException:" + e);
+            throw new SecurityException( CONTEXT_DESERIALIZATION_FAILED_CLASS_NOT_FOUND, "deserialize caught ClassNotFoundException:" + e);
+        }
     }
 }

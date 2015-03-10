@@ -307,5 +307,14 @@ public interface J2eePolicyMgr
      * @throws SecurityException If user not found or system error occurs.
      */
     public List<String> authorizedRoles( String userId ) throws SecurityException;
+
+
+    /**
+     * This utility method can deserialize java.security.Principal to Fortress RBAC session object.
+     *
+     * @param str contains String to deserialize
+     * @return deserialization target object
+     */
+    public Session deserialize( String str ) throws SecurityException;
 }
 
