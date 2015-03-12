@@ -59,10 +59,6 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     private static AccessMgr accessMgr;
     private static ReviewMgr reviewMgr;
     private static final String SESSION = "session";
-    private static int CONTEXT_SERIALIZATION_FAILED = 201;
-    private static int CONTEXT_DESERIALIZATION_FAILED_IO = 202;
-    private static int CONTEXT_DESERIALIZATION_FAILED_UNSUPPORTED_ENCODING = 203;
-    private static int CONTEXT_DESERIALIZATION_FAILED_CLASS_NOT_FOUND = 204;
 
     static
     {
@@ -558,7 +554,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
             catch ( IOException ioe )
             {
                 String error = "serialize caught IOException: " + ioe;
-                throw new SecurityException(CONTEXT_SERIALIZATION_FAILED, error);
+                throw new SecurityException( org.apache.directory.fortress.realm.GlobalIds.CONTEXT_SERIALIZATION_FAILED, error);
             }
         }
         
@@ -585,17 +581,17 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         }
         catch (java.io.UnsupportedEncodingException e)
         {
-            throw new SecurityException( CONTEXT_DESERIALIZATION_FAILED_UNSUPPORTED_ENCODING, "deserialize caught UnsupportedEncodingException:" + e);
+            throw new SecurityException( org.apache.directory.fortress.realm.GlobalIds.CONTEXT_DESERIALIZATION_FAILED_UNSUPPORTED_ENCODING, "deserialize caught UnsupportedEncodingException:" + e);
         }
         catch (IOException e)
         {
             LOG.warn( "deserialize caught IOException:" + e);
-            throw new SecurityException( CONTEXT_DESERIALIZATION_FAILED_IO, "deserialize caught IOException:" + e);
+            throw new SecurityException( org.apache.directory.fortress.realm.GlobalIds.CONTEXT_DESERIALIZATION_FAILED_IO, "deserialize caught IOException:" + e);
         }
         catch (ClassNotFoundException e)
         {
             LOG.warn( "deserialize caught ClassNotFoundException:" + e);
-            throw new SecurityException( CONTEXT_DESERIALIZATION_FAILED_CLASS_NOT_FOUND, "deserialize caught ClassNotFoundException:" + e);
+            throw new SecurityException( org.apache.directory.fortress.realm.GlobalIds.CONTEXT_DESERIALIZATION_FAILED_CLASS_NOT_FOUND, "deserialize caught ClassNotFoundException:" + e);
         }
     }
 }
