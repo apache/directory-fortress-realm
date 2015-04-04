@@ -26,7 +26,7 @@
   <name>Apache Fortress Realm</name>
   <description>Fortress Realm is an ANSI RBAC INCITS 359 compliant policy enforcement engine.</description>
   <url>http://directory.apache.org/fortress/</url>
-  <version>1.0-RC41-SNAPSHOT</version>
+  <version>1.0-RC40-SNAPSHOT</version>
 
   <properties>
     <projectName>apache-directory-fortress-realm</projectName>
