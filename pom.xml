@@ -171,8 +171,8 @@
           <includes></includes>
           <version>true</version>
           <author>true</author>
-          <doctitle>Fortress Realm Javadoc ${version}</doctitle>
-          <windowtitle>Apache Fortress Realm Javadoc ${version}</windowtitle>
+          <doctitle>Fortress Realm Javadoc ${project.version}</doctitle>
+          <windowtitle>Apache Fortress Realm Javadoc ${project.version}</windowtitle>
         </configuration>
       </plugin>
 
