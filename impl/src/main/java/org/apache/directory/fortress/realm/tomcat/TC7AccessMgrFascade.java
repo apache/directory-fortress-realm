@@ -40,8 +40,8 @@ public class TC7AccessMgrFascade extends RealmBase
     private static final String REALM_IMPL = "org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl";
     private static final String REALM_CLASSPATH = "REALM_CLASSPATH";
     private static final String JBOSS_AGENT = "jboss";
-    private static String container = "Catalina7";
-    private static String defaultRoles;
+    private String container = "Catalina7";
+    private String defaultRoles;
     private String realmClasspath;
     private TcAccessMgr realm = new TcAccessMgrImpl();
 
@@ -202,7 +202,6 @@ public class TC7AccessMgrFascade extends RealmBase
     public String getRealmClasspath()
     {
         LOG.info( CLS_NM + ".getRealmClasspath <" + realmClasspath + ">" );
-    
         return realmClasspath;
     }
     
@@ -215,7 +214,6 @@ public class TC7AccessMgrFascade extends RealmBase
     public void setRealmClasspath( String rCpth )
     {
         LOG.info( CLS_NM + ".setRealmClasspath <" + rCpth + ">" );
-        
         this.realmClasspath = rCpth;
     }
 
@@ -224,10 +222,9 @@ public class TC7AccessMgrFascade extends RealmBase
      *
      * @return String containing comma delimited list of role names.
      */
-    public static String getDefaultRoles()
+    public String getDefaultRoles()
     {
         LOG.info( CLS_NM + ".getDefaultRoles <" + defaultRoles + ">" );
-        
         return defaultRoles;
     }
 
@@ -236,9 +233,9 @@ public class TC7AccessMgrFascade extends RealmBase
      *
      * @param defaultRoles containing comma delimited list of role names.
      */
-    public static void setDefaultRoles( String defaultRoles )
+    public void setDefaultRoles( String defaultRoles )
     {
         LOG.info( CLS_NM + ".setDefaultRoles <" + defaultRoles + ">"  );
-        TC7AccessMgrFascade.defaultRoles = defaultRoles;
+        this.defaultRoles = defaultRoles;
     }
 }
