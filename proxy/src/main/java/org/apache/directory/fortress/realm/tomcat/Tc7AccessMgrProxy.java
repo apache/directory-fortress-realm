@@ -36,7 +36,7 @@ import org.apache.directory.fortress.realm.util.ChildFirstUrlClassLoader;
  * This class is a "proxy" for the {@link org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl} class which isolates dependencies from the Tomcat
  * runtime environment by loading the implementation on a URLClassLoader.
  *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</ga>
  */
 public class Tc7AccessMgrProxy extends RealmBase
 {
@@ -45,8 +45,8 @@ public class Tc7AccessMgrProxy extends RealmBase
     private static final String REALM_IMPL = "org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl";
     private static final String REALM_CLASSPATH = "REALM_CLASSPATH";
     private static final String JBOSS_AGENT = "jboss";
-    private static String CONTAINER = "Catalina7";
-    private static String defaultRoles;
+    private String CONTAINER = "Catalina7";
+    private String defaultRoles;
     private String realmClasspath;
     private TcAccessMgr realm;
 
@@ -64,17 +64,7 @@ public class Tc7AccessMgrProxy extends RealmBase
             {
                 LOG.info( CLS_NM + ".initialize JBoss policy agent" );
                 URL[] cp = CpUtil.getRealmClasspath( REALM_CLASSPATH );
-                
-                if ( cp != null )
-                {
-                    ucl = new ChildFirstUrlClassLoader(cp, this.getClass().getClassLoader() );
-                }
-                else
-                {
-                    String error = CLS_NM + ".initialize invalid realm classpath setup";
-                    LOG.severe( error );
-                    throw new RuntimeException( error );
-                }
+                ucl = new ChildFirstUrlClassLoader(cp, this.getClass().getClassLoader() );
             }
             else if ( CONTAINER.equalsIgnoreCase( "TomcatContext" ) )
             {
@@ -238,9 +228,9 @@ public class Tc7AccessMgrProxy extends RealmBase
         {
             initialize();
         }
-        catch (Throwable e)
+        catch (Exception e)
         {
-            String error = CLS_NM + ".startInternal caught Throwable=" + e;
+            String error = CLS_NM + ".startInternal caught Exception=" + e;
             LOG.severe( error );
             e.printStackTrace();
             throw new LifecycleException( error );
@@ -302,7 +292,6 @@ public class Tc7AccessMgrProxy extends RealmBase
     public String getRealmClasspath()
     {
         LOG.info( CLS_NM + ".getRealmClasspath <" + realmClasspath + ">" );
-        
         return realmClasspath;
     }
 
@@ -324,10 +313,9 @@ public class Tc7AccessMgrProxy extends RealmBase
      *
      * @return String containing comma delimited list of role names.
      */
-    public static String getDefaultRoles()
+    public String getDefaultRoles()
     {
         LOG.info( CLS_NM + ".getDefaultRoles <" + defaultRoles + ">" );
-        
         return defaultRoles;
     }
 
@@ -337,9 +325,9 @@ public class Tc7AccessMgrProxy extends RealmBase
      *
      * @param defaultRoles containing comma delimited list of role names.
      */
-    public static void setDefaultRoles( String defaultRoles )
+    public void setDefaultRoles( String defaultRoles )
     {
         LOG.info( CLS_NM + ".setDefaultRoles <" + defaultRoles + ">" );
-        Tc7AccessMgrProxy.defaultRoles = defaultRoles;
+        this.defaultRoles = defaultRoles;
     }
 }
