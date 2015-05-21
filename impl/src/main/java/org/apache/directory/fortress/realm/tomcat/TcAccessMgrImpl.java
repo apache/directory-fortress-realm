@@ -54,7 +54,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
         try
         {
             j2eeMgr = J2eePolicyMgrFactory.createInstance();
-            LOG.info( "{} constructor <{}>", CLS_NM, count++ );
+            LOG.info( "{} constructor <{}>", CLS_NM, incrementCtr() );
         }
         catch ( SecurityException se )
         {
@@ -63,6 +63,11 @@ public class TcAccessMgrImpl implements TcAccessMgr
             se.printStackTrace();
             throw new java.lang.RuntimeException( error, se );
         }
+    }
+
+    private static int incrementCtr()
+    {
+        return count++;
     }
     
 
