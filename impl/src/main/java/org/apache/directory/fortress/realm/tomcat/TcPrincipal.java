@@ -103,7 +103,7 @@ public class TcPrincipal implements Principal, Serializable
      */
     public final String toString()
     {
-        String ser = null;
+        String ser = "userId=" + name;
         HashMap<String, Object> context = getContext();
         
         if ( context != null )
