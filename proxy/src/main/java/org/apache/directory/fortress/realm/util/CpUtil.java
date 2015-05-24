@@ -41,6 +41,11 @@ public class CpUtil
     private static final String WIN_SLASH = "\\";
     private static final String UNIX_SEPARATOR = ":";
 
+    // disallow construction
+    private CpUtil()
+    {
+    }
+
     /**
      * This method is used by Tomcat Realm Proxy to retrieve REALM_CLASSPATH from the Server.xml config file.
      *

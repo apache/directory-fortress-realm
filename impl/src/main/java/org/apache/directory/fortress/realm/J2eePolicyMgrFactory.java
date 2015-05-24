@@ -36,6 +36,11 @@ import org.slf4j.LoggerFactory;
  */
 public class J2eePolicyMgrFactory
 {
+    // disallow construction
+    private J2eePolicyMgrFactory()
+    {
+    }
+
     /**
      * When this optional tag, {@code realmImplementation}, is placed in Fortress properties, its class name will be the default {@code org.apache.directory.fortress.core.security.RealmMgr} instance used.
      */
