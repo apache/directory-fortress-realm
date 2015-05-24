@@ -82,17 +82,7 @@ public class Tc7AccessMgrProxy extends RealmBase
                 else
                 {
                     URL[] cp = CpUtil.getRealmClasspath( REALM_CLASSPATH );
-                    
-                    if ( cp != null )
-                    {
-                        ucl = new URLClassLoader( cp, this.getClass().getClassLoader() );
-                    }
-                    else
-                    {
-                        String error = CLS_NM + ".initialize could not resolve realm classpath";
-                        LOG.severe( error );
-                        throw new RuntimeException( error );
-                    }
+                    ucl = new URLClassLoader( cp, this.getClass().getClassLoader() );
                 }
             }
 
