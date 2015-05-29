@@ -46,7 +46,7 @@ public interface J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
-    public boolean authenticate( String userId, char[] password ) throws SecurityException;
+    boolean authenticate( String userId, char[] password ) throws SecurityException;
 
 
     /**
@@ -104,7 +104,7 @@ public interface J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
-    public TcPrincipal createSession( String userId, char[] password ) throws SecurityException;
+    TcPrincipal createSession( String userId, char[] password ) throws SecurityException;
 
 
     /**
@@ -163,7 +163,7 @@ public interface J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
-    public TcPrincipal createSession( String userId, char[] password, List<String> roles ) throws SecurityException;
+    TcPrincipal createSession( String userId, char[] password, List<String> roles ) throws SecurityException;
 
 
     /**
@@ -221,7 +221,7 @@ public interface J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
-    public Session createSession( User user, boolean isTrusted ) throws SecurityException;
+    Session createSession( User user, boolean isTrusted ) throws SecurityException;
 
 
     /**
@@ -234,7 +234,7 @@ public interface J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          data validation failure or system error..
      */
-    public boolean hasRole( Principal principal, String roleName ) throws SecurityException;
+    boolean hasRole( Principal principal, String roleName ) throws SecurityException;
 
 
     /**
@@ -245,7 +245,7 @@ public interface J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          will be thrown if role not found or system error occurs.
      */
-    public Role readRole( String roleName ) throws SecurityException;
+    Role readRole( String roleName ) throws SecurityException;
 
 
     /**
@@ -257,7 +257,7 @@ public interface J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure or DAO error.
      */
-    public List<String> searchRoles( String userId, int limit ) throws SecurityException;
+    List<String> searchRoles( String userId, int limit ) throws SecurityException;
 
 
     /**
@@ -268,7 +268,7 @@ public interface J2eePolicyMgr
      * @return entity containing matching user data.
      * @throws SecurityException if record not found or system error occurs.
      */
-    public User readUser( String userId ) throws SecurityException;
+    User readUser( String userId ) throws SecurityException;
 
 
     /**
@@ -280,7 +280,7 @@ public interface J2eePolicyMgr
      * @return List of type String containing matching userIds.
      * @throws SecurityException in the event of system error.
      */
-    public List<String> searchUsers( String userId, int limit ) throws SecurityException;
+    List<String> searchUsers( String userId, int limit ) throws SecurityException;
 
 
     /**
@@ -295,7 +295,7 @@ public interface J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation or system error.
      */
-    public List<String> assignedUsers( String roleName, int limit ) throws SecurityException;
+    List<String> assignedUsers( String roleName, int limit ) throws SecurityException;
 
 
     /**
@@ -306,7 +306,7 @@ public interface J2eePolicyMgr
      * @return Set of type String containing the roles assigned and roles inherited.
      * @throws SecurityException If user not found or system error occurs.
      */
-    public List<String> authorizedRoles( String userId ) throws SecurityException;
+    List<String> authorizedRoles( String userId ) throws SecurityException;
 
 
     /**
@@ -315,6 +315,6 @@ public interface J2eePolicyMgr
      * @param str contains String to deserialize
      * @return deserialization target object
      */
-    public Session deserialize( String str ) throws SecurityException;
+    Session deserialize( String str ) throws SecurityException;
 }
 
