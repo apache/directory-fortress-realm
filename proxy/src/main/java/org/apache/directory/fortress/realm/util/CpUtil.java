@@ -31,17 +31,17 @@ import java.util.StringTokenizer;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CpUtil
+public final class CpUtil
 {
     private static final String CLS_NM = CpUtil.class.getName();
-    private static Logger LOG = Logger.getLogger(CLS_NM);
+    private static final Logger LOG = Logger.getLogger(CLS_NM);
     private static final String PATH_SEPARATOR = "path.separator";
     private static final String FILE_PREFIX = "file:/";
     private static final String UNIX_SLASH = "/";
     private static final String WIN_SLASH = "\\";
     private static final String UNIX_SEPARATOR = ":";
 
-    // disallow construction
+    // disallow outside construction
     private CpUtil()
     {
     }
