@@ -40,7 +40,6 @@ import org.apache.directory.fortress.core.GlobalErrIds;
 import org.apache.directory.fortress.core.rbac.User;
 import org.apache.directory.fortress.core.rbac.Role;
 import org.apache.directory.fortress.core.rbac.Session;
-import org.apache.directory.fortress.realm.tomcat.TcPrincipal;
 import org.apache.directory.fortress.core.util.attr.VUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

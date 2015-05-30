@@ -17,7 +17,7 @@
  *   under the License.
  *
  */
-package org.apache.directory.fortress.realm.tomcat;
+package org.apache.directory.fortress.realm;
 
 import java.io.Serializable;
 import java.security.Principal;

@@ -26,7 +26,6 @@ import org.apache.directory.fortress.core.rbac.User;
 import org.apache.directory.fortress.core.rbac.Role;
 import org.apache.directory.fortress.core.SecurityException;
 import org.apache.directory.fortress.core.rbac.Session;
-import org.apache.directory.fortress.realm.tomcat.TcPrincipal;
 
 /**
  * This interface is for components that use Websphere and Tomcat Container SPI's to provide
@@ -226,7 +225,7 @@ public interface J2eePolicyMgr
 
     /**
      * Determine if given Role is contained within User's Tomcat Principal object.  This method does not need to hit
-     * the ldap server as the User's activated Roles are loaded into {@link org.apache.directory.fortress.realm.tomcat.TcPrincipal#setContext(java.util.HashMap)}
+     * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
      *
      * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
      * @param roleName  Maps to {@link org.apache.directory.fortress.core.rbac.Role#name}.

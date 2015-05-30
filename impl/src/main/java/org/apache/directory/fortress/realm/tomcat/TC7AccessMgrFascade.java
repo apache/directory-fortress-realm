@@ -79,7 +79,7 @@ public class TC7AccessMgrFascade extends RealmBase
 
     /**
      * Determine if given Role is contained within User's Tomcat Principal object.  This method does not need to hit
-     * the ldap server as the User's activated Roles are loaded into {@link org.apache.directory.fortress.realm.tomcat.TcPrincipal#setContext(java.util.HashMap)}
+     * the ldap server as the User's activated Roles are loaded into {@link org.apache.directory.fortress.realm.TcPrincipal#setContext(java.util.HashMap)}
      *
      * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
      * @param role  Maps to {@code org.apache.directory.fortress.core.rbac.Role#name}.

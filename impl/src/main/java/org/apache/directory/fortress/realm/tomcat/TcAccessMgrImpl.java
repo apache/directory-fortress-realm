@@ -23,6 +23,7 @@ import org.apache.directory.fortress.core.SecurityException;
 import org.apache.directory.fortress.core.util.attr.VUtil;
 import org.apache.directory.fortress.realm.J2eePolicyMgr;
 import org.apache.directory.fortress.realm.J2eePolicyMgrFactory;
+import org.apache.directory.fortress.realm.TcPrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
