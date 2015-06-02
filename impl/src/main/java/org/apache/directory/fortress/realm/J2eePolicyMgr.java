@@ -22,10 +22,10 @@ package org.apache.directory.fortress.realm;
 import java.util.List;
 import java.security.Principal;
 
-import org.apache.directory.fortress.core.rbac.User;
-import org.apache.directory.fortress.core.rbac.Role;
+import org.apache.directory.fortress.core.model.User;
+import org.apache.directory.fortress.core.model.Role;
 import org.apache.directory.fortress.core.SecurityException;
-import org.apache.directory.fortress.core.rbac.Session;
+import org.apache.directory.fortress.core.model.Session;
 
 /**
  * This interface is for components that use Websphere and Tomcat Container SPI's to provide
@@ -51,19 +51,19 @@ public interface J2eePolicyMgr
     /**
      * Perform user authentication {@link User#password} and role activations.<br />
      * This method must be called once per user prior to calling other methods within this class.
-     * The successful result is {@link org.apache.directory.fortress.core.rbac.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
-     * In addition to checking user password validity it will apply configured password policy checks {@link org.apache.directory.fortress.core.rbac.User#pwPolicy}..<br />
-     * Method may also store parms passed in for audit trail {@link org.apache.directory.fortress.core.rbac.FortEntity}.
+     * The successful result is {@link org.apache.directory.fortress.core.model.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
+     * In addition to checking user password validity it will apply configured password policy checks {@link org.apache.directory.fortress.core.model.User#pwPolicy}..<br />
+     * Method may also store parms passed in for audit trail {@link org.apache.directory.fortress.core.model.FortEntity}.
      * <h4> This API will...</h4>
      * <ul>
      * <li> authenticate user password if trusted == false.
      * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>.
-     * <li> fail for any user who is locked by OpenLDAP's policies {@link org.apache.directory.fortress.core.rbac.User#isLocked()}, regardless of trusted flag being set as parm on API.
-     * <li> evaluate temporal {@link org.apache.directory.fortress.core.util.time.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.rbac.UserRole} and {@link org.apache.directory.fortress.core.rbac.UserAdminRole} entities.
+     * <li> fail for any user who is locked by OpenLDAP's policies {@link org.apache.directory.fortress.core.model.User#isLocked()}, regardless of trusted flag being set as parm on API.
+     * <li> evaluate temporal {@link org.apache.directory.fortress.core.util.time.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.model.UserRole} and {@link org.apache.directory.fortress.core.model.UserAdminRole} entities.
      * <li> process selective role activations into User RBAC Session {@link User#roles}.
-     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.rbac.DSDChecker#validate(org.apache.directory.fortress.core.rbac.Session, org.apache.directory.fortress.core.util.time.Constraint, org.apache.directory.fortress.core.util.time.Time)} on {@link org.apache.directory.fortress.core.rbac.User#roles}.
+     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.model.DSDChecker#validate(org.apache.directory.fortress.core.model.Session, org.apache.directory.fortress.core.util.time.Constraint, org.apache.directory.fortress.core.util.time.Time)} on {@link org.apache.directory.fortress.core.model.User#roles}.
      * <li> process selective administrative role activations {@link User#adminRoles}.
-     * <li> return a {@link org.apache.directory.fortress.core.rbac.Session} containing {@link org.apache.directory.fortress.core.rbac.Session#getUser()}, {@link org.apache.directory.fortress.core.rbac.Session#getRoles()} and {@link org.apache.directory.fortress.core.rbac.Session#getAdminRoles()} if everything checks out good.
+     * <li> return a {@link org.apache.directory.fortress.core.model.Session} containing {@link org.apache.directory.fortress.core.model.Session#getUser()}, {@link org.apache.directory.fortress.core.model.Session#getRoles()} and {@link org.apache.directory.fortress.core.model.Session#getAdminRoles()} if everything checks out good.
      * <li> throw a checked exception that will be {@link org.apache.directory.fortress.core.SecurityException} or its derivation.
      * <li> throw a {@link SecurityException} for system failures.
      * <li> throw a {@link org.apache.directory.fortress.core.PasswordException} for authentication and password policy violations.
@@ -83,9 +83,9 @@ public interface J2eePolicyMgr
      * </h4>
      * <ul>
      * <li> {@link User#userId} - required
-     * <li> {@link org.apache.directory.fortress.core.rbac.User#password}
-     * <li> {@link org.apache.directory.fortress.core.rbac.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
-     * <li> {@link org.apache.directory.fortress.core.rbac.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
+     * <li> {@link org.apache.directory.fortress.core.model.User#password}
+     * <li> {@link org.apache.directory.fortress.core.model.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
+     * <li> {@link org.apache.directory.fortress.core.model.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
      * <li> {@link User#props} collection of name value pairs collected on behalf of User during signon.  For example hostname:myservername or ip:192.168.1.99
      * </ul>
      * <h4>
@@ -97,8 +97,8 @@ public interface J2eePolicyMgr
      * </ul>
      * </p>
      *
-     * @param userId   maps to {@link org.apache.directory.fortress.core.rbac.User#userId}.
-     * @param password maps to {@link org.apache.directory.fortress.core.rbac.User#password}.
+     * @param userId   maps to {@link org.apache.directory.fortress.core.model.User#userId}.
+     * @param password maps to {@link org.apache.directory.fortress.core.model.User#password}.
      * @return TcPrincipal which contains the User's RBAC Session data formatted into a java.security.Principal that is used by Tomcat runtime.
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
@@ -109,19 +109,19 @@ public interface J2eePolicyMgr
     /**
      * Perform user authentication {@link User#password} and role activations.<br />
      * This method must be called once per user prior to calling other methods within this class.
-     * The successful result is {@link org.apache.directory.fortress.core.rbac.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
-     * In addition to checking user password validity it will apply configured password policy checks {@link org.apache.directory.fortress.core.rbac.User#pwPolicy}..<br />
-     * Method may also store parms passed in for audit trail {@link org.apache.directory.fortress.core.rbac.FortEntity}.
+     * The successful result is {@link org.apache.directory.fortress.core.model.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
+     * In addition to checking user password validity it will apply configured password policy checks {@link org.apache.directory.fortress.core.model.User#pwPolicy}..<br />
+     * Method may also store parms passed in for audit trail {@link org.apache.directory.fortress.core.model.FortEntity}.
      * <h4> This API will...</h4>
      * <ul>
      * <li> authenticate user password if trusted == false.
      * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>.
-     * <li> fail for any user who is locked by OpenLDAP's policies {@link org.apache.directory.fortress.core.rbac.User#isLocked()}, regardless of trusted flag being set as parm on API.
-     * <li> evaluate temporal {@link org.apache.directory.fortress.core.util.time.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.rbac.UserRole} and {@link org.apache.directory.fortress.core.rbac.UserAdminRole} entities.
+     * <li> fail for any user who is locked by OpenLDAP's policies {@link org.apache.directory.fortress.core.model.User#isLocked()}, regardless of trusted flag being set as parm on API.
+     * <li> evaluate temporal {@link org.apache.directory.fortress.core.util.time.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.model.UserRole} and {@link org.apache.directory.fortress.core.model.UserAdminRole} entities.
      * <li> process selective role activations into User RBAC Session {@link User#roles}.
-     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.rbac.DSDChecker#validate(org.apache.directory.fortress.core.rbac.Session, org.apache.directory.fortress.core.util.time.Constraint, org.apache.directory.fortress.core.util.time.Time)} on {@link org.apache.directory.fortress.core.rbac.User#roles}.
+     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.model.DSDChecker#validate(org.apache.directory.fortress.core.model.Session, org.apache.directory.fortress.core.util.time.Constraint, org.apache.directory.fortress.core.util.time.Time)} on {@link org.apache.directory.fortress.core.model.User#roles}.
      * <li> process selective administrative role activations {@link User#adminRoles}.
-     * <li> return a {@link org.apache.directory.fortress.core.rbac.Session} containing {@link org.apache.directory.fortress.core.rbac.Session#getUser()}, {@link org.apache.directory.fortress.core.rbac.Session#getRoles()} and {@link org.apache.directory.fortress.core.rbac.Session#getAdminRoles()} if everything checks out good.
+     * <li> return a {@link org.apache.directory.fortress.core.model.Session} containing {@link org.apache.directory.fortress.core.model.Session#getUser()}, {@link org.apache.directory.fortress.core.model.Session#getRoles()} and {@link org.apache.directory.fortress.core.model.Session#getAdminRoles()} if everything checks out good.
      * <li> throw a checked exception that will be {@link org.apache.directory.fortress.core.SecurityException} or its derivation.
      * <li> throw a {@link SecurityException} for system failures.
      * <li> throw a {@link org.apache.directory.fortress.core.PasswordException} for authentication and password policy violations.
@@ -141,9 +141,9 @@ public interface J2eePolicyMgr
      * </h4>
      * <ul>
      * <li> {@link User#userId} - required
-     * <li> {@link org.apache.directory.fortress.core.rbac.User#password}
-     * <li> {@link org.apache.directory.fortress.core.rbac.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
-     * <li> {@link org.apache.directory.fortress.core.rbac.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
+     * <li> {@link org.apache.directory.fortress.core.model.User#password}
+     * <li> {@link org.apache.directory.fortress.core.model.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
+     * <li> {@link org.apache.directory.fortress.core.model.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
      * <li> {@link User#props} collection of name value pairs collected on behalf of User during signon.  For example hostname:myservername or ip:192.168.1.99
      * </ul>
      * <h4>
@@ -155,8 +155,8 @@ public interface J2eePolicyMgr
      * </ul>
      * </p>
      *
-     * @param userId   maps to {@link org.apache.directory.fortress.core.rbac.User#userId}.
-     * @param password maps to {@link org.apache.directory.fortress.core.rbac.User#password}.
+     * @param userId   maps to {@link org.apache.directory.fortress.core.model.User#userId}.
+     * @param password maps to {@link org.apache.directory.fortress.core.model.User#password}.
      * @param roles constains list of role names to activate.
      * @return TcPrincipal which contains the User's RBAC Session data formatted into a java.security.Principal that is used by Tomcat runtime.
      * @throws org.apache.directory.fortress.core.SecurityException
@@ -168,19 +168,19 @@ public interface J2eePolicyMgr
     /**
      * Perform user authentication {@link User#password} and role activations.<br />
      * This method must be called once per user prior to calling other methods within this class.
-     * The successful result is {@link org.apache.directory.fortress.core.rbac.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
-     * In addition to checking user password validity it will apply configured password policy checks {@link org.apache.directory.fortress.core.rbac.User#pwPolicy}..<br />
-     * Method may also store parms passed in for audit trail {@link org.apache.directory.fortress.core.rbac.FortEntity}.
+     * The successful result is {@link org.apache.directory.fortress.core.model.Session} that contains target user's RBAC {@link User#roles} and Admin role {@link User#adminRoles}.<br />
+     * In addition to checking user password validity it will apply configured password policy checks {@link org.apache.directory.fortress.core.model.User#pwPolicy}..<br />
+     * Method may also store parms passed in for audit trail {@link org.apache.directory.fortress.core.model.FortEntity}.
      * <h4> This API will...</h4>
      * <ul>
      * <li> authenticate user password if trusted == false.
      * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>.
-     * <li> fail for any user who is locked by OpenLDAP's policies {@link org.apache.directory.fortress.core.rbac.User#isLocked()}, regardless of trusted flag being set as parm on API.
-     * <li> evaluate temporal {@link org.apache.directory.fortress.core.util.time.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.rbac.UserRole} and {@link org.apache.directory.fortress.core.rbac.UserAdminRole} entities.
+     * <li> fail for any user who is locked by OpenLDAP's policies {@link org.apache.directory.fortress.core.model.User#isLocked()}, regardless of trusted flag being set as parm on API.
+     * <li> evaluate temporal {@link org.apache.directory.fortress.core.util.time.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.model.UserRole} and {@link org.apache.directory.fortress.core.model.UserAdminRole} entities.
      * <li> process selective role activations into User RBAC Session {@link User#roles}.
-     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.rbac.DSDChecker#validate(org.apache.directory.fortress.core.rbac.Session, org.apache.directory.fortress.core.util.time.Constraint, org.apache.directory.fortress.core.util.time.Time)} on {@link org.apache.directory.fortress.core.rbac.User#roles}.
+     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.model.DSDChecker#validate(org.apache.directory.fortress.core.model.Session, org.apache.directory.fortress.core.util.time.Constraint, org.apache.directory.fortress.core.util.time.Time)} on {@link org.apache.directory.fortress.core.model.User#roles}.
      * <li> process selective administrative role activations {@link User#adminRoles}.
-     * <li> return a {@link org.apache.directory.fortress.core.rbac.Session} containing {@link org.apache.directory.fortress.core.rbac.Session#getUser()}, {@link org.apache.directory.fortress.core.rbac.Session#getRoles()} and {@link org.apache.directory.fortress.core.rbac.Session#getAdminRoles()} if everything checks out good.
+     * <li> return a {@link org.apache.directory.fortress.core.model.Session} containing {@link org.apache.directory.fortress.core.model.Session#getUser()}, {@link org.apache.directory.fortress.core.model.Session#getRoles()} and {@link org.apache.directory.fortress.core.model.Session#getAdminRoles()} if everything checks out good.
      * <li> throw a checked exception that will be {@link org.apache.directory.fortress.core.SecurityException} or its derivation.
      * <li> throw a {@link SecurityException} for system failures.
      * <li> throw a {@link org.apache.directory.fortress.core.PasswordException} for authentication and password policy violations.
@@ -200,9 +200,9 @@ public interface J2eePolicyMgr
      * </h4>
      * <ul>
      * <li> {@link User#userId} - required
-     * <li> {@link org.apache.directory.fortress.core.rbac.User#password}
-     * <li> {@link org.apache.directory.fortress.core.rbac.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
-     * <li> {@link org.apache.directory.fortress.core.rbac.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
+     * <li> {@link org.apache.directory.fortress.core.model.User#password}
+     * <li> {@link org.apache.directory.fortress.core.model.User#roles} contains a list of RBAC role names authorized for user and targeted for activation within this session.  Default is all authorized RBAC roles will be activated into this Session.
+     * <li> {@link org.apache.directory.fortress.core.model.User#adminRoles} contains a list of Admin role names authorized for user and targeted for activation.  Default is all authorized ARBAC roles will be activated into this Session.
      * <li> {@link User#props} collection of name value pairs collected on behalf of User during signon.  For example hostname:myservername or ip:192.168.1.99
      * </ul>
      * <h4>
@@ -214,9 +214,9 @@ public interface J2eePolicyMgr
      * </ul>
      * </p>
      *
-     * @param user      Contains {@link User#userId}, {@link org.apache.directory.fortress.core.rbac.User#password} (optional if {@code isTrusted} is 'true'), optional {@link User#roles}, optional {@link org.apache.directory.fortress.core.rbac.User#adminRoles}
+     * @param user      Contains {@link User#userId}, {@link org.apache.directory.fortress.core.model.User#password} (optional if {@code isTrusted} is 'true'), optional {@link User#roles}, optional {@link org.apache.directory.fortress.core.model.User#adminRoles}
      * @param isTrusted if true password is not required.
-     * @return Session object will contain authentication result code {@link org.apache.directory.fortress.core.rbac.Session#errorId}, RBAC role activations {@link org.apache.directory.fortress.core.rbac.Session#getRoles()}, Admin Role activations {@link org.apache.directory.fortress.core.rbac.Session#getAdminRoles()},OpenLDAP pw policy codes {@link org.apache.directory.fortress.core.rbac.Session#warningId}, {@link org.apache.directory.fortress.core.rbac.Session#expirationSeconds}, {@link org.apache.directory.fortress.core.rbac.Session#graceLogins} and more.
+     * @return Session object will contain authentication result code {@link org.apache.directory.fortress.core.model.Session#errorId}, RBAC role activations {@link org.apache.directory.fortress.core.model.Session#getRoles()}, Admin Role activations {@link org.apache.directory.fortress.core.model.Session#getAdminRoles()},OpenLDAP pw policy codes {@link org.apache.directory.fortress.core.model.Session#warningId}, {@link org.apache.directory.fortress.core.model.Session#expirationSeconds}, {@link org.apache.directory.fortress.core.model.Session#graceLogins} and more.
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
@@ -228,7 +228,7 @@ public interface J2eePolicyMgr
      * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
      *
      * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
-     * @param roleName  Maps to {@link org.apache.directory.fortress.core.rbac.Role#name}.
+     * @param roleName  Maps to {@link org.apache.directory.fortress.core.model.Role#name}.
      * @return True if Role is found in TcPrincipal, false otherwise.
      * @throws org.apache.directory.fortress.core.SecurityException
      *          data validation failure or system error..
@@ -250,9 +250,9 @@ public interface J2eePolicyMgr
     /**
      * Search for Roles assigned to given User.
      *
-     * @param userId Maps to {@link org.apache.directory.fortress.core.rbac.User#userId}.
+     * @param userId Maps to {@link org.apache.directory.fortress.core.model.User#userId}.
      * @param limit  controls the size of ldap result set returned.
-     * @return List of type String containing the {@link org.apache.directory.fortress.core.rbac.Role#name} of all assigned Roles.
+     * @return List of type String containing the {@link org.apache.directory.fortress.core.model.Role#name} of all assigned Roles.
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure or DAO error.
      */

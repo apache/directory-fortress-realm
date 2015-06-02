@@ -19,8 +19,9 @@
  */
 package org.apache.directory.fortress.realm.tomcat;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.fortress.core.SecurityException;
-import org.apache.directory.fortress.core.util.attr.VUtil;
+import org.apache.directory.fortress.core.util.ObjUtil;
 import org.apache.directory.fortress.realm.J2eePolicyMgr;
 import org.apache.directory.fortress.realm.J2eePolicyMgrFactory;
 import org.apache.directory.fortress.realm.TcPrincipal;
@@ -86,7 +87,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
         try
         {
             // If a 'default.roles' property set in config, user them
-            if ( VUtil.isNotNullOrEmpty( defaultRoles ) )
+            if ( ObjUtil.isNotNullOrEmpty( defaultRoles ) )
             {
                 principal = j2eeMgr.createSession( userId, password, defaultRoles );
                 LOG.debug( "{}.authenticate userId [{}], with default roles[{}], successful", CLS_NM, userId, defaultRoles );
@@ -111,7 +112,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
      * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
      *
      * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
-     * @param roleName  Maps to {@code org.apache.directory.fortress.core.rbac.Role#name}.
+     * @param roleName  Maps to {@code org.apache.directory.fortress.core.model.Role#name}.
      * @return True if Role is found in TcPrincipal, false otherwise.
      */
     public boolean hasRole( Principal principal, String roleName )
@@ -147,7 +148,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
      */
     public void setDefaultRoles( String szDefaultRoles )
     {
-        if( VUtil.isNotNullOrEmpty( szDefaultRoles ) )
+        if( StringUtils.isNotEmpty( szDefaultRoles ) )
         {
             defaultRoles = Arrays.asList( szDefaultRoles.split( "\\s*,\\s*" ) );
             LOG.info( "DEFAULT ROLES: {}", defaultRoles );

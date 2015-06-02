@@ -150,7 +150,7 @@ public class Tc7AccessMgrProxy extends RealmBase
      * the ldap server as the User's activated Roles are loaded into {@link org.apache.directory.fortress.realm.tomcat.TcPrincipal#setContext(java.util.HashMap)}
      *
      * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
-     * @param role  Maps to {@code org.apache.directory.fortress.core.rbac.Role#name}.
+     * @param role  Maps to {@code org.apache.directory.fortress.core.model.Role#name}.
      * @return True if Role is found in TcPrincipal, false otherwise.
      */
     @Override

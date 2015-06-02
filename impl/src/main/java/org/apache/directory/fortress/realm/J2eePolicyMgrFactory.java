@@ -19,7 +19,7 @@
  */
 package org.apache.directory.fortress.realm;
 
-import org.apache.directory.fortress.core.cfg.Config;
+import org.apache.directory.fortress.core.util.Config;
 import org.apache.directory.fortress.core.SecurityException;
 import org.apache.directory.fortress.core.GlobalErrIds;
 import org.slf4j.Logger;
