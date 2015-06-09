@@ -30,6 +30,7 @@ import java.util.List;
 import java.security.Principal;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.directory.fortress.core.GlobalIds;
 import org.apache.directory.fortress.core.ReviewMgr;
 import org.apache.directory.fortress.core.ReviewMgrFactory;
@@ -40,7 +41,6 @@ import org.apache.directory.fortress.core.GlobalErrIds;
 import org.apache.directory.fortress.core.model.User;
 import org.apache.directory.fortress.core.model.Role;
 import org.apache.directory.fortress.core.model.Session;
-import org.apache.directory.fortress.core.util.ObjUtil;
 import org.apache.directory.fortress.core.util.VUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -244,7 +244,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         User user = new User( userId, password );
         
         // Load the passed in role list into list of User requested roles:
-        if ( ObjUtil.isNotNullOrEmpty( roles ) )
+        if ( CollectionUtils.isNotEmpty( roles ) )
         {
             for(String role : roles)
             {

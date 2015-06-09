@@ -19,9 +19,9 @@
  */
 package org.apache.directory.fortress.realm.tomcat;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.fortress.core.SecurityException;
-import org.apache.directory.fortress.core.util.ObjUtil;
 import org.apache.directory.fortress.realm.J2eePolicyMgr;
 import org.apache.directory.fortress.realm.J2eePolicyMgrFactory;
 import org.apache.directory.fortress.realm.TcPrincipal;
@@ -87,7 +87,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
         try
         {
             // If a 'default.roles' property set in config, user them
-            if ( ObjUtil.isNotNullOrEmpty( defaultRoles ) )
+            if ( CollectionUtils.isNotEmpty( defaultRoles ) )
             {
                 principal = j2eeMgr.createSession( userId, password, defaultRoles );
                 LOG.debug( "{}.authenticate userId [{}], with default roles[{}], successful", CLS_NM, userId, defaultRoles );
