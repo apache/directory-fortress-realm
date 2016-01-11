@@ -248,7 +248,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
         {
             for(String role : roles)
             {
-                user.setRole( role );
+                user.setRoleName( role );
             }
         }
         
