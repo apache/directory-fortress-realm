@@ -17,6 +17,9 @@
 
 # Apache Fortress Realm
 
+ Apache Fortress Realm Version 1.0-RC41 System Architecture Diagram
+ ![Apache Fortress Realm System Architecture](images/fortress-realm-system-arch.png "Apache Fortress Realm System Architecture")
+
 This document contains instructions to download, build, and install Apache Fortress Realm component.
 
 -------------------------------------------------------------------------------

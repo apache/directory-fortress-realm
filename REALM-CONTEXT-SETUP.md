@@ -17,6 +17,9 @@
 
 # Apache Fortress Realm Context Setup
 
+ Apache Fortress Realm Version 1.0-RC41 System Architecture Diagram
+ ![Apache Fortress Realm System Architecture](images/fortress-realm-system-arch.png "Apache Fortress Realm System Architecture")
+
 This document contains instructions to enable Apache Fortress Realm for a single Web context under Apache Tomcat.  To target enablement for all apps running under the container, checkout: [REALM-HOST-SETUP](./REALM-HOST-SETUP.md).
 
 -------------------------------------------------------------------------------
