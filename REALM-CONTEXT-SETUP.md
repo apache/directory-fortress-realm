@@ -44,7 +44,7 @@ Minimum software requirements:
  * Apache Fortress Core installed per README located in that package.
  * LDAP server setup and configured per Apache Fortress Core README.
 
-Everything else covered in steps that follow.  Tested on Debian, Centos & Windows systems.
+Everything else covered in steps that follow.  Tested on Debian, Centos & Windows machines.
 
 -------------------------------------------------------------------------------
 ## SECTION 2. Prepare Machine.

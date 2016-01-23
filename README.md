@@ -42,7 +42,7 @@ Minimum software requirements:
  * Apache Maven3++
  * Apache Fortress Core installed per README located in the same package.
 
-Everything else covered in steps that follow.  Tested on Debian, Centos & Windows systems.
+Everything else covered in steps that follow.  Tested on Debian, Centos & Windows machines.
 
 -------------------------------------------------------------------------------
 ## SECTION 2. Download & Build

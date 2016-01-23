@@ -43,7 +43,7 @@ Minimum software requirements:
  * Apache Fortress Core installed per README located in that package.
  * LDAP server setup and configured per Apache Fortress Core README.
 
-Everything else covered in steps that follow.  Tested on Debian, Centos & Windows systems.
+Everything else covered in steps that follow.  Tested on Debian, Centos & Windows machines.
 
 -------------------------------------------------------------------------------
 ## SECTION 2. Prepare Machine.
@@ -58,16 +58,16 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
  Where [directory-fortress-realm] is base folder of this source package.
 
-3. Configure Fortress Realm for target LDAP server
+3. Configure the Fortress Realm for target LDAP server.
 
  Copy the fortress.properties, created during [directory-fortress-core] setup, to this package's config folder.
  ```
  cp [directory-fortress-core]/config/fortress.properties [directory-fortress-realm]/conf
  ```
 
- Where [directory-fortress-core] is base folder of the fortress core source package and [directory-fortress-realm] is the current package's home folder.
+ Where [directory-fortress-core] is base folder of the fortress core source package and [directory-fortress-realm] is this package's home folder.
 
-4. Restart tomcat server instance for changes to take effect.
+4. Restart Tomcat server for changes to take effect.
 
 _________________________________________________________________________________
 ## SECTION 3. Enable Tomcat Realm for Host
@@ -94,7 +94,7 @@ ________________________________________________________________________________
 	/>
  ```
 
- Where [directory-fortress-realm] is base folder of the fortress realm source package.
+ Where [directory-fortress-realm] is base folder of this package.
 
 4. restart tomcat
 
