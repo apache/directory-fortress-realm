@@ -26,13 +26,13 @@
  * Document Overview
  * Tips for first-time users.
  * SECTION 1. Prerequisites.
- * SECTION 2. Prepare Machine.
- * SECTION 3. Enable Tomcat Realm for Web context.
+ * SECTION 2. Prepare the Fortress Realm.
+ * SECTION 3. Enable Fortress Realm for Web context.
  * More on the Realm Proxy
 ___________________________________________________________________________________
 ## Document Overview
 
-This document contains instructions to enable Apache Fortress Realm for a single Web app context running under Apache Tomcat.  To enable for all apps running under the Tomcat server, checkout: [REALM-HOST-SETUP](./REALM-HOST-SETUP.md).
+This document contains instructions to enable Apache Fortress Realm for a single Web app context running under Apache Tomcat.  To enable for all apps running, using Tomcat global security option, checkout: [REALM-HOST-SETUP](./REALM-HOST-SETUP.md).
 
 ___________________________________________________________________________________
 ##  Tips for first-time users
@@ -58,11 +58,12 @@ Minimum software requirements:
  * git
  * Apache Maven3++
  * Apache Fortress Core and LDAP server installed per README located in **FORTRESS_CORE_HOME** package.
+ * Apache Fortress Realm installed per this package's [README](README.md).
 
 Everything else covered in steps that follow.  Tested on Debian, Centos & Windows machines.
 
 -------------------------------------------------------------------------------
-## SECTION 2. Prepare Machine.
+## SECTION 2. Prepare the Fortress Realm
 
 1. Follow instructions in README.txt to build and install fortress realm component.
 
@@ -75,7 +76,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 3. Restart tomcat server instance for changes to take effect.
 
 -------------------------------------------------------------------------------
-## SECTION 3. Enable Tomcat Realm for Web context
+## SECTION 3. Enable Fortress Realm for Web context
 
 1. Add a context.xml file to the META-INF folder of target web app.
 
@@ -175,20 +176,38 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  enable.pool.reconnect=true
  ```
 
-6. Redeploy web application to Tomcat.
-
-7. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
-
-8. Verify that fortress realm is operating properly by viewing the Tomcat server log:
+6. Add two other config files to classpath.
 
  ```
- tail -f -n10000 TOMCAT_HOME/logs/catalina.out
+ cp $FORTRESS_REALM_HOME/conf/echcache.xml $MY_APP_HOME/src/main/resources
+ cp $FORTRESS_REALM_HOME/conf/log4j.properties $MY_APP_HOME/src/main/resources
+ ```
+
+7. Verify the configuration artifacts are properly staged to your app.
+ ```
+ x@machine:~/MY_APP_HOME/src/main/resources$ ls -l
+ ...
+ -rwxrwxr-x 1 x y 5905 Jan 23 12:41 ehcache.xml
+ -rw-rw-r-- 1 x y 1161 Jan 23 12:41 fortress.properties
+ -rw-rw-r-- 1 x y 1235 Jan 23 12:41 log4j.properties
+ ...
+ ```
+ *Fortress requires all three files to work.*
+
+8. Redeploy web application to Tomcat.
+
+9. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
+
+10. Verify that realm is operating properly per Tomcat server log:
+
+ ```
+ tail -f -n10000 $TOMCAT_HOME/logs/catalina.out
  ...
  org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
  ...
  ```
 
-9. You have enabled security for a single Web app running in Tomcat.  This will enforce declarative authentication and coarse-gained authorization (isUserInRole) checks.  For a look at how to apply more, check out [Apache Fortress Demo End-to-End Security Example](https://github.com/shawnmckinney/apache-fortress-demo).
+11. You have enabled security for a single Web app running in Tomcat.  This will enforce declarative authentication and coarse-gained authorization (isUserInRole) checks.  For a look at how to apply more, check out [Apache Fortress Demo End-to-End Security Example](https://github.com/shawnmckinney/apache-fortress-demo).
 
 *These instructions depend on understanding of Java EE security, Apache Fortress & Tomcat semantics.  For more info on how these work, checkout the section on tips for first-time users.*
 

@@ -27,8 +27,8 @@
  * Document Overview
  * Tips for first-time users.
  * SECTION 1. Prerequisites.
- * SECTION 2. Prepare Machine.
- * SECTION 3. Enable Tomcat Realm for Host.
+ * SECTION 2. Prepare the Fortress Realm.
+ * SECTION 3. Enable Tomcat Global Security.
  * SECTION 4. Enable Web Application to use Apache Fortress Realm
  * SECTION 5. Test with Tomcat Manager App (Optional).
  * SECTION 6. Common troubleshooting tips.
@@ -37,7 +37,7 @@
 ___________________________________________________________________________________
 ## Document Overview
 
-This document describes how to enable Fortress Realm to provide security for all apps running inside a Tomcat server virtual host.  To target setup for a single web application, and not the entire container, follow the Tomcat instructions in the [REALM-CONTEXT-SETUP](./REALM-CONTEXT-SETUP.md).
+This document describes how to enable global security inside Tomcat to use the Fortress Realm.  To target setup for a single web application, w/out global security enabled, follow the instructions in the [REALM-CONTEXT-SETUP](./REALM-CONTEXT-SETUP.md).
 
 ___________________________________________________________________________________
 ##  Tips for first-time users
@@ -62,35 +62,81 @@ Minimum software requirements:
  * Apache Tomcat7++
  * git
  * Apache Maven3++
- * Apache Fortress Core installed per README located in that package.
- * LDAP server setup and configured per Apache Fortress Core README.
+ * Apache Fortress Core and LDAP server installed per README located in **FORTRESS_CORE_HOME** package.
+ * Apache Fortress Realm installed per this package's [README](README.md).
 
 Everything else covered in steps that follow.  Tested on Debian, Centos & Windows machines.
 
 -------------------------------------------------------------------------------
-## SECTION 2. Prepare Machine.
+## SECTION 2. Prepare the Fortress Realm.
 
-1. Follow instructions in README.txt to build and install fortress realm component.
+1. Stage the Fortress Realm Proxy jar.
 
-2. copy fortress-realm-proxy-[version].jar to TOMCAT_HOME/lib/
+ Copy fortress-realm-proxy-[version].jar to TOMCAT_HOME/lib/ folder:
 
  ```
- cp FORTRESS_REALM_HOME/proxy/fortress-realm-proxy-[version].jar TOMCAT_HOME/lib
+ cp $FORTRESS_REALM_HOME/proxy/fortress-realm-proxy-[version].jar $TOMCAT_HOME/lib
  ```
 
-3. Configure the Fortress Realm for target LDAP server.
+2. Configure the Fortress Realm for target LDAP server usage.
 
- Copy the fortress.properties, created during [directory-fortress-core] setup, to this package's config folder.
+ Copy the fortress.properties, created during **FORTRESS_CORE_HOME**/README, to this package's conf folder.
  ```
- cp FORTRESS_CORE_HOME/config/fortress.properties FORTRESS_REALM_HOME/conf
+ cp $FORTRESS_CORE_HOME/config/fortress.properties $FORTRESS_REALM_HOME/conf
  ```
 
-4. Restart Tomcat server for changes to take effect.
+3. Verify a match for target LDAP server coordinates.
+ ```
+ # This param tells fortress what type of ldap server in use:
+ ldap.server.type=apacheds
 
+ # ldap host name
+ host=localhost
+
+ # if ApacheDS is listening on
+ port=10389
+
+ # If ApacheDS, these credentials are used for read/write to fortress DIT
+ admin.user=uid=admin,ou=system
+ admin.pw=secret
+
+ # This is min/max settings for admin pool connections:
+ min.admin.conn=1
+ max.admin.conn=10
+
+ # This node contains more fortress properties stored on behalf of connecting LDAP clients:
+ config.realm=DEFAULT
+ config.root=ou=Config,dc=example,dc=com
+
+ # Used by application security components:
+ perms.cached=true
+
+ # Fortress uses a cache:
+ ehcache.config.file=ehcache.xml
+
+ # Default for pool reconnect flag is false:
+ enable.pool.reconnect=true
+ ```
+
+4. Verify the configuration artifacts are present.
+ ```
+ x@machine:~/GIT/fortressDev/directory-fortress-realm/conf$ ls -l
+ ...
+ -rwxrwxr-x 1 x y 5905 Jan 23 12:41 ehcache.xml
+ -rw-rw-r-- 1 x y 1161 Jan 23 12:41 fortress.properties
+ -rw-rw-r-- 1 x y 1235 Jan 23 12:41 log4j.properties
+ ...
+ ```
+
+ *Fortress requires all three files to work.*
 _________________________________________________________________________________
-## SECTION 3. Enable Tomcat Realm for Host
+## SECTION 3. Enable Tomcat Global Security
 
-1. Edit TOMCAT_HOME/conf/server.xml
+1. Edit **TOMCAT_HOME**/conf/server.xml:
+
+ ```
+ vi $TOMCAT_HOME/conf/server.xml
+ ```
 
 2. Comment out entry to UserDatabase:
  ```
@@ -101,7 +147,8 @@ ________________________________________________________________________________
     pathname="conf/tomcat-users.xml" /-->
  ```
 
-3. Add the following to the same file:
+3. Enable Tomcat global security to use the Fortress Realm.
+ Add the following to the same file:
  ```
  <Realm className="org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy"
      debug="0"
@@ -111,14 +158,19 @@ ________________________________________________________________________________
      defaultRoles=""
 	/>
  ```
+ Here the fortress realm config folder and implementation jar is being declared.  Stage these files outside of **TOMCAT_HOME** to ensure they remain clear the system classpath of Tomcat server.
 
-4. restart tomcat
+4. Save and exit editor.
 
-5. view the server logs to ensure there are no errors.
+5. Restart Tomcat server to enable changes.
 
-6. verify that fortress realm started successfully by viewing following message in catalina.log:
+6. Verify it worked:
+
  ```
+ tail -f -n10000 $TOMCAT_HOME/logs/catalina.out
+ ...
  org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
+ ...
  ```
 
 _________________________________________________________________________________
@@ -163,16 +215,16 @@ ________________________________________________________________________________
 4. Verify that fortress realm is operating properly by viewing the Tomcat server log:
 
  ```
- tail -f -n10000 TOMCAT_HOME/logs/catalina.out
+ tail -f -n10000 $TOMCAT_HOME/logs/catalina.out
  ...
  org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
  ...
  ```
 
-5. You have global security enabled under Tomcat but have enabled for a single Web app only.  This will require declarative authentication and coarse-gained authorization (isUserInRole) checks for that app.
- You may now repeat these steps for other apps running under the Tomcat server.  For a look at how to apply more stringent security, check out the [Apache Fortress Demo End-to-End Security Example](https://github.com/shawnmckinney/apache-fortress-demo).
-
-*These instructions depend on understanding of Java EE security, Apache Fortress & Tomcat semantics.  For more info on how these work, checkout the section on tips for first-time users.*
+Realm Usage Notes:
+* Global security is now enabled under Tomcat.
+* This automatically enforces authentication and coarse-gained authorization (isUserInRole) checking.
+* Repeat steps in this section for each additional app to use Java EE security enforcement.
 
 _________________________________________________________________________________
 ## SECTION 5. Test with Tomcat Manager App (Optional)
@@ -181,7 +233,7 @@ This section provides instructions for using the Tomcat Manager application to t
 
 1. Enable Tomcat Manager application. note: check the Tomcat documentation on how to do this.
 
-2. Verify/enable role name. Edit TOMCAT_HOME/webapps/manager/WEB-INF/web.xml
+2. Verify/enable role name. Edit **TOMCAT_HOME**/webapps/manager/WEB-INF/web.xml
 
  ```
  <!-- Security roles referenced by this web application --/>

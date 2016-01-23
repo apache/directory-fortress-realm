@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
+   Licensed to the Apache Software Foundation (ASF) under one
+   or more contributor license agreements.  See the NOTICE file
+   distributed with this work for additional information
+   regarding copyright ownership.  The ASF licenses this file
+   to you under the Apache License, Version 2.0 (the
+   "License"); you may not use this file except in compliance
+   with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.
+-->
+
+<!--
 Fortress CacheManager Configuration
 ==========================
 This ehcache.xml corresponds to a single CacheManager.
@@ -22,16 +41,16 @@ This ehcache.xml corresponds to a single CacheManager.
     The defaultCache has an implicit name "default" which is a reserved cache name.
     -->
     <defaultCache
-           eternal="false"
-           overflowToDisk="false"
-           timeToIdleSeconds="120"
-           timeToLiveSeconds="120"
-           diskSpoolBufferSizeMB="30"
-           maxElementsOnDisk="10"
-           diskPersistent="false"
-           diskExpiryThreadIntervalSeconds="120"
-           memoryStoreEvictionPolicy="LRU"
-           />
+            eternal="false"
+            overflowToDisk="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            diskSpoolBufferSizeMB="30"
+            maxElementsOnDisk="10"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"
+            />
 
     <!--
         Thic cache contains password policy entries.  It is used to save a read on User password policy edits. There should be one element for every tenant.
@@ -45,7 +64,7 @@ This ehcache.xml corresponds to a single CacheManager.
            timeToIdleSeconds="600"
            timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
-           />
+            />
 
     <!--
         Contains the value OrgUnits for User and Permissions. There should be two elements for every tenant.
@@ -59,7 +78,7 @@ This ehcache.xml corresponds to a single CacheManager.
            timeToIdleSeconds="600"
            timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
-           />
+            />
 
     <!--
         Contains the JGraphT hierarchies for RBAC roles.  There should be one element for every tenant.
@@ -73,7 +92,7 @@ This ehcache.xml corresponds to a single CacheManager.
            timeToIdleSeconds="600"
            timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
-           />
+            />
 
     <!--
         Contains the JGraphT hierarchies for ARBAC roles. There should be one element for every tenant.
@@ -87,7 +106,7 @@ This ehcache.xml corresponds to a single CacheManager.
            timeToIdleSeconds="600"
            timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
-           />
+            />
 
     <!--
         Contains the JGraphT hierarchies for Perm OUs. There should be one element for every tenant.
@@ -101,7 +120,7 @@ This ehcache.xml corresponds to a single CacheManager.
            timeToIdleSeconds="600"
            timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
-           />
+            />
 
     <!--
         Contains the JGraphT hierarchies for User OUs.  There should be one element for every tenant.
@@ -115,7 +134,7 @@ This ehcache.xml corresponds to a single CacheManager.
            timeToIdleSeconds="600"
            timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
-           />
+            />
 
     <!--
         Searchable cache contains Role<->DSD mapping.  This configuration sets a fairly long TTL of 1 hour.
@@ -129,12 +148,12 @@ This ehcache.xml corresponds to a single CacheManager.
            timeToIdleSeconds="3600"
            timeToLiveSeconds="3600"
            memoryStoreEvictionPolicy="LFU">
-           <searchable>
-               <searchAttribute name="member" expression="value.getMember()"/>
-               <searchAttribute name="name" expression="value.getName()"/>
-               <searchAttribute name="contextId" expression="value.getContextId()"/>
-           </searchable>
-        </cache>
+        <searchable>
+            <searchAttribute name="member" expression="value.getMember()"/>
+            <searchAttribute name="name" expression="value.getName()"/>
+            <searchAttribute name="contextId" expression="value.getContextId()"/>
+        </searchable>
+    </cache>
 
     <!--
         Cache contains Role<->SSD mapping.
@@ -148,6 +167,6 @@ This ehcache.xml corresponds to a single CacheManager.
            timeToIdleSeconds="600"
            timeToLiveSeconds="600"
            memoryStoreEvictionPolicy="LFU"
-           />
+            />
 
 </ehcache>
