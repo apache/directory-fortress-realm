@@ -96,10 +96,10 @@ There are pros and cons of each.  Option 1 requires web apps to be dependent on 
 frees the app of entanglement with fortress, which is easier to manage, but limits capabilities to Java EE security semantics.
 
 ```
-|Realm Type||Is Web App Dependent?|Is Declarative?|Is Programmatic?|Is Global Security?|
-|----------||---------------------|---------------|----------------|-------------------|
-| Option 1 ||         Yes         |      Yes      |       Yes      |        No         |
-| Option 2 ||         No          |      Yes      |       No       |        Yes        |
+|Realm Type||Is Web App Dependent?|Is Declarative?|Is RBAC?|Is Global Security?|
+|----------||---------------------|---------------|--------|-------------------|
+| Option 1 ||         Yes         |      Yes      |  Yes   |       No          |
+| Option 2 ||         No          |      Yes      |  No    |       Yes         |
 ```
 
 ### Option 1. For Single Web Context
