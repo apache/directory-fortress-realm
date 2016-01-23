@@ -192,7 +192,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  -rw-rw-r-- 1 x y 1235 Jan 23 12:41 log4j.properties
  ...
  ```
- *Fortress requires all three files to work.*
+ *Fortress needs all three files.*
 
 8. Redeploy web application to Tomcat.
 
@@ -209,7 +209,9 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
 11. You have enabled security for a single Web app running in Tomcat.  This will enforce declarative authentication and coarse-gained authorization (isUserInRole) checks.  For a look at how to apply more, check out [Apache Fortress Demo End-to-End Security Example](https://github.com/shawnmckinney/apache-fortress-demo).
 
-*These instructions depend on understanding of Java EE security, Apache Fortress & Tomcat semantics.  For more info on how these work, checkout the section on tips for first-time users.*
+Realm Usage Notes:
+* This automatically enforces authentication and coarse-gained authorization (isUserInRole) checking.
+* Repeat steps in this section for each additional app to use Java EE security enforcement.
 
 ## More on the Realm Proxy
 The fortress realm proxy jar contains a *shim* that uses a URLClassLoader to reach its implementation libs. It prevents the realm impl libs, pulled in as dependency to your web app, from interfering with Tomcat's system classpath thus providing an error free deployment process w/out classloader issues. The realm proxy offers the flexibility for each web app to determine its own version/type of security realm to use, satisfying a variety of requirements related to web hosting and multitenancy.

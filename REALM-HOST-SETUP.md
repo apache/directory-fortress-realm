@@ -80,7 +80,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
 2. Configure the Fortress Realm for target LDAP server usage.
 
- Copy the fortress.properties, created during **FORTRESS_CORE_HOME**/README, to this package's conf folder.
+ Copy the fortress.properties, created during **FORTRESS_CORE_HOME** setup, to this package's conf folder.
  ```
  cp $FORTRESS_CORE_HOME/config/fortress.properties $FORTRESS_REALM_HOME/conf
  ```
@@ -128,7 +128,8 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  ...
  ```
 
- *Fortress requires all three files to work.*
+ *Fortress needs all three files.*
+
 _________________________________________________________________________________
 ## SECTION 3. Enable Tomcat Global Security
 
@@ -154,15 +155,15 @@ ________________________________________________________________________________
      debug="0"
      resourceName="UserDatabase"
 	 containerType="Tomcat7"
-     realmClasspath="FORTRESS_REALM_HOME/conf:FORTRESS_REALM_HOME/impl/target/fortress-realm-impl-uber-[version].jar"
+     realmClasspath="$FORTRESS_REALM_HOME/conf:$FORTRESS_REALM_HOME/impl/target/fortress-realm-impl-uber-[version].jar"
      defaultRoles=""
 	/>
  ```
- *Here the fortress realm config folder and implementation jar are being declared.  Stage these files outside of TOMCAT_HOME to ensure they remain clear of Tomcat's system classpath.*
+ *Here the fortress realm config folder and implementation jar are being declared.  Stage these files outside of TOMCAT_HOME to ensure remaining clear of Tomcat's system classpath.*
 
-4. Save and exit editor.
+4. Save and exit the editor.
 
-5. Restart Tomcat server to enable changes.
+5. Restart Tomcat server to enable changes to take effect.
 
 6. Verify it worked:
 
@@ -176,7 +177,7 @@ ________________________________________________________________________________
 _________________________________________________________________________________
 ## SECTION 4. Enable Web Application to use Apache Fortress Realm
 
-1. Add security constraints to target web.xml:
+1. Add security constraints to the target web.xml deployment descriptor:
  ```
   ...
   <security-constraint>
@@ -208,11 +209,11 @@ ________________________________________________________________________________
 
  *Fortress Realm follows standard Java EE security semantics.*
 
-2. Redeploy web application to Tomcat.
+2. Redeploy web app to Tomcat.
 
-3. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
+3. Login to the web app.  Users that successfully authenticate and have role(s) listed in **auth-constraint** may access resources matching the **url-pattern**.
 
-4. Verify that fortress realm is operating properly by viewing the Tomcat server log:
+4. Verify that the fortress realm is operating properly by viewing the Tomcat server log:
 
  ```
  tail -f -n10000 $TOMCAT_HOME/logs/catalina.out
