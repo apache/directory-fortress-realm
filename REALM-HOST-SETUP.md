@@ -17,7 +17,7 @@
 
 # Apache Fortress Realm Host Setup
 
-This document describes how to enable Fortress Realm to provide security for all apps running inside a Tomcat server virtual host.  To target setup for a single web application, and not for the container, follow the Tomcat instructions in the [REALM-CONTEXT-SETUP](./REALM-CONTEXT-SETUP.md).
+This document describes how to enable Fortress Realm to provide security for all apps running inside a Tomcat server virtual host.  To target setup for a single web application, and not the entire container, follow the Tomcat instructions in the [REALM-CONTEXT-SETUP](./REALM-CONTEXT-SETUP.md).
 
 -------------------------------------------------------------------------------
 ## Table of Contents
@@ -40,7 +40,8 @@ Minimum software requirements:
  * Apache Tomcat7++
  * git
  * Apache Maven3++
- * Apache Fortress Core installed per README located in the Apache Fortress Core package.
+ * Apache Fortress Core installed per README located in that package.
+ * LDAP server setup and configured per Apache Fortress Core README.
 
 Everything else covered in steps that follow.  Tested on Debian, Centos & Windows systems.
 
@@ -59,9 +60,9 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
 3. Configure Fortress Realm for target LDAP server
 
- Copy the fortress.properties, created during [directory-fortress-core] setup, to this package's resource folder.
+ Copy the fortress.properties, created during [directory-fortress-core] setup, to this package's config folder.
  ```
- cp [directory-fortress-core]/config/fortress.properties [directory-fortress-realm]/src/main/resources
+ cp [directory-fortress-core]/config/fortress.properties [directory-fortress-realm]/conf
  ```
 
  Where [directory-fortress-core] is base folder of the fortress core source package and [directory-fortress-realm] is the current package's home folder.
@@ -88,12 +89,11 @@ ________________________________________________________________________________
      debug="0"
      resourceName="UserDatabase"
 	 containerType="Tomcat7"
-     realmClasspath="[directory-fortress-realm]/src/main/resources:[directory-fortress-realm]/impl/target/fortress-realm-impl-uber-[version].jar"
+     realmClasspath="[directory-fortress-realm]/conf:[directory-fortress-realm]/impl/target/fortress-realm-impl-uber-[version].jar"
      defaultRoles=""
 	/>
  ```
 
- Where [directory-fortress-core] is base folder of the fortress core source package.
  Where [directory-fortress-realm] is base folder of the fortress realm source package.
 
 4. restart tomcat
@@ -136,7 +136,7 @@ This section provides instructions for using the Tomcat Manager application to t
 _________________________________________________________________________________
 ## SECTION 5. Common troubleshooting tips
 
-1. Server can't find config files (realmClasspath="/fortressSentry-1.0.0/conf/")
+1. Server can't find config files (realmClasspath="[directory-fortress-realm]/conf")
 
  ```
  Jul 15, 2011 8:21:16 PM us.jts.sentry.tomcat.Tc7AccessMgrProxy initialize
@@ -177,24 +177,24 @@ ________________________________________________________________________________
 
  ACTION: Ensure realm classpath points to Fortress configuration folder that contains fortress.properties config file.
 
-2. Server can't find proxy jar (Realm className="us.jts.sentry.tomcat.TcAccessMgrProxy")
+2. Server can't find proxy jar (Realm className="org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy")
  ```
- INFO: The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/i386/server:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/lib/i386:/usr/lib/jvm/java-6-sun-1.6.0.22/jre/../lib/i386:/usr/java/packages/lib/i386:/lib:/usr/lib
+ INFO: The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path...
  Apr 22, 2011 10:24:04 PM org.apache.tomcat.util.digester.Digester startElement
  SEVERE: Begin event threw exception
- java.lang.ClassNotFoundException: us.jts.sentry.tomcat.TcAccessMgrProxy
+ java.lang.ClassNotFoundException: org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy
  ```
 
  ACTION: Ensure fortress-realm-proxy jar copied to TOMCAT_HOME/lib folder.
 
-3. Server can't find binaries (realmClasspath="...FORTRESS_HOME/lib/fortressSentry-[version].jar")
+3. Server can't find binaries (realmClasspath="[directory-fortress-realm]/impl/target/fortress-realm-impl-uber-[version].jar")
  ```
- Apr 22, 2011 10:22:25 PM us.jts.sentry.tomcat.TcAccessMgrProxy initialize
- SEVERE: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: us.jts.sentry.tomcat.TcAccessMgrImpl
- Apr 22, 2011 10:22:25 PM us.jts.sentry.tomcat.TcAccessMgrProxy start
- SEVERE: Fortress Tomcat Realm.start caught Exception=java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: us.jts.sentry.tomcat.TcAccessMgrImpl
- java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: us.jts.sentry.tomcat.TcAccessMgrImpl
-        at us.jts.sentry.tomcat.TcAccessMgrProxy.initialize(TcAccessMgrProxy.java:118)
+ Apr 22, 2011 10:22:25 PM org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy initialize
+ SEVERE: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl
+ Apr 22, 2011 10:22:25 PM org.apache.directory.fortress.realm.tomcat.TcAccessMgrProxy start
+ SEVERE: Fortress Tomcat Realm.start caught Exception=java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl
+ java.lang.RuntimeException: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl
+        at org.apache.directory.fortress.realm.tomcat.TcAccessMgrProxy.initialize(TcAccessMgrProxy.java:118)
  ```
 
  ACTION: Ensure realm classpath points fortress-realm-impl-uber jar, i.e. [fortress-realm]/proxy/target/fortress-realm-impl-uber-[version].jar.
@@ -205,8 +205,8 @@ ________________________________________________________________________________
 
  ```
  SEVERE: An exception or error occurred in the container during the request processing
- java.lang.RuntimeException: us.jts.sentry.tomcat.Tc7AccessMgrProxyauthenticate detected Fortress Tomcat7 Realm not initialized correctly.  Check your Fortress Realm configuration
-        at us.jts.sentry.tomcat.Tc7AccessMgrProxy.authenticate(Tc7AccessMgrProxy.java:161)
+ java.lang.RuntimeException: org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxyauthenticate detected Fortress Tomcat7 Realm not initialized correctly.  Check your Fortress Realm configuration
+        at org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy.authenticate(Tc7AccessMgrProxy.java:161)
         at org.apache.catalina.authenticator.FormAuthenticator.authenticate(FormAuthenticator.java:259)
         at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:449)
         at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)

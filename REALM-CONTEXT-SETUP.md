@@ -41,7 +41,8 @@ Minimum software requirements:
  * Apache Tomcat7++
  * git
  * Apache Maven3++
- * Apache Fortress Core installed per README located in the Apache Fortress Core package.
+ * Apache Fortress Core installed per README located in that package.
+ * LDAP server setup and configured per Apache Fortress Core README.
 
 Everything else covered in steps that follow.  Tested on Debian, Centos & Windows systems.
 
@@ -111,7 +112,6 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  ```
 
  * Note:  Fortress Realm follows standard Java EE security semantics.  The above is a very simple example. For more info on how Java EE security is used: http://docs.oracle.com/javaee/6/tutorial/doc/bnbwj.html
-
 
 4. Redeploy web application to Tomcat.
 
