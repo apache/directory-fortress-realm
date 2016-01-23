@@ -15,19 +15,35 @@
    specific language governing permissions and limitations
    under the License.
 
-# Apache Fortress Realm Context Setup
-
- Apache Fortress Realm Version 1.0-RC41 System Architecture Diagram
+# README for Apache Fortress Realm Context Setup
+ * Version 1.0-RC41
+ * Apache Fortress Realm System Architecture Diagram
  ![Apache Fortress Realm System Architecture](images/fortress-realm-system-arch.png "Apache Fortress Realm System Architecture")
-
-This document contains instructions to enable Apache Fortress Realm for a single Web context under Apache Tomcat.  To target enablement for all apps running under the container, checkout: [REALM-HOST-SETUP](./REALM-HOST-SETUP.md).
 
 -------------------------------------------------------------------------------
 ## Table of Contents
 
+ * Document Overview
+ * Tips for first-time users.
  * SECTION 1. Prerequisites.
  * SECTION 2. Prepare Machine.
  * SECTION 3. Enable Tomcat Realm for Web context.
+
+___________________________________________________________________________________
+## Document Overview
+
+This document contains instructions to enable Apache Fortress Realm for a single Web context under Apache Tomcat.  To target enablement for all apps running under the container, checkout: [REALM-HOST-SETUP](./REALM-HOST-SETUP.md).
+
+___________________________________________________________________________________
+##  Tips for first-time users
+
+ * For a tutorial on how to use Apache Fortress check out the: [10 Minute Guide](http://directory.apache.org/fortress/gen-docs/latest/apidocs/org/apache/directory/fortress/core/doc-files/ten-minute-guide.html).
+ * For a tutorial on how to enable a Web application to use Fortress, check out the: [README-ENABLE-FORTRESS](https://github.com/shawnmckinney/wicket-sample/blob/master/README-ENABLE-FORTRESS.md).
+ * If you see **FORTRESS_CORE_HOME**, refer to the base package of [directory-fortress-core].
+ * If you see **FORTRESS_REALM_HOME**, refer to this packages base folder.
+ * If you see **TOMCAT_HOME**, refer to the location of that package's base folder.
+ * Questions about this software package should be directed to its mailing list:
+   * http://mail-archives.apache.org/mod_mbox/directory-fortress/
 
 -------------------------------------------------------------------------------
 ## SECTION 1. Prerequisites
@@ -54,10 +70,8 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 2. copy fortress-realm-proxy-[version].jar to TOMCAT_HOME/lib/
 
  ```
- cp [directory-fortress-realm]/proxy/fortress-realm-proxy-[version].jar TOMCAT_HOME/lib
+ cp FORTRESS_REALM_HOME/proxy/fortress-realm-proxy-[version].jar TOMCAT_HOME/lib
  ```
-
- Where [directory-fortress-realm] is base folder of this source package.
 
 3. Restart tomcat server instance for changes to take effect.
 
@@ -113,13 +127,28 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
  * Note:  Fortress Realm follows standard Java EE security semantics.  The above is a very simple example. For more info on how Java EE security is used: http://docs.oracle.com/javaee/6/tutorial/doc/bnbwj.html
 
-4. Redeploy web application to Tomcat.
+5. Add the maven dependencies to the Web app.
 
-5. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
+ ```
+ <dependency>
+     <groupId>org.apache.directory</groupId>
+     <artifactId>fortress-realm-impl</artifactId>
+     <version>${project.version}</version>
+     <classifier>classes</classifier>
+  </dependency>
+  ```
 
-6. View the Tomcat server logs to ensure there are no errors.
+6. Add the fortress.properties to the Web app.
 
-7. Verify that fortress realm is operating properly by viewing the following in catalina.log:
+ *This file contains the coordinates to the LDAP server.*
+
+7. Redeploy web application to Tomcat.
+
+8. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
+
+9. View the Tomcat server logs to ensure there are no errors.
+
+10. Verify that fortress realm is operating properly by viewing the following in catalina.log:
 
  ```
  org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
