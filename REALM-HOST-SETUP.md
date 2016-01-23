@@ -158,7 +158,7 @@ ________________________________________________________________________________
      defaultRoles=""
 	/>
  ```
- Here the fortress realm config folder and implementation jar is being declared.  Stage these files outside of **TOMCAT_HOME** to ensure they remain clear the system classpath of Tomcat server.
+ *Here the fortress realm config folder and implementation jar is being declared.  Stage these files outside of **TOMCAT_HOME** to ensure they remain clear of Tomcat's system classpath.*
 
 4. Save and exit editor.
 
