@@ -32,7 +32,7 @@
 ___________________________________________________________________________________
 ## Document Overview
 
-This document contains instructions to enable Apache Fortress Realm for a single Web app context running under Apache Tomcat.  To enable for all apps running, using Tomcat global security option, checkout: [REALM-HOST-SETUP](./REALM-HOST-SETUP.md).
+This document contains instructions to enable Apache Fortress Realm for a single Web app context running under Apache Tomcat.  To enable for all apps running, using Tomcat global security option, follow these steps [REALM-HOST-SETUP](./REALM-HOST-SETUP.md) instead.
 
 ___________________________________________________________________________________
 ##  Tips for first-time users

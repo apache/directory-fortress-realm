@@ -37,7 +37,7 @@
 ___________________________________________________________________________________
 ## Document Overview
 
-This document describes how to enable global security inside Tomcat to use the Fortress Realm.  To target setup for a single web application, w/out global security enabled, follow the instructions in the [REALM-CONTEXT-SETUP](./REALM-CONTEXT-SETUP.md).
+This document describes how to enable global security inside Tomcat to use the Fortress Realm.  To target setup for a single web application, w/out global security enabled, follow the instructions in the [REALM-CONTEXT-SETUP](./REALM-CONTEXT-SETUP.md) instead.
 
 ___________________________________________________________________________________
 ##  Tips for first-time users
