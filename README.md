@@ -25,7 +25,7 @@
  * Tips for first-time users.
  * SECTION 1. Prerequisites.
  * SECTION 2. Download & Build.
- * SECTION 3. Instructions to Use
+ * SECTION 3. Instructions for Application Usage
 
 ___________________________________________________________________________________
 ## Document Overview
@@ -88,7 +88,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 -------------------------------------------------------------------------------
 ## SECTION 3. Instructions for Application Usage
 
- *Not required for Apache Fortress Web and Rest usage.*
+ *The following are options for outside app usage and not required for Apache Fortress Web and Rest setup.*
 
 There are two ways for other apps to use the Fortress Realm for Java EE security enforcement.  The first, pulls extra dependencies onto the Web app's classpath.  The second, externalizes the dependencies away from the Web app into a separate folder.
 
