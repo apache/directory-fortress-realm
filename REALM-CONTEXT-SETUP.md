@@ -77,7 +77,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 -------------------------------------------------------------------------------
 ## SECTION 3. Enable Web App to use the Context Realm
 
-1. Add a context.xml file to the META-INF folder of target web app.
+1. Add a **context.xml** file to the **META-INF** folder of target web app.
  ```
  vi $MY_APP_HOME/src/main/resources/META-INF/conf/context.xml
  ```
@@ -134,7 +134,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
  *Fortress Realm follows standard Java EE security semantics.*
 
-5. Add the maven dependencies to the Web app.
+5. Add this dependency to the Web app's **pom.xml** file.
 
  ```
  <dependency>
@@ -147,7 +147,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
  *Where project.version contains target version, e.g. 1.0-RC41*
 
-6. Add the fortress.properties file to the classpath of the Web app.
+6. Add the **fortress.properties** file to the classpath of the web app.
 
  Copy the fortress.properties, created during **FORTRESS_CORE_HOME** setup, to app resource folder.
  ```
@@ -187,14 +187,14 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  enable.pool.reconnect=true
  ```
 
-8. Add two other files to classpath of the Web app.
+8. Add two other files, **ehcache.xml** and **log4j.properties** to classpath of the web app.
 
  ```
  cp $FORTRESS_REALM_HOME/conf/echcache.xml $MY_APP_HOME/src/main/resources
  cp $FORTRESS_REALM_HOME/conf/log4j.properties $MY_APP_HOME/src/main/resources
  ```
 
-9. Verify the configuration artifacts are properly staged to your app resource folder.
+9. Verify these configuration artifacts are properly staged to your app resource folder:
  ```
  x@machine:~/MY_APP_HOME/src/main/resources$ ls -l
  ...
@@ -207,7 +207,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
 10. Redeploy web application to Tomcat.
 
-11. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
+11. Login to the web app.  Users that successfully authenticate and have role(s) listed in **auth-constraint** of web deployment descriptor may access matching resources under the **url-pattern**.
 
 12. Verify that realm is operating properly per Tomcat server log:
 

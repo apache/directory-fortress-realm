@@ -80,7 +80,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
 2. Configure the Fortress Realm for target LDAP server usage.
 
- Copy the fortress.properties, created during **FORTRESS_CORE_HOME** setup, to this package's conf folder.
+ Copy the **fortress.properties**, created during **FORTRESS_CORE_HOME** setup, to this package's conf folder.
  ```
  cp $FORTRESS_CORE_HOME/config/fortress.properties $FORTRESS_REALM_HOME/conf
  ```
@@ -158,7 +158,7 @@ ________________________________________________________________________________
      defaultRoles=""
 	/>
  ```
- *Here the FORTRESS_REALM_HOME config folder and implementation jar are being declared.  Ensure that you stage these files outside of TOMCAT_HOME to ensure remaining clear of Tomcat's system classpath.*
+ *Here the FORTRESS_REALM_HOME conf folder and implementation jar are being declared to Tomcat server.  Ensure that you stage these files outside of TOMCAT_HOME to ensure remaining clear of Tomcat's system classpath.*
 
 4. Save and exit the editor.
 
@@ -176,7 +176,12 @@ ________________________________________________________________________________
 _________________________________________________________________________________
 ## SECTION 4. Enable Web App to use the Global Realm
 
-1. Add security constraints to the target web.xml deployment descriptor:
+1. Edit the web app's deployment descriptor:
+ ```
+ vi $MY_APP_HOME/src/main/webapp/WEB-INF/web.xml
+ ```
+
+2. Add security constraints to the file:
  ```
   ...
   <security-constraint>
@@ -208,11 +213,11 @@ ________________________________________________________________________________
 
  *Fortress Realm follows standard Java EE security semantics.*
 
-2. Redeploy web app to Tomcat.
+3. Redeploy web app to Tomcat.
 
-3. Login to the web app.  Users that successfully authenticate and have role(s) listed in **auth-constraint** may access resources matching the **url-pattern**.
+4. Login to the web app.  Users that successfully authenticate and have role(s) listed in **auth-constraint** may access resources matching the **url-pattern**.
 
-4. Verify that the fortress realm is operating properly by viewing the Tomcat server log:
+5. Verify that the fortress realm is operating properly by viewing the Tomcat server log:
 
  ```
  tail -f -n10000 $TOMCAT_HOME/logs/catalina.out
