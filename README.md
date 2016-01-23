@@ -95,12 +95,10 @@ There are two options for web app usage.  The first, pulls extra dependencies on
 There are pros and cons of each.  Option 1 requires web apps to be dependent on the fortress realm jars but enables RBAC programmatic authZ.  Option 2, on the other hand,
 frees the app of entanglement with fortress, which is easier to manage, but limits capabilities to Java EE security semantics.
 
-```
-|Realm Type||Is Web App Dependent?|Is Declarative?|Is RBAC?|Is Global Security?|
-|----------||---------------------|---------------|--------|-------------------|
-| Option 1 ||         Yes         |      Yes      |  Yes   |       No          |
-| Option 2 ||         No          |      Yes      |  No    |       Yes         |
-```
+|Realm Type|Is Web App Dependent?|Is Declarative?|Is RBAC?|Is Global Security?|
+|:--------:|:-------------------:|:-------------:|:------:|:-----------------:|
+| Option 1 |         Yes         |      Yes      |  Yes   |       No          |
+| Option 2 |         No          |      Yes      |  No    |       Yes         |
 
 ### Option 1. For Single Web Context
  *enable Java EE security for a single web app running under Tomcat*
