@@ -88,17 +88,20 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 -------------------------------------------------------------------------------
 ## SECTION 3. Instructions for Application Usage
 
-There are two options for web app usage.  The first, pulls extra dependencies onto the Web app's classpath.  The second, externalizes the dependencies from the Web app into a separate folder.
+ There are two options for web app usage of the fortress realm and there are pros and cons of each:
+
+ * **Option 1** requires web apps to be dependent on the fortress realm jars but enables RBAC programmatic authZ controls.
+ It also allows multiple realms to be enabled within a single instance of Tomcat.
+
+ * **Option 2** frees the web app from entanglement with additional dependencies, which is easier to manage, but limits capabilities to Java EE security control.  It also limits the usage to a single realm enabled globally
+ which might not agree with multitenant deployments.
 
 ### Table of Options
 
-There are pros and cons of each.  Option 1 requires web apps to be dependent on the fortress realm jars but enables RBAC programmatic authZ.  Option 2, on the other hand,
-frees the app of entanglement with fortress, which is easier to manage, but limits capabilities to Java EE security semantics.
-
-|Realm Type|Is Web App Dependent?|Is Declarative?|Is RBAC?|Is Global Security?|
-|:--------:|:-------------------:|:-------------:|:------:|:-----------------:|
-| Option 1 |         Yes         |      Yes      |  Yes   |       No          |
-| Option 2 |         No          |      Yes      |  No    |       Yes         |
+|Realm Type|Is Web App Dependent?|Is Declarative?|Is RBAC?|Is Global Security?|Multiple Realms Supported?|
+|:--------:|:-------------------:|:-------------:|:------:|:-----------------:|:-------------------------:
+| Option 1 |         Yes         |      Yes      |  Yes   |       No          |           Yes            |
+| Option 2 |         No          |      Yes      |  No    |       Yes         |           No             |
 
 ### Option 1. For Single Web Context
  *enable Java EE security for a single web app running under Tomcat*
