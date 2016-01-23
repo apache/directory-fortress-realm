@@ -120,7 +120,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
 4. Verify the configuration artifacts are present.
  ```
- x@machine:~/GIT/fortressDev/directory-fortress-realm/conf$ ls -l
+ x@machine:~/FORTRESS_REALM_HOME/conf$ ls -l
  ...
  -rwxrwxr-x 1 x y 5905 Jan 23 12:41 ehcache.xml
  -rw-rw-r-- 1 x y 1161 Jan 23 12:41 fortress.properties
@@ -159,7 +159,7 @@ ________________________________________________________________________________
      defaultRoles=""
 	/>
  ```
- *Here the fortress realm config folder and implementation jar are being declared.  Stage these files outside of TOMCAT_HOME to ensure remaining clear of Tomcat's system classpath.*
+ *Here the FORTRESS_REALM_HOME config folder and implementation jar are being declared.  Ensure that you stage these files outside of TOMCAT_HOME to ensure remaining clear of Tomcat's system classpath.*
 
 4. Save and exit the editor.
 
