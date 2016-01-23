@@ -88,13 +88,11 @@
       <id>elecharny</id>
       <name>Emmanuel Lecharny</name>
       <email>elecharny@apache.org</email>
-      <timezone>+1</timezone>
     </developer>
     <developer>
       <id>smckinney</id>
       <name>Shawn McKinney</name>
       <email>smckinney@apache.org</email>
-      <timezone>-6</timezone>
     </developer>
   </developers>
 
