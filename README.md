@@ -86,9 +86,11 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 3. View the generated document here: [./target/site/apidocs/overview-summary.html](./target/site/apidocs/overview-summary.html).
 
 -------------------------------------------------------------------------------
-## SECTION 3. Instructions to Use
+## SECTION 3. Instructions for Application Usage
 
-There are two ways in which to use the Apache Fortress Realm.  The first, pulls extra dependencies into the Web app.  The second, externalizes the dependencies away from the Web app into a separate folder.
+ *Not required for Apache Fortress Web and Rest usage.*
+
+There are two ways for other apps to use the Fortress Realm for Java EE security enforcement.  The first, pulls extra dependencies onto the Web app's classpath.  The second, externalizes the dependencies away from the Web app into a separate folder.
 
 ### Option 1. For Single Web Context
  *enable Java EE security for a single web app running under Tomcat*
