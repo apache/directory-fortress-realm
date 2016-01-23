@@ -65,7 +65,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  cp [directory-fortress-core]/config/fortress.properties [directory-fortress-realm]/conf
  ```
 
- Where [directory-fortress-core] is base folder of the fortress core source package and [directory-fortress-realm] is this package's home folder.
+ Where [directory-fortress-core] is base folder of the fortress core source package and [directory-fortress-realm] is this package's base folder.
 
 4. Restart Tomcat server for changes to take effect.
 
@@ -104,6 +104,7 @@ ________________________________________________________________________________
  ```
  org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
  ```
+
 _________________________________________________________________________________
 ## SECTION 4. Test with Tomcat Manager App (Optional)
 
