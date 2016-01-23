@@ -17,6 +17,9 @@
 
 # README for Apache Fortress Realm Host Setup
  * Version 1.0-RC41
+ * Apache Fortress Realm Host System Architecture Diagram
+ ![Apache Fortress Realm Host System Architecture](images/fortress-realm-host-system-arch.png "Apache Fortress Realm Host System Architecture")
+
 
 -------------------------------------------------------------------------------
 ## Table of Contents
@@ -26,8 +29,10 @@
  * SECTION 1. Prerequisites.
  * SECTION 2. Prepare Machine.
  * SECTION 3. Enable Tomcat Realm for Host.
- * SECTION 4. Test with Tomcat Manager App (Optional).
- * SECTION 5. Common troubleshooting tips.
+ * SECTION 4. Enable Web Application to use Apache Fortress Realm
+ * SECTION 5. Test with Tomcat Manager App (Optional).
+ * SECTION 6. Common troubleshooting tips.
+ * More on the Realm Proxy
 
 ___________________________________________________________________________________
 ## Document Overview
@@ -117,7 +122,60 @@ ________________________________________________________________________________
  ```
 
 _________________________________________________________________________________
-## SECTION 4. Test with Tomcat Manager App (Optional)
+## SECTION 4. Enable Web Application to use Apache Fortress Realm
+
+1. Add security constraints to target web.xml:
+ ```
+  ...
+  <security-constraint>
+      <display-name>Commander Security Constraint</display-name>
+      <web-resource-collection>
+          <web-resource-name>Protected Area</web-resource-name>
+          <!-- Define the context-relative URL(s) to be protected -->
+          <url-pattern>/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+          <!-- Anyone with one of the listed roles may access this area -->
+          <role-name>MY_ROLE_NAME</role-name>
+          ...
+      </auth-constraint>
+  </security-constraint>
+
+  <!-- Example of HTTP Basic Authentication Setup. -->
+  <login-config>
+      <auth-method>BASIC</auth-method>
+      <realm-name>FortressSecurityRealm</realm-name>
+  </login-config>
+
+  <!-- Security roles referenced by this web application -->
+  <security-role>
+      <role-name>MY_ROLE_NAME</role-name>
+  </security-role>
+  ...
+ ```
+
+ *Fortress Realm follows standard Java EE security semantics.*
+
+2. Redeploy web application to Tomcat.
+
+3. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
+
+4. Verify that fortress realm is operating properly by viewing the Tomcat server log:
+
+ ```
+ tail -f -n10000 TOMCAT_HOME/logs/catalina.out
+ ...
+ org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
+ ...
+ ```
+
+5. You have global security enabled under Tomcat but have enabled for a single Web app only.  This will require declarative authentication and coarse-gained authorization (isUserInRole) checks for that app.
+ You may now repeat these steps for other apps running under the Tomcat server.  For a look at how to apply more stringent security, check out the [Apache Fortress Demo End-to-End Security Example](https://github.com/shawnmckinney/apache-fortress-demo).
+
+*These instructions depend on understanding of Java EE security, Apache Fortress & Tomcat semantics.  For more info on how these work, checkout the section on tips for first-time users.*
+
+_________________________________________________________________________________
+## SECTION 5. Test with Tomcat Manager App (Optional)
 
 This section provides instructions for using the Tomcat Manager application to test Apache Fortress Realm.
 
@@ -146,7 +204,7 @@ This section provides instructions for using the Tomcat Manager application to t
     Verify authentication/authorization success to web app.
 
 _________________________________________________________________________________
-## SECTION 5. Common troubleshooting tips
+## SECTION 6. Common troubleshooting tips
 
 1. Server can't find config files (realmClasspath=**FORTRESS_REALM_HOME**/conf")
 
@@ -232,6 +290,9 @@ ________________________________________________________________________________
  ```
 
  ACTION: Install and use Tomcat version 7 and later in your target machine.
+
+## More on the Realm Proxy
+The fortress realm proxy jar contains a *shim* that uses a URLClassLoader to reach its implementation libs. It prevents the realm impl libs, contained within this package, from interfering with Tomcat's system classpath thus providing an error free deployment process w/out classloader issues. The realm proxy offers the flexibility for each web app to determine its own version/type of security realm to use, satisfying a variety of requirements related to web hosting and multitenancy.
 
 ___________________________________________________________________________________
 #### END OF README-HOST-SETUP.md

@@ -17,8 +17,6 @@
 
 # README for Apache Fortress Realm
  * Version 1.0-RC41
- * Apache Fortress Realm System Architecture Diagram
- ![Apache Fortress Realm System Architecture](images/fortress-realm-system-arch.png "Apache Fortress Realm System Architecture")
 
 -------------------------------------------------------------------------------
 ## Table of Contents
@@ -27,7 +25,7 @@
  * Tips for first-time users.
  * SECTION 1. Prerequisites.
  * SECTION 2. Download & Build.
- * SECTION 3. Instructions to use Fortress Realm.
+ * SECTION 3. Instructions to Use
 
 ___________________________________________________________________________________
 ## Document Overview
@@ -88,11 +86,23 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 3. View the generated document here: [./target/site/apidocs/overview-summary.html](./target/site/apidocs/overview-summary.html).
 
 -------------------------------------------------------------------------------
-## SECTION 3. Instructions to use Fortress Realm
+## SECTION 3. Instructions to Use
 
-1. For a single web application context under Tomcat: [REALM-CONTEXT-SETUP](./REALM-CONTEXT-SETUP.md).
+There are two ways in which to use the Apache Fortress Realm.  The first, pulls extra dependencies into the Web app.  The second, externalizes the dependencies away from the Web app into a separate folder.
 
-2. For all web application contexts under Tomcat: [REALM-HOST-SETUP](./REALM-HOST-SETUP.md).
+### Option 1. For Single Web Context
+ *enable Java EE security for a single web app running under Tomcat*
+ * Follow these instructions: [REALM-CONTEXT-SETUP](./REALM-CONTEXT-SETUP.md).
+
+ ![Apache Fortress Realm System Architecture](images/fortress-realm-system-arch.png "Apache Fortress Realm System Architecture")
+
+-------------------------------------------------------------------------------
+
+### Option 2. For Global Security
+ *enable Java EE security for all web apps running under Tomcat*
+ * Follow these instructions: [REALM-HOST-SETUP](./REALM-HOST-SETUP.md).
+
+  ![Apache Fortress Realm Host System Architecture](images/fortress-realm-host-system-arch.png "Apache Fortress Realm Host System Architecture")
 
 ___________________________________________________________________________________
 #### END OF README

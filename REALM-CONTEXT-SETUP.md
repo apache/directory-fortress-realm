@@ -17,8 +17,8 @@
 
 # README for Apache Fortress Realm Context Setup
  * Version 1.0-RC41
- * Apache Fortress Realm System Architecture Diagram
- ![Apache Fortress Realm System Architecture](images/fortress-realm-system-arch.png "Apache Fortress Realm System Architecture")
+ * Apache Fortress Realm Context System Architecture Diagram
+ ![Apache Fortress Realm Context System Architecture](images/fortress-realm-system-arch.png "Apache Fortress Realm Context System Architecture")
 
 -------------------------------------------------------------------------------
 ## Table of Contents
@@ -28,11 +28,11 @@
  * SECTION 1. Prerequisites.
  * SECTION 2. Prepare Machine.
  * SECTION 3. Enable Tomcat Realm for Web context.
-
+ * More on the Realm Proxy
 ___________________________________________________________________________________
 ## Document Overview
 
-This document contains instructions to enable Apache Fortress Realm for a single Web context under Apache Tomcat.  To target enablement for all apps running under the container, checkout: [REALM-HOST-SETUP](./REALM-HOST-SETUP.md).
+This document contains instructions to enable Apache Fortress Realm for a single Web app context running under Apache Tomcat.  To enable for all apps running under the Tomcat server, checkout: [REALM-HOST-SETUP](./REALM-HOST-SETUP.md).
 
 ___________________________________________________________________________________
 ##  Tips for first-time users
@@ -125,9 +125,9 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
   ...
  ```
 
- * Note:  Fortress Realm follows standard Java EE security semantics.  The above is a very simple example. For more info on how Java EE security is used: http://docs.oracle.com/javaee/6/tutorial/doc/bnbwj.html
+ *Fortress Realm follows standard Java EE security semantics.*
 
-5. Add the maven dependencies to the Web app.
+4. Add the maven dependencies to the Web app.
 
  ```
  <dependency>
@@ -138,20 +138,63 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
   </dependency>
   ```
 
-6. Add the fortress.properties to the Web app.
+ *Where project.version contains target version, e.g. 1.0-RC41*
 
- *This file contains the coordinates to the LDAP server.*
+5. Add the fortress.properties file to the classpath of the Web app.
 
-7. Redeploy web application to Tomcat.
-
-8. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
-
-9. View the Tomcat server logs to ensure there are no errors.
-
-10. Verify that fortress realm is operating properly by viewing the following in catalina.log:
+ *It contains the coordinates to the target LDAP server.*
 
  ```
+ # This param tells fortress what type of ldap server in use:
+ ldap.server.type=apacheds
+
+ # ldap host name
+ host=localhost
+
+ # if ApacheDS is listening on
+ port=10389
+
+ # If ApacheDS, these credentials are used for read/write to fortress DIT
+ admin.user=uid=admin,ou=system
+ admin.pw=secret
+
+ # This is min/max settings for admin pool connections:
+ min.admin.conn=1
+ max.admin.conn=10
+
+ # This node contains more fortress properties stored on behalf of connecting LDAP clients:
+ config.realm=DEFAULT
+ config.root=ou=Config,dc=example,dc=com
+
+ # Used by application security components:
+ perms.cached=true
+
+ # Fortress uses a cache:
+ ehcache.config.file=ehcache.xml
+
+ # Default for pool reconnect flag is false:
+ enable.pool.reconnect=true
+ ```
+
+6. Redeploy web application to Tomcat.
+
+7. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
+
+8. Verify that fortress realm is operating properly by viewing the Tomcat server log:
+
+ ```
+ tail -f -n10000 TOMCAT_HOME/logs/catalina.out
+ ...
  org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
+ ...
  ```
+
+9. You have enabled security for a single Web app running in Tomcat.  This will enforce declarative authentication and coarse-gained authorization (isUserInRole) checks.  For a look at how to apply more, check out [Apache Fortress Demo End-to-End Security Example](https://github.com/shawnmckinney/apache-fortress-demo).
+
+*These instructions depend on understanding of Java EE security, Apache Fortress & Tomcat semantics.  For more info on how these work, checkout the section on tips for first-time users.*
+
+## More on the Realm Proxy
+The fortress realm proxy jar contains a *shim* that uses a URLClassLoader to reach its implementation libs. It prevents the realm impl libs, pulled in as dependency to your web app, from interfering with Tomcat's system classpath thus providing an error free deployment process w/out classloader issues. The realm proxy offers the flexibility for each web app to determine its own version/type of security realm to use, satisfying a variety of requirements related to web hosting and multitenancy.
+
 ___________________________________________________________________________________
 #### END OF README-CONTEXT-SETUP.md
