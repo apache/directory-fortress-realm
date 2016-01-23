@@ -15,19 +15,32 @@
    specific language governing permissions and limitations
    under the License.
 
-# Apache Fortress Realm
-
- Apache Fortress Realm Version 1.0-RC41 System Architecture Diagram
+# README for Apache Fortress Realm
+ * Version 1.0-RC41
+ * Apache Fortress Realm System Architecture Diagram
  ![Apache Fortress Realm System Architecture](images/fortress-realm-system-arch.png "Apache Fortress Realm System Architecture")
-
-This document contains instructions to download, build, and install Apache Fortress Realm component.
 
 -------------------------------------------------------------------------------
 ## Table of Contents
 
+ * Document Overview
+ * Tips for first-time users.
  * SECTION 1. Prerequisites.
  * SECTION 2. Download & Build.
  * SECTION 3. Instructions to use Fortress Realm.
+
+___________________________________________________________________________________
+## Document Overview
+
+This document contains instructions to download, build, and install Apache Fortress Realm component.
+
+___________________________________________________________________________________
+##  Tips for first-time users
+
+ * For a tutorial on how to use Apache Fortress check out the: [10 Minute Guide](http://directory.apache.org/fortress/gen-docs/latest/apidocs/org/apache/directory/fortress/core/doc-files/ten-minute-guide.html).
+ * For a tutorial on how to enable a Web application to use Fortress, check out the: [README-ENABLE-FORTRESS](https://github.com/shawnmckinney/wicket-sample/blob/master/README-ENABLE-FORTRESS.md).
+ * Questions about this software package should be directed to its mailing list:
+   * http://mail-archives.apache.org/mod_mbox/directory-fortress/
 
 -------------------------------------------------------------------------------
 ## SECTION 1. Prerequisites

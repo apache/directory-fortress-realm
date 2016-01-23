@@ -15,18 +15,35 @@
    specific language governing permissions and limitations
    under the License.
 
-# Apache Fortress Realm Host Setup
-
-This document describes how to enable Fortress Realm to provide security for all apps running inside a Tomcat server virtual host.  To target setup for a single web application, and not the entire container, follow the Tomcat instructions in the [REALM-CONTEXT-SETUP](./REALM-CONTEXT-SETUP.md).
+# README for Apache Fortress Realm Host Setup
+ * Version 1.0-RC41
 
 -------------------------------------------------------------------------------
 ## Table of Contents
 
+ * Document Overview
+ * Tips for first-time users.
  * SECTION 1. Prerequisites.
  * SECTION 2. Prepare Machine.
  * SECTION 3. Enable Tomcat Realm for Host.
  * SECTION 4. Test with Tomcat Manager App (Optional).
  * SECTION 5. Common troubleshooting tips.
+
+___________________________________________________________________________________
+## Document Overview
+
+This document describes how to enable Fortress Realm to provide security for all apps running inside a Tomcat server virtual host.  To target setup for a single web application, and not the entire container, follow the Tomcat instructions in the [REALM-CONTEXT-SETUP](./REALM-CONTEXT-SETUP.md).
+
+___________________________________________________________________________________
+##  Tips for first-time users
+
+ * For a tutorial on how to use Apache Fortress check out the: [10 Minute Guide](http://directory.apache.org/fortress/gen-docs/latest/apidocs/org/apache/directory/fortress/core/doc-files/ten-minute-guide.html).
+ * For a tutorial on how to enable a Web application to use Fortress, check out the: [README-ENABLE-FORTRESS](https://github.com/shawnmckinney/wicket-sample/blob/master/README-ENABLE-FORTRESS.md).
+ * If you see **FORTRESS_CORE_HOME**, refer to the base package of [directory-fortress-core].
+ * If you see **FORTRESS_REALM_HOME**, refer to this packages base folder.
+ * If you see **TOMCAT_HOME**, refer to the location of that package's base folder.
+ * Questions about this software package should be directed to its mailing list:
+   * http://mail-archives.apache.org/mod_mbox/directory-fortress/
 
 -------------------------------------------------------------------------------
 ## SECTION 1. Prerequisites
@@ -53,19 +70,15 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 2. copy fortress-realm-proxy-[version].jar to TOMCAT_HOME/lib/
 
  ```
- cp [directory-fortress-realm]/proxy/fortress-realm-proxy-[version].jar TOMCAT_HOME/lib
+ cp FORTRESS_REALM_HOME/proxy/fortress-realm-proxy-[version].jar TOMCAT_HOME/lib
  ```
-
- Where [directory-fortress-realm] is base folder of this source package.
 
 3. Configure the Fortress Realm for target LDAP server.
 
  Copy the fortress.properties, created during [directory-fortress-core] setup, to this package's config folder.
  ```
- cp [directory-fortress-core]/config/fortress.properties [directory-fortress-realm]/conf
+ cp FORTRESS_CORE_HOME/config/fortress.properties FORTRESS_REALM_HOME/conf
  ```
-
- Where [directory-fortress-core] is base folder of the fortress core source package and [directory-fortress-realm] is this package's base folder.
 
 4. Restart Tomcat server for changes to take effect.
 
@@ -89,12 +102,10 @@ ________________________________________________________________________________
      debug="0"
      resourceName="UserDatabase"
 	 containerType="Tomcat7"
-     realmClasspath="[directory-fortress-realm]/conf:[directory-fortress-realm]/impl/target/fortress-realm-impl-uber-[version].jar"
+     realmClasspath="FORTRESS_REALM_HOME/conf:FORTRESS_REALM_HOME/impl/target/fortress-realm-impl-uber-[version].jar"
      defaultRoles=""
 	/>
  ```
-
- Where [directory-fortress-realm] is base folder of this package.
 
 4. restart tomcat
 
@@ -137,7 +148,7 @@ This section provides instructions for using the Tomcat Manager application to t
 _________________________________________________________________________________
 ## SECTION 5. Common troubleshooting tips
 
-1. Server can't find config files (realmClasspath="[directory-fortress-realm]/conf")
+1. Server can't find config files (realmClasspath=**FORTRESS_REALM_HOME**/conf")
 
  ```
  Jul 15, 2011 8:21:16 PM us.jts.sentry.tomcat.Tc7AccessMgrProxy initialize
@@ -188,7 +199,7 @@ ________________________________________________________________________________
 
  ACTION: Ensure fortress-realm-proxy jar copied to TOMCAT_HOME/lib folder.
 
-3. Server can't find binaries (realmClasspath="[directory-fortress-realm]/impl/target/fortress-realm-impl-uber-[version].jar")
+3. Server can't find binaries (realmClasspath="**FORTRESS_REALM_HOME**/impl/target/fortress-realm-impl-uber-[version].jar")
  ```
  Apr 22, 2011 10:22:25 PM org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy initialize
  SEVERE: Fortress Tomcat Realm.initialize java.lang.ClassNotFoundException=java.lang.ClassNotFoundException: org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl
@@ -198,7 +209,7 @@ ________________________________________________________________________________
         at org.apache.directory.fortress.realm.tomcat.TcAccessMgrProxy.initialize(TcAccessMgrProxy.java:118)
  ```
 
- ACTION: Ensure realm classpath points fortress-realm-impl-uber jar, i.e. [fortress-realm]/proxy/target/fortress-realm-impl-uber-[version].jar.
+ ACTION: Ensure realm classpath points fortress-realm-impl-uber jar, i.e. **FORTRESS_REALM_HOME**/proxy/target/fortress-realm-impl-uber-[version].jar.
 
 4. Incompatible Tomcat Proxy jar loaded for Tomcat 6 and before.
 
