@@ -27,9 +27,9 @@
  * Document Overview
  * Tips for first-time users.
  * SECTION 1. Prerequisites.
- * SECTION 2. Prepare the Fortress Realm.
+ * SECTION 2. Prepare Tomcat for the Global Realm.
  * SECTION 3. Enable Tomcat Global Security.
- * SECTION 4. Enable Web Application to use Apache Fortress Realm
+ * SECTION 4. Enable Web App to use the Global Realm.
  * SECTION 5. Test with Tomcat Manager App (Optional).
  * SECTION 6. Common troubleshooting tips.
  * More on the Realm Proxy
@@ -68,7 +68,7 @@ Minimum software requirements:
 Everything else covered in steps that follow.  Tested on Debian, Centos & Windows machines.
 
 -------------------------------------------------------------------------------
-## SECTION 2. Prepare the Fortress Realm.
+## SECTION 2. Prepare Tomcat for the Global Realm
 
 1. Stage the Fortress Realm Proxy jar.
 
@@ -134,7 +134,6 @@ ________________________________________________________________________________
 ## SECTION 3. Enable Tomcat Global Security
 
 1. Edit **TOMCAT_HOME**/conf/server.xml:
-
  ```
  vi $TOMCAT_HOME/conf/server.xml
  ```
@@ -175,7 +174,7 @@ ________________________________________________________________________________
  ```
 
 _________________________________________________________________________________
-## SECTION 4. Enable Web Application to use Apache Fortress Realm
+## SECTION 4. Enable Web App to use the Global Realm
 
 1. Add security constraints to the target web.xml deployment descriptor:
  ```

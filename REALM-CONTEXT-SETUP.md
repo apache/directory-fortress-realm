@@ -26,8 +26,8 @@
  * Document Overview
  * Tips for first-time users.
  * SECTION 1. Prerequisites.
- * SECTION 2. Prepare the Fortress Realm.
- * SECTION 3. Enable Fortress Realm for Web context.
+ * SECTION 2. Prepare Tomcat for the Context Realm.
+ * SECTION 3. Enable Web App to use the Context Realm.
  * More on the Realm Proxy
 
 ___________________________________________________________________________________
@@ -64,24 +64,25 @@ Minimum software requirements:
 Everything else covered in steps that follow.  Tested on Debian, Centos & Windows machines.
 
 -------------------------------------------------------------------------------
-## SECTION 2. Prepare the Fortress Realm
+## SECTION 2. Prepare Tomcat for the Context Realm
 
-1. Follow instructions in README.txt to build and install fortress realm component.
-
-2. copy fortress-realm-proxy-[version].jar to TOMCAT_HOME/lib/
+1. copy fortress-realm-proxy-[version].jar to **TOMCAT_HOME**/lib/
 
  ```
- cp FORTRESS_REALM_HOME/proxy/fortress-realm-proxy-[version].jar TOMCAT_HOME/lib
+ cp $FORTRESS_REALM_HOME/proxy/fortress-realm-proxy-[version].jar $TOMCAT_HOME/lib
  ```
 
-3. Restart tomcat server instance for changes to take effect.
+2. Restart Tomcat server for changes to take effect.
 
 -------------------------------------------------------------------------------
-## SECTION 3. Enable Fortress Realm for Web context
+## SECTION 3. Enable Web App to use the Context Realm
 
 1. Add a context.xml file to the META-INF folder of target web app.
+ ```
+ vi $MY_APP_HOME/src/main/resources/META-INF/conf/context.xml
+ ```
 
-2. Add the following:
+2. Add to the file:
  ```
  <Context path="/myappcontext" reloadable="true">
     <Realm className="org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy"
@@ -94,9 +95,14 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  </Context>
  ```
 
- Where *myappcontext* is the web context for your web application.
+ Where *myappcontext* is the web context for *your* web application.
 
-3. Add security constraints to target web.xml:
+3. Edit the web app's deployment descriptor:
+ ```
+ vi $MY_APP_HOME/src/main/webapp/WEB-INF/web.xml
+ ```
+
+4. Add Java EE security constraint declarations to the file:
  ```
   ...
   <security-constraint>
@@ -128,7 +134,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
  *Fortress Realm follows standard Java EE security semantics.*
 
-4. Add the maven dependencies to the Web app.
+5. Add the maven dependencies to the Web app.
 
  ```
  <dependency>
@@ -141,10 +147,14 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
  *Where project.version contains target version, e.g. 1.0-RC41*
 
-5. Add the fortress.properties file to the classpath of the Web app.
+6. Add the fortress.properties file to the classpath of the Web app.
 
- *It contains the coordinates to the target LDAP server.*
+ Copy the fortress.properties, created during **FORTRESS_CORE_HOME** setup, to app resource folder.
+ ```
+ cp $FORTRESS_CORE_HOME/config/fortress.properties $MY_APP_HOME/src/main/resources
+ ```
 
+7. Verify a match for target LDAP server coordinates.
  ```
  # This param tells fortress what type of ldap server in use:
  ldap.server.type=apacheds
@@ -177,14 +187,14 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  enable.pool.reconnect=true
  ```
 
-6. Add two other config files to classpath.
+8. Add two other files to classpath of the Web app.
 
  ```
  cp $FORTRESS_REALM_HOME/conf/echcache.xml $MY_APP_HOME/src/main/resources
  cp $FORTRESS_REALM_HOME/conf/log4j.properties $MY_APP_HOME/src/main/resources
  ```
 
-7. Verify the configuration artifacts are properly staged to your app.
+9. Verify the configuration artifacts are properly staged to your app resource folder.
  ```
  x@machine:~/MY_APP_HOME/src/main/resources$ ls -l
  ...
@@ -193,13 +203,13 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  -rw-rw-r-- 1 x y 1235 Jan 23 12:41 log4j.properties
  ...
  ```
- *Fortress needs all three files.*
+ *Fortress needs all three files in its classpath.*
 
-8. Redeploy web application to Tomcat.
+10. Redeploy web application to Tomcat.
 
-9. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
+11. Login to the web application.  Users that successfully authenticate and have activated role(s) listed in auth-constraints have access to all resources matching the url-pattern(s).
 
-10. Verify that realm is operating properly per Tomcat server log:
+12. Verify that realm is operating properly per Tomcat server log:
 
  ```
  tail -f -n10000 $TOMCAT_HOME/logs/catalina.out
@@ -208,14 +218,12 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  ...
  ```
 
-11. You have enabled security for a single Web app running in Tomcat.  This will enforce declarative authentication and coarse-gained authorization (isUserInRole) checks.  For a look at how to apply more, check out [Apache Fortress Demo End-to-End Security Example](https://github.com/shawnmckinney/apache-fortress-demo).
-
 Realm Usage Notes:
-* This automatically enforces authentication and coarse-gained authorization (isUserInRole) checking.
-* Repeat steps in this section for each additional app to use Java EE security enforcement.
+* This automatically enforces authentication and coarse-gained authorization (isUserInRole) checking for a single web app.
+* Repeat steps in this section for each additional app using the Fortress Realm.
 
 ## More on the Realm Proxy
-The fortress realm proxy jar contains a *shim* that uses a URLClassLoader to reach its implementation libs. It prevents the realm impl libs, pulled in as dependency to your web app, from interfering with Tomcat's system classpath thus providing an error free deployment process w/out classloader issues. The realm proxy offers the flexibility for each web app to determine its own version/type of security realm to use, satisfying a variety of requirements related to web hosting and multitenancy.
+The fortress realm proxy jar contains a *shim* that uses a URLClassLoader to reach its implementation libs. It prevents the realm impl libs, pulled in as dependency to your web app, from interfering with Tomcat's system classpath thus providing an error free deployment process w/out classloader issues. This satisfies requirements related to web hosting and multitenancy.
 
 ___________________________________________________________________________________
 #### END OF README-CONTEXT-SETUP.md
