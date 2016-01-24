@@ -67,10 +67,10 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 -------------------------------------------------------------------------------
 ## SECTION 2. Prepare Tomcat for the Context Realm
 
-1. copy fortress-realm-proxy-[version].jar to **TOMCAT_HOME**/lib/
+1. copy **FORTRESS_REALM_HOME** proxy jar to **TOMCAT_HOME**/lib/
 
  ```
- cp $FORTRESS_REALM_HOME/proxy/fortress-realm-proxy-[version].jar $TOMCAT_HOME/lib
+ cp $FORTRESS_REALM_HOME/proxy/target/fortress-realm-proxy-[version].jar $TOMCAT_HOME/lib
  ```
 
 2. Restart Tomcat server for changes to take effect.
