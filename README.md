@@ -52,7 +52,7 @@ Minimum software requirements:
  * Java SDK 7++
  * git
  * Apache Maven3++
- * Apache Fortress Core Downloaded and Installed per **README.md** located in **FORTRESS_CORE_HOME** package.
+ * Apache Fortress Core **Download & Install** in **FORTRESS_CORE_HOME** package **README.md**.
 
 Everything else covered in steps that follow.  Tested on Debian, Centos & Windows machines.
 
