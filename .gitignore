@@ -11,3 +11,15 @@ bin/
 .deployables
 .clover
 META-INF/
+target
+eclipse-classes
+*.log
+lib/*.jar
+build
+dist
+.externalToolBuilders
+.idea
+*.conf
+*.properties
+b.sh
+b.bat

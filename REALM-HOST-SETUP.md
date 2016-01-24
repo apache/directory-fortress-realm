@@ -158,6 +158,7 @@ ________________________________________________________________________________
      defaultRoles=""
 	/>
  ```
+
  *Here the FORTRESS_REALM_HOME conf folder and implementation jar are being declared to Tomcat server.  Ensure that you stage these files outside of TOMCAT_HOME to ensure remaining clear of Tomcat's system classpath.*
 
 4. Save and exit the editor.
@@ -324,7 +325,7 @@ ________________________________________________________________________________
         at org.apache.directory.fortress.realm.tomcat.TcAccessMgrProxy.initialize(TcAccessMgrProxy.java:118)
  ```
 
- ACTION: Ensure realm classpath points fortress-realm-impl-uber jar, i.e. **FORTRESS_REALM_HOME**/proxy/target/fortress-realm-impl-uber-[version].jar.
+ ACTION: Ensure realm classpath points fortress-realm-impl-uber jar, i.e. **FORTRESS_REALM_HOME**/impl/target/fortress-realm-impl-uber-[version].jar.
 
 4. Incompatible Tomcat Proxy jar loaded for Tomcat 6 and before.
 
