@@ -30,13 +30,14 @@
 ___________________________________________________________________________________
 ## Document Overview
 
-This document contains instructions to download, build, and install Apache Fortress Realm component.
+This document contains instructions to download and install the Apache Fortress Realm.  In SECTION 3 it refers to other documents for how this component works inside Apache Tomcat servers.
 
 ___________________________________________________________________________________
 ##  Tips for first-time users
 
- * For a tutorial on how to use Apache Fortress check out the: [10 Minute Guide](http://directory.apache.org/fortress/gen-docs/latest/apidocs/org/apache/directory/fortress/core/doc-files/ten-minute-guide.html).
- * For a tutorial on how to enable a Web application to use Fortress, check out the: [README-ENABLE-FORTRESS](https://github.com/shawnmckinney/wicket-sample/blob/master/README-ENABLE-FORTRESS.md).
+ * To use with ApacheDS: [10 Minute Guide](http://directory.apache.org/fortress/gen-docs/latest/apidocs/org/apache/directory/fortress/core/doc-files/ten-minute-guide.html).
+ * To use OpenLDAP: **README-QUICKSTART-SLAPD.md** in **FORTRESS_CORE_HOME** package.
+ * Tutorial to integrate a Java Web app with Fortress RBAC apis: [README-ENABLE-FORTRESS](https://github.com/shawnmckinney/wicket-sample/blob/master/README-ENABLE-FORTRESS.md).
  * Questions about this software package should be directed to its mailing list:
    * http://mail-archives.apache.org/mod_mbox/directory-fortress/
 
