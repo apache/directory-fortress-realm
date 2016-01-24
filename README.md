@@ -30,7 +30,7 @@
 ___________________________________________________________________________________
 ## Document Overview
 
-This document contains instructions to download and install the Apache Fortress Realm.  In SECTION 3 it refers to other documents for how this component works inside Apache Tomcat servers.
+This document contains instructions to download and install the Apache Fortress Realm.  SECTION 3 contains steps to get it working with Apache Tomcat.
 
 ___________________________________________________________________________________
 ##  Tips for first-time users
