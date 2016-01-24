@@ -24,7 +24,7 @@
  * Document Overview
  * Tips for first-time users.
  * SECTION 1. Prerequisites.
- * SECTION 2. Download & Build.
+ * SECTION 2. Download & Install.
  * SECTION 3. Instructions for Application Usage
 
 ___________________________________________________________________________________
@@ -52,12 +52,12 @@ Minimum software requirements:
  * Java SDK 7++
  * git
  * Apache Maven3++
- * Apache Fortress Core installed per README located in the same package.
+ * Apache Fortress Core Downloaded and Installed per **README.md** located in **FORTRESS_CORE_HOME** package.
 
 Everything else covered in steps that follow.  Tested on Debian, Centos & Windows machines.
 
 -------------------------------------------------------------------------------
-## SECTION 2. Download & Build
+## SECTION 2. Download & Install
 
 1. Build the source.
  ```
