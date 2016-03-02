@@ -135,6 +135,106 @@
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <inherited>true</inherited>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.7</source>
+            <target>1.7</target>
+            <optimize>true</optimize>
+            <encoding>ISO-8859-1</encoding>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <excludes>
+              <exclude>**/bootstrap</exclude>
+              <exclude>**/config</exclude>
+              <exclude>**/*.xml</exclude>
+              <exclude>**/*.properties</exclude>
+              <exclude>**/*.txt</exclude>
+              <exclude>**/*.src</exclude>
+            </excludes>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>test-jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <excludeSubProjects>false</excludeSubProjects>
+            <excludes>
+              <!-- MAVEN_DEFAULT_EXCLUDES -->
+              <exclude>**/target/**/*</exclude>
+              <exclude>**/cobertura.ser</exclude>
+              <!-- ECLIPSE_DEFAULT_EXCLUDES -->
+              <exclude>**/.classpath</exclude>
+              <exclude>**/.project</exclude>
+              <exclude>**/.settings/**/*</exclude>
+              <!-- IDEA_DEFAULT_EXCLUDES -->
+              <exclude>**/*.iml</exclude>
+              <exclude>**/*.ipr</exclude>
+              <exclude>**/*.iws</exclude>
+              <!-- MANIFEST_MF_EXCLUDES -->
+              <exclude>**/MANIFEST.MF</exclude>
+              <!-- 3RD_PARTY_LICENSES -->
+              <exclude>distribution/src/main/release/licenses/*</exclude>
+              <exclude>src/main/release/licenses/*</exclude>
+              <exclude>lib/LICENSE-EHCACHE-TERRACOTTA.txt</exclude>
+              <exclude>lib/LICENSE-JGraphT.txt</exclude>
+              <exclude>lib/LICENSE-unboundid-ldapsdk-2.1.0-se.txt</exclude>
+              <exclude>lib/LICENSE-UnboundID-LDAPSDK.txt</exclude>
+              <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
+              <exclude>**/dependency-reduced-pom.xml</exclude>
+              <!-- Generated ldif files -->
+              <exclude>**/src/main/resources/schema/**/*.ldif</exclude>
+              <exclude>**/src/main/resources/schema-all.ldif</exclude>
+              <exclude>**/src/main/resources/schema/**/*.ldif</exclude>
+              <exclude>**/src/main/resources/schema-all.ldif</exclude>
+              <!-- Files having a Bouncy Castle license -->
+              <exclude>ldap/src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
+              <exclude>src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
           <configuration>
             <tagNameFormat>@{project.version}</tagNameFormat>
@@ -162,7 +262,7 @@
             </configuration>
           </execution>
         </executions>
-      </plugini-->
+      </plugin-->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -181,11 +281,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <!-- version>${javadoc.version}</version -->
         <configuration>
-          <!--<additionalparam>-Xdoclint:none</additionalparam>-->
+          <additionalparam>-Xdoclint:none</additionalparam>
           <stylesheet>java</stylesheet>
-          <bottom>&lt;small&gt;Copyright &amp;copy; 2003-2015, The Apache Software Foundation. All Rights Reserved. Generated ${maven.build.timestamp}&lt;/small&gt;</bottom>
+          <bottom>&lt;small&gt;Copyright &amp;copy; 2003-2016, The Apache Software Foundation. All Rights Reserved. Generated ${maven.build.timestamp}&lt;/small&gt;</bottom>
           <overview>proxy/src/main/java/overview.html</overview>
           <docfilessubdirs>true</docfilessubdirs>
           <includes></includes>
