@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>34</version>
+    <version>35</version>
     <relativePath />
   </parent>
 
@@ -31,31 +31,12 @@
   <artifactId>fortress-realm</artifactId>
   <packaging>pom</packaging>
   <name>Apache Fortress Realm</name>
-  <description>Fortress Realm is an ANSI RBAC INCITS 359 compliant policy enforcement engine.</description>
-  <url>http://directory.apache.org/fortress/</url>
-  <version>1.0-RC41-SNAPSHOT</version>
+  <version>1.0-RC42-SNAPSHOT</version>
   <inceptionYear>2007</inceptionYear>
-
-  <properties>
-    <projectName>apache-directory-fortress-realm</projectName>
-    <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/api/gen-docs/${project.version}/
-    </distMgmtSiteUrl>
-
-    <!-- Set versions for depending projects -->
-    <skin.version>1.0.2</skin.version>
-    <org.apache.directory.junit.junit-addons.version>0.1</org.apache.directory.junit.junit-addons.version>
-    <org.apache.directory.checkstyle-configuration.version>0.1</org.apache.directory.checkstyle-configuration.version>
-    <slf4j.api.version>1.7.7</slf4j.api.version>
-    <slf4j.log4j12.version>1.7.7</slf4j.log4j12.version>
-    <junit.version>4.11</junit.version>
-    <javadoc.version>2.9.1</javadoc.version>
-
-    <!-- Set versions for depending jars -->
-    <fortress-core.version>1.0-RC41-SNAPSHOT</fortress-core.version>
-
-    <!-- Set versions for depending jars -->
-    <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
-  </properties>
+  <description>
+    Fortress Realm is an ANSI RBAC INCITS 359 compliant policy enforcement engine.
+  </description>
+  <url>http://directory.apache.org/fortress/</url>
 
   <licenses>
     <license>
@@ -63,17 +44,75 @@
       <url>http://www.apache.org/licenses/LICENSE-2.0</url>
     </license>
   </licenses>
-  
+
   <scm>
     <connection>scm:git:http://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</connection>
-    <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</developerConnection>
+    <developerConnection>
+      scm:git:https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git
+    </developerConnection>
     <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
     <system>jira</system>
-    <url>https://issues.apache.org/jira/browse/FORTRESS-CORE</url>
+    <url>https://issues.apache.org/jira/browse/DIRFORTRESS</url>
   </issueManagement>
+
+  <!-- ====================================================== -->
+  <!-- The list of current developers                         -->
+  <!-- ====================================================== -->
+  <developers>
+    <developer>
+      <id>smckinney</id>
+      <name>Shawn McKinney</name>
+      <email>smckinney@apache.org</email>
+    </developer>
+
+    <developer>
+      <id>elecharny</id>
+      <name>Emmanuel Lecharny</name>
+      <email>elecharny@apache.org</email>
+    </developer>
+
+    <developer>
+      <id>cpike</id>
+      <name>Chris Pike</name>
+      <email>cpike@apache.org</email>
+    </developer>
+
+    <developer>
+      <id />
+      <name>Jan Sindberg</name>
+      <email>jan.sindberg@apache.org</email>
+    </developer>
+  </developers>
+
+  <!-- ====================================================== -->
+  <!-- The used properties for this project                   -->
+  <!-- ====================================================== -->
+  <properties>
+    <projectName>apache-directory-fortress-realm</projectName>
+    <distMgmtSiteUrl>
+      scpexe://people.apache.org/www/directory.apache.org/api/gen-docs/${project.version}/
+    </distMgmtSiteUrl>
+
+    <!-- Set versions for depending projects -->
+    <javadoc.version>2.9.1</javadoc.version>
+    <junit.version>4.12</junit.version>
+    <checkstyle-configuration.version>0.1</checkstyle-configuration.version>
+    <findbugs.annotation.version>1.0.0</findbugs.annotation.version>
+    <junit-addons.version>0.1</junit-addons.version>
+    <skin.version>1.0.2</skin.version>
+    <slf4j.api.version>1.7.18</slf4j.api.version>
+    <slf4j.log4j12.version>1.7.18</slf4j.log4j12.version>
+    <tomcat.catalina.version>7.0.22</tomcat.catalina.version>
+
+    <!-- Set versions for depending jars -->
+    <fortress-core.version>1.0-RC42</fortress-core.version>
+
+    <!-- Set versions for depending jars -->
+    <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
+  </properties>
 
   <mailingLists>
     <mailingList>
@@ -83,22 +122,9 @@
     </mailingList>
   </mailingLists>
 
-  <developers>
-    <developer>
-      <id>elecharny</id>
-      <name>Emmanuel Lecharny</name>
-      <email>elecharny@apache.org</email>
-    </developer>
-    <developer>
-      <id>smckinney</id>
-      <name>Shawn McKinney</name>
-      <email>smckinney@apache.org</email>
-    </developer>
-  </developers>
-
   <modules>
-    <module>impl</module>
     <module>proxy</module>
+    <module>impl</module>
   </modules>
 
   <build>
@@ -121,7 +147,6 @@
       <!-- Assemble a realm distro archive -->
       <!-- plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.4</version>
         <executions>
           <execution>
             <id>make-assembly</id>
@@ -155,7 +180,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${javadoc.version}</version>
+        <!-- version>${javadoc.version}</version -->
         <configuration>
           <!--<additionalparam>-Xdoclint:none</additionalparam>-->
           <stylesheet>java</stylesheet>
@@ -350,9 +375,8 @@
       <dependency>
         <groupId>org.apache.tomcat</groupId>
         <artifactId>tomcat-catalina</artifactId>
-        <version>7.0.22</version>
+        <version>${tomcat.catalina.version}</version>
       </dependency>
-
     </dependencies>
   </dependencyManagement>
 
@@ -362,7 +386,7 @@
       <groupId>findbugs</groupId>
       <artifactId>annotations</artifactId>
       <scope>provided</scope>
-      <version>1.0.0</version>
+      <version>${findbugs.annotation.version}</version>
     </dependency>
 
     <!-- common logging interface -->
@@ -384,7 +408,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
-      <version>4.11</version>
+      <version>${junit.version}</version>
     </dependency>
   </dependencies>
 
@@ -404,7 +428,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.4</version>
+            <version>1.5</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>

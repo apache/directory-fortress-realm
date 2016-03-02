@@ -19,81 +19,74 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.apache.directory.fortress</groupId>
-        <artifactId>fortress-realm</artifactId>
-        <version>1.0-RC41-SNAPSHOT</version>
-    </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.directory.fortress</groupId>
+    <artifactId>fortress-realm</artifactId>
+    <version>1.0-RC42-SNAPSHOT</version>
+  </parent>
 
-    <artifactId>fortress-realm-impl</artifactId>
-    <name>Apache Fortress Realm Implementation</name>
-    <packaging>jar</packaging>
-    <description>
-        Implementation classes for the Fortress Realm Component.
-    </description>
+  <artifactId>fortress-realm-impl</artifactId>
+  <name>Apache Fortress Realm Implementation</name>
+  <packaging>jar</packaging>
+  <description>
+    Implementation classes for the Fortress Realm Component.
+  </description>
 
-    <properties>
-        <fortress-core.version>1.0-RC41-SNAPSHOT</fortress-core.version>
-<!--        <fortress-core.version>1.0-RC40</fortress-core.version>-->
-    </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.directory.junit</groupId>
+      <artifactId>junit-addons</artifactId>
+      <scope>test</scope>
+      <version>${junit-addons.version}</version>
+    </dependency>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.directory.junit</groupId>
-            <artifactId>junit-addons</artifactId>
-            <scope>test</scope>
-            <version>0.1</version>
-        </dependency>
+    <dependency>
+    <groupId>${project.groupId}</groupId>
+      <artifactId>fortress-realm-proxy</artifactId>
+      <scope>provided</scope>
+      <version>${project.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>fortress-realm-proxy</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>fortress-core</artifactId>
+      <version>${fortress-core.version}</version>
+    </dependency>
+  </dependencies>
 
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>fortress-core</artifactId>
-            <version>${fortress-core.version}</version>
-        </dependency>
-    </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.5</version>
+      </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.5</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <finalName>${project.artifactId}-uber-${project.version}</finalName>
-                </configuration>
-            </plugin>
-
-        </plugins>
-    </build>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <finalName>${project.artifactId}-uber-${project.version}</finalName>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
