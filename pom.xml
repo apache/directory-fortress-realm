@@ -91,6 +91,7 @@
   <!-- The used properties for this project                   -->
   <!-- ====================================================== -->
   <properties>
+    <additionalparam>-Xdoclint:none</additionalparam>
     <projectName>apache-directory-fortress-realm</projectName>
     <distMgmtSiteUrl>
       scpexe://people.apache.org/www/directory.apache.org/api/gen-docs/${project.version}/
