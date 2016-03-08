@@ -245,25 +245,6 @@
     </pluginManagement>
     
     <plugins>
-      <!-- Assemble a realm distro archive -->
-      <!-- plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <descriptors>
-                <descriptor>src/main/assembly/distsrc.xml</descriptor>
-              </descriptors>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin-->
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -557,7 +538,6 @@
               <execution>
                 <id>source-release-assembly</id>
                 <configuration>
-                  <!-- we have a dedicated distribution module -->
                   <skipAssembly>false</skipAssembly>
                 </configuration>
               </execution>
