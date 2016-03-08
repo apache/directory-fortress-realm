@@ -16,7 +16,7 @@
    under the License.
 
 # README for Apache Fortress Realm
- * Version 1.0-RC41
+ * Version 1.0-RC42
 
 -------------------------------------------------------------------------------
 ## Table of Contents
