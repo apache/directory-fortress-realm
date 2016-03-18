@@ -217,8 +217,6 @@
               <exclude>src/main/release/licenses/*</exclude>
               <exclude>lib/LICENSE-EHCACHE-TERRACOTTA.txt</exclude>
               <exclude>lib/LICENSE-JGraphT.txt</exclude>
-              <exclude>lib/LICENSE-unboundid-ldapsdk-2.1.0-se.txt</exclude>
-              <exclude>lib/LICENSE-UnboundID-LDAPSDK.txt</exclude>
               <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
               <exclude>**/dependency-reduced-pom.xml</exclude>
               <!-- Generated ldif files -->
