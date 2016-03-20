@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.fortress</groupId>
     <artifactId>fortress-realm</artifactId>
-    <version>1.0-RC42</version>
+    <version>1.0-RC42-SNAPSHOT</version>
   </parent>
 
   <artifactId>fortress-realm-impl</artifactId>
