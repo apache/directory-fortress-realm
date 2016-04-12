@@ -16,7 +16,7 @@
    under the License.
 
 # README for Apache Fortress Realm
- * Version 1.0-RC42
+ * Version 1.0.0
 
 -------------------------------------------------------------------------------
 ## Table of Contents
@@ -35,7 +35,7 @@ This document contains instructions to download and install the Apache Fortress 
 ___________________________________________________________________________________
 ##  Tips for first-time users
 
- * To use with ApacheDS: [10 Minute Guide](http://directory.apache.org/fortress/gen-docs/latest/apidocs/org/apache/directory/fortress/core/doc-files/ten-minute-guide.html).
+ * To use with ApacheDS: **README-QUICKSTART-APACHEDS.md** in **FORTRESS_CORE_HOME** package
  * To use OpenLDAP: **README-QUICKSTART-SLAPD.md** in **FORTRESS_CORE_HOME** package.
  * Tutorial to integrate a Java Web app with Fortress RBAC apis: [README-ENABLE-FORTRESS](https://github.com/shawnmckinney/wicket-sample/blob/master/README-ENABLE-FORTRESS.md).
  * Questions about this software package should be directed to its mailing list:
@@ -60,9 +60,20 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 ## SECTION 2. Download & Install
 
 1. Build the source.
+
+ a. from git:
  ```
- git clone https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git
+ git clone --branch 1.0.0 https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git
  cd directory-fortress-realm
+ mvn clean install
+ ```
+
+ b. or download package:
+
+ ```
+ wget http://www.apache.org/dist/directory/fortress/dist/1.0.0/fortress-realm-1.0.0-source-release.zip
+ unzip fortress-realm-1.0.0-source-release.zip
+ cd fortress-realm-1.0.0
  mvn clean install
  ```
 

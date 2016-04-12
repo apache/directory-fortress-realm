@@ -16,7 +16,7 @@
    under the License.
 
 # README for Apache Fortress Realm Host Setup
- * Version 1.0-RC42
+ * Version 1.0.0
  * Apache Fortress Realm Host System Architecture Diagram
  ![Apache Fortress Realm Host System Architecture](images/fortress-realm-host-system-arch.png "Apache Fortress Realm Host System Architecture")
 
@@ -42,7 +42,7 @@ This document describes how to enable global security inside Tomcat to use the F
 ___________________________________________________________________________________
 ##  Tips for first-time users
 
- * For a tutorial on how to use Apache Fortress check out the: [10 Minute Guide](http://directory.apache.org/fortress/gen-docs/latest/apidocs/org/apache/directory/fortress/core/doc-files/ten-minute-guide.html).
+ * For a tutorial on how to use Apache Fortress check out the quickstarts in directory-fortress-core package.
  * For a tutorial on how to enable a Web application to use Fortress, check out the: [README-ENABLE-FORTRESS](https://github.com/shawnmckinney/wicket-sample/blob/master/README-ENABLE-FORTRESS.md).
  * If you see **FORTRESS_CORE_HOME**, refer to the base package of [directory-fortress-core].
  * If you see **FORTRESS_REALM_HOME**, refer to this packages base folder.
