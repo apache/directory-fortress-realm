@@ -48,7 +48,7 @@ public final class J2eePolicyMgrFactory
     private static final String J2EE_POLICYMGR_DEFAULT_CLASS = J2eePolicyMgrImpl.class.getName();
     private static final String CLS_NM = J2eePolicyMgrFactory.class.getName();
     private static final Logger LOG = LoggerFactory.getLogger( CLS_NM );
-    private static String j2eeClassName = Config.getProperty( J2EE_POLICYMGR_IMPLEMENTATION );
+    private static String j2eeClassName = Config.getInstance().getProperty( J2EE_POLICYMGR_IMPLEMENTATION );
 
     /**
      * Create and return a reference to {@link J2eePolicyMgr} object.
