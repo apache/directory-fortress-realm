@@ -81,8 +81,6 @@ public class TcAccessMgrImpl implements TcAccessMgr
     public Principal authenticate( String userId, char[] password )
     {
         TcPrincipal principal = null;
-
-        System.out.println("BREAK1");
         try
         {
             // If a 'default.roles' property set in config, user them
@@ -113,20 +111,15 @@ public class TcAccessMgrImpl implements TcAccessMgr
     {
         boolean result = false;
         String userId = principal.getName();
-
-        System.out.println("BREAK2 user:" + userId + ", role" + roleName);
         try
         {
             if ( j2eeMgr.hasRole( principal, roleName ) )
             {
-                System.out.println("BREAK3 user:" + userId + ", role" + roleName);
-
                 LOG.debug( "{}.hasRole userId [{}], role[{}], successful", CLS_NM, principal.getName(), roleName );
                 result = true;
             }
             else
             {
-                System.out.println("BREAK4 user:" + userId + ", role" + roleName);
                 LOG.debug( "{}.hasRole userId [{}], role[{}], failed", CLS_NM, principal.getName(), roleName );
             }
         }
@@ -135,7 +128,6 @@ public class TcAccessMgrImpl implements TcAccessMgr
             LOG.warn( "{}.hasRole userId <{}> role <{}> caught SecurityException= {}", CLS_NM, userId, roleName, se);
         }
 
-        System.out.println("BREAK5 user:" + userId + ", role" + roleName);
         return result;
     }
 
