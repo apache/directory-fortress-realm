@@ -19,9 +19,15 @@
  */
 package org.apache.directory.fortress.realm;
 
-import org.apache.directory.fortress.core.util.Config;
+import org.apache.commons.lang.StringUtils;
+import org.apache.directory.fortress.core.*;
+import org.apache.directory.fortress.core.GlobalIds;
 import org.apache.directory.fortress.core.SecurityException;
-import org.apache.directory.fortress.core.GlobalErrIds;
+import org.apache.directory.fortress.core.impl.AdminMgrImpl;
+import org.apache.directory.fortress.core.rest.AdminMgrRestImpl;
+import org.apache.directory.fortress.core.util.ClassUtil;
+import org.apache.directory.fortress.core.util.Config;
+import org.apache.directory.fortress.core.util.VUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,43 +57,42 @@ public final class J2eePolicyMgrFactory
     private static String j2eeClassName = Config.getInstance().getProperty( J2EE_POLICYMGR_IMPLEMENTATION );
 
     /**
-     * Create and return a reference to {@link J2eePolicyMgr} object.
+     * Create and return a reference to {@link J2eePolicyMgr} object with HOME context.
      *
      * @return instance of {@link J2eePolicyMgr}.
      * @throws org.apache.directory.fortress.core.SecurityException in the event of failure during instantiation.
      */
     public static J2eePolicyMgr createInstance() throws SecurityException
     {
-        J2eePolicyMgr realmMgr;
-        
-        try
-        {
-            if ( ( j2eeClassName == null ) || ( j2eeClassName.length() == 0 ) )
-            {
-                j2eeClassName = J2EE_POLICYMGR_DEFAULT_CLASS;
-                LOG.debug( "{}.createInstance [{}], not found.", CLS_NM, J2EE_POLICYMGR_IMPLEMENTATION );
-                LOG.debug( "{}.createInstance use default [{}], not found.", CLS_NM, J2EE_POLICYMGR_DEFAULT_CLASS );
-            }
-            
-            realmMgr = (J2eePolicyMgr) Class.forName( j2eeClassName ).newInstance();
-        }
-        catch ( ClassNotFoundException e )
-        {
-            String error = CLS_NM + ".createInstance caught java.lang.ClassNotFoundException=" + e;
-            throw new SecurityException( GlobalErrIds.FT_MGR_CLASS_NOT_FOUND, error, e );
-        }
-        catch ( InstantiationException e )
-        {
-            String error = CLS_NM + ".createInstance caught java.lang.InstantiationException=" + e;
-            throw new SecurityException( GlobalErrIds.FT_MGR_INST_EXCEPTION, error, e );
-        }
-        catch ( IllegalAccessException e )
-        {
-            String error = CLS_NM + ".createInstance caught java.lang.IllegalAccessException=" + e;
-            LOG.error( error );
-            throw new SecurityException( GlobalErrIds.FT_MGR_ILLEGAL_ACCESS, error, e );
-        }
-        
-        return realmMgr;
+        return createInstance( GlobalIds.HOME );
     }
+
+
+    /**
+     * Create and return a reference to {@link J2eePolicyMgr} object with HOME context.
+     *
+     * @param contextId maps to sub-tree in DIT, for example ou=contextId, dc=example, dc=com.
+     * @return instance of {@link J2eePolicyMgr}.
+     * @throws SecurityException in the event of failure during instantiation.
+     */
+    public static J2eePolicyMgr createInstance(String contextId)
+        throws SecurityException
+    {
+        VUtil.assertNotNull( contextId, GlobalErrIds.CONTEXT_NULL, CLS_NM + ".createInstance" );
+        String j2eeClassName = Config.getInstance().getProperty( J2EE_POLICYMGR_IMPLEMENTATION );
+        J2eePolicyMgr policyMgr;
+
+        if ( StringUtils.isEmpty( j2eeClassName ) )
+        {
+            policyMgr = new J2eePolicyMgrImpl( );
+        }
+        else
+        {
+            policyMgr = ( J2eePolicyMgr ) ClassUtil.createInstance( J2EE_POLICYMGR_DEFAULT_CLASS );
+        }
+
+        policyMgr.setContextId( contextId );
+        return policyMgr;
+    }
+
 }

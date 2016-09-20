@@ -41,13 +41,14 @@ import org.apache.directory.fortress.realm.util.ChildFirstUrlClassLoader;
 public class Tc7AccessMgrProxy extends RealmBase
 {
     private static final String CLS_NM = Tc7AccessMgrProxy.class.getName();
-    private static final Logger LOG = Logger.getLogger(CLS_NM);
+    private static final Logger LOG = Logger.getLogger( CLS_NM );
     private static final String REALM_IMPL = "org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl";
     private static final String REALM_CLASSPATH = "REALM_CLASSPATH";
     private static final String JBOSS_AGENT = "jboss";
     private String CONTAINER = "Catalina7";
     private String defaultRoles;
     private String realmClasspath;
+    private String contextId;
     private TcAccessMgr realm;
 
     /**
@@ -90,7 +91,8 @@ public class Tc7AccessMgrProxy extends RealmBase
             Class<?> sc = ucl.loadClass( REALM_IMPL );
             realm = (TcAccessMgr) sc.newInstance();
             realm.setDefaultRoles( defaultRoles );
-            LOG.info( CLS_NM + " J2EE Tomcat7 policy agent initialization successful" );
+            realm.setContextId( contextId );
+            LOG.info( CLS_NM + " J2EE Tomcat7 policy agent, contextId: " + contextId + ", defaultRoles: " + defaultRoles );
         }
         catch ( ClassNotFoundException e )
         {
@@ -319,5 +321,27 @@ public class Tc7AccessMgrProxy extends RealmBase
     {
         LOG.info( CLS_NM + ".setDefaultRoles <" + defaultRoles + ">" );
         this.defaultRoles = defaultRoles;
+    }
+
+    /**
+     * Gets the contextId attribute of the TcAccessMgrProxy object.  When set, it will be used as tenant id within the fortress manager apis.
+     *
+     * @return String containing comma delimited list of role names.
+     */
+    public String getContextId()
+    {
+        LOG.info( CLS_NM + ".getContextId <" + contextId + ">" );
+        return contextId;
+    }
+
+    /**
+     * Sets the contextId attribute of the TcAccessMgrProxy object.  When set, it will be used as tenant id within the fortress manager apis.
+     *
+     * @param contextId containing the id of instance.
+     */
+    public void setContextId(String contextId)
+    {
+        LOG.info( CLS_NM + ".setContextId <" + contextId + ">" );
+        this.contextId = contextId;
     }
 }

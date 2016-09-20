@@ -47,6 +47,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
     private J2eePolicyMgr j2eeMgr;
     // If this field gets set, use for all subsequent calls to authenticate:
     private List<String> defaultRoles;
+    private String contextId;
 
     /**
      * Constructor for the TcAccessMgrImpl object
@@ -55,7 +56,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
     {
         try
         {
-            j2eeMgr = J2eePolicyMgrFactory.createInstance();
+            j2eeMgr = J2eePolicyMgrFactory.createInstance( );
             LOG.info( "{} constructor <{}>", CLS_NM, incrementCtr() );
         }
         catch ( SecurityException se )
@@ -71,19 +72,17 @@ public class TcAccessMgrImpl implements TcAccessMgr
     {
         return count++;
     }
-    
+
 
     /**
-     * Perform user authentication and evaluate password policies.
-     *
-     * @param userId   Contains the userid of the user signing on.
-     * @param password Contains the user's password.
-     * @return Principal which contains the Fortress RBAC session data.
+     * {@inheritDoc}
      */
+    @Override
     public Principal authenticate( String userId, char[] password )
     {
         TcPrincipal principal = null;
-        
+
+        System.out.println("BREAK1");
         try
         {
             // If a 'default.roles' property set in config, user them
@@ -106,29 +105,28 @@ public class TcAccessMgrImpl implements TcAccessMgr
         return principal;
     }
 
-    
     /**
-     * Determine if given Role is contained within User's Tomcat Principal object.  This method does not need to hit
-     * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
-     *
-     * @param principal Contains User's Tomcat RBAC Session data that includes activated Roles.
-     * @param roleName  Maps to {@code org.apache.directory.fortress.core.model.Role#name}.
-     * @return True if Role is found in TcPrincipal, false otherwise.
+     * {@inheritDoc}
      */
+    @Override
     public boolean hasRole( Principal principal, String roleName )
     {
         boolean result = false;
         String userId = principal.getName();
-        
+
+        System.out.println("BREAK2 user:" + userId + ", role" + roleName);
         try
         {
             if ( j2eeMgr.hasRole( principal, roleName ) )
             {
+                System.out.println("BREAK3 user:" + userId + ", role" + roleName);
+
                 LOG.debug( "{}.hasRole userId [{}], role[{}], successful", CLS_NM, principal.getName(), roleName );
                 result = true;
             }
             else
             {
+                System.out.println("BREAK4 user:" + userId + ", role" + roleName);
                 LOG.debug( "{}.hasRole userId [{}], role[{}], failed", CLS_NM, principal.getName(), roleName );
             }
         }
@@ -137,15 +135,14 @@ public class TcAccessMgrImpl implements TcAccessMgr
             LOG.warn( "{}.hasRole userId <{}> role <{}> caught SecurityException= {}", CLS_NM, userId, roleName, se);
         }
 
+        System.out.println("BREAK5 user:" + userId + ", role" + roleName);
         return result;
     }
 
     /**
-     * When the 'defaultRoles' parameter is set on realm proxy config (e.g. in server.xml or context.xml) it will be used to pass into
-     * createSession calls into Fortress.  This will scope the roles to be considered for activation to this particular set.
-     *
-     * @param szDefaultRoles contains a String containing comma delimited roles names.
+     * {@inheritDoc}
      */
+    @Override
     public void setDefaultRoles( String szDefaultRoles )
     {
         if( StringUtils.isNotEmpty( szDefaultRoles ) )
@@ -153,5 +150,16 @@ public class TcAccessMgrImpl implements TcAccessMgr
             defaultRoles = Arrays.asList( szDefaultRoles.split( "\\s*,\\s*" ) );
             LOG.info( "DEFAULT ROLES: {}", defaultRoles );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setContextId( String contextId )
+    {
+        this.contextId = contextId;
+        j2eeMgr.setContextId( contextId );
+        LOG.info( "CONTEXT ID: {}", contextId );
     }
 }

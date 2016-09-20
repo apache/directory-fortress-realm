@@ -157,6 +157,7 @@ ________________________________________________________________________________
 	 containerType="Tomcat7"
      realmClasspath="$FORTRESS_REALM_HOME/conf:$FORTRESS_REALM_HOME/impl/target/fortress-realm-impl-uber-[version].jar"
      defaultRoles=""
+     contextId="HOME"
 	/>
  ```
 

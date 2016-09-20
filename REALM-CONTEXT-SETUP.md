@@ -92,6 +92,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
            defaultRoles=""
            containerType="TomcatContext"
            realmClasspath=""
+           contextId="HOME"
             />
  </Context>
  ```

@@ -47,7 +47,6 @@ public interface J2eePolicyMgr
      */
     boolean authenticate( String userId, char[] password ) throws SecurityException;
 
-
     /**
      * Perform user authentication {@link User#password} and role activations.<br />
      * This method must be called once per user prior to calling other methods within this class.
@@ -104,7 +103,6 @@ public interface J2eePolicyMgr
      *          in the event of data validation failure, security policy violation or DAO error.
      */
     TcPrincipal createSession( String userId, char[] password ) throws SecurityException;
-
 
     /**
      * Perform user authentication {@link User#password} and role activations.<br />
@@ -164,7 +162,6 @@ public interface J2eePolicyMgr
      */
     TcPrincipal createSession( String userId, char[] password, List<String> roles ) throws SecurityException;
 
-
     /**
      * Perform user authentication {@link User#password} and role activations.<br />
      * This method must be called once per user prior to calling other methods within this class.
@@ -222,7 +219,6 @@ public interface J2eePolicyMgr
      */
     Session createSession( User user, boolean isTrusted ) throws SecurityException;
 
-
     /**
      * Determine if given Role is contained within User's Tomcat Principal object.  This method does not need to hit
      * the ldap server as the User's activated Roles are loaded into {@link TcPrincipal#setContext(java.util.HashMap)}
@@ -235,7 +231,6 @@ public interface J2eePolicyMgr
      */
     boolean hasRole( Principal principal, String roleName ) throws SecurityException;
 
-
     /**
      * Method reads Role entity from the role container in directory.
      *
@@ -245,7 +240,6 @@ public interface J2eePolicyMgr
      *          will be thrown if role not found or system error occurs.
      */
     Role readRole( String roleName ) throws SecurityException;
-
 
     /**
      * Search for Roles assigned to given User.
@@ -258,7 +252,6 @@ public interface J2eePolicyMgr
      */
     List<String> searchRoles( String userId, int limit ) throws SecurityException;
 
-
     /**
      * Method returns matching User entity that is contained within the people container in the directory.
      *
@@ -268,7 +261,6 @@ public interface J2eePolicyMgr
      * @throws SecurityException if record not found or system error occurs.
      */
     User readUser( String userId ) throws SecurityException;
-
 
     /**
      * Return a list of type String of all users in the people container that match the userId field passed in User entity.
@@ -280,7 +272,6 @@ public interface J2eePolicyMgr
      * @throws SecurityException in the event of system error.
      */
     List<String> searchUsers( String userId, int limit ) throws SecurityException;
-
 
     /**
      * This function returns the set of users assigned to a given role. The function is valid if and
@@ -296,7 +287,6 @@ public interface J2eePolicyMgr
      */
     List<String> assignedUsers( String roleName, int limit ) throws SecurityException;
 
-
     /**
      * This function returns the set of roles authorized for a given user. The function is valid if
      * and only if the user is a member of the USERS data set.
@@ -307,7 +297,6 @@ public interface J2eePolicyMgr
      */
     List<String> authorizedRoles( String userId ) throws SecurityException;
 
-
     /**
      * This utility method can deserialize java.security.Principal to Fortress RBAC session object.
      *
@@ -315,5 +304,13 @@ public interface J2eePolicyMgr
      * @return deserialization target object
      */
     Session deserialize( String str ) throws SecurityException;
-}
 
+    /**
+     * Use this method to set the tenant id onto function call into Fortress which allows segregation of data by customer.
+     * The contextId is used for multi-tenancy to isolate data sets within a particular sub-tree within DIT.
+     * Setting contextId into this object will render this class' implementer thread unsafe.
+     *
+     * @param contextId maps to sub-tree in DIT, for example ou=contextId, dc=jts, dc = com.
+     */
+    public void setContextId(String contextId);
+}

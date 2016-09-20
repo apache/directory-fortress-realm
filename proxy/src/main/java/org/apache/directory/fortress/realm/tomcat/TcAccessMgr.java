@@ -57,4 +57,13 @@ public interface TcAccessMgr
      * @param roles contains a String containing comma delimited roles names.
      */
     void setDefaultRoles( String roles );
+
+
+    /**
+     * When the 'contextId' parameter is set on realm proxy config (e.g. in server.xml or context.xml) it will be used to pass into
+     * fortress core apis as tenantId.
+     *
+     * @param contextId contains a String containing the tenantId for the operations.
+     */
+    public void setContextId( String contextId );
 }
