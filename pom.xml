@@ -103,7 +103,7 @@
     <tomcat.catalina.version>7.0.22</tomcat.catalina.version>
 
     <!-- Set versions for depending jars -->
-    <fortress-core.version>1.0.1</fortress-core.version>
+    <fortress-core.version>1.0.2-SNAPSHOT</fortress-core.version>
 
     <!-- Set versions for depending jars -->
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
