@@ -78,7 +78,7 @@ public class TcAccessMgrImpl implements TcAccessMgr
      * {@inheritDoc}
      */
     @Override
-    public Principal authenticate( String userId, char[] password )
+    public Principal authenticate( String userId, String password )
     {
         TcPrincipal principal = null;
         try

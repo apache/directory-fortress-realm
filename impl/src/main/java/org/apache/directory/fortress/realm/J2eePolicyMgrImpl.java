@@ -81,7 +81,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      * {@inheritDoc}
      */
     @Override
-    public boolean authenticate( String userId, char[] password ) throws SecurityException
+    public boolean authenticate( String userId, String password ) throws SecurityException
     {
         boolean result = false;
         Session session = accessMgr.authenticate( userId, password );
@@ -103,7 +103,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      * {@inheritDoc}
      */
     @Override
-    public TcPrincipal createSession( String userId, char[] password ) throws SecurityException
+    public TcPrincipal createSession( String userId, String password ) throws SecurityException
     {
         User user = new User( userId, new String ( password ) );
         
@@ -113,7 +113,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     /**
      * {@inheritDoc}
      */
-    public TcPrincipal createSession( String userId, char[] password, List<String> roles ) throws SecurityException
+    public TcPrincipal createSession( String userId, String password, List<String> roles ) throws SecurityException
     {
         User user = new User( userId, new String ( password ) );
         

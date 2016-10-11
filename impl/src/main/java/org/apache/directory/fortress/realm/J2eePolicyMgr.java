@@ -45,7 +45,7 @@ public interface J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
-    boolean authenticate( String userId, char[] password ) throws SecurityException;
+    boolean authenticate( String userId, String password ) throws SecurityException;
 
     /**
      * Perform user authentication {@link User#password} and role activations.<br />
@@ -58,9 +58,9 @@ public interface J2eePolicyMgr
      * <li> authenticate user password if trusted == false.
      * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>.
      * <li> fail for any user who is locked by OpenLDAP's policies {@link org.apache.directory.fortress.core.model.User#isLocked()}, regardless of trusted flag being set as parm on API.
-     * <li> evaluate temporal {@link org.apache.directory.fortress.core.util.time.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.model.UserRole} and {@link org.apache.directory.fortress.core.model.UserAdminRole} entities.
+     * <li> evaluate temporal {@link org.apache.directory.fortress.core.model.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.model.UserRole} and {@link org.apache.directory.fortress.core.model.UserAdminRole} entities.
      * <li> process selective role activations into User RBAC Session {@link User#roles}.
-     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.model.DSDChecker#validate(org.apache.directory.fortress.core.model.Session, org.apache.directory.fortress.core.util.time.Constraint, org.apache.directory.fortress.core.util.time.Time)} on {@link org.apache.directory.fortress.core.model.User#roles}.
+     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.impl.DSDChecker#validate(org.apache.directory.fortress.core.model.Session, org.apache.directory.fortress.core.model.Constraint, org.apache.directory.fortress.core.util.time.Time), org.apache.directory.fortress.core.util.VUtil#ConstraintType} on {@link org.apache.directory.fortress.core.model.User#roles}.
      * <li> process selective administrative role activations {@link User#adminRoles}.
      * <li> return a {@link org.apache.directory.fortress.core.model.Session} containing {@link org.apache.directory.fortress.core.model.Session#getUser()}, {@link org.apache.directory.fortress.core.model.Session#getRoles()} and {@link org.apache.directory.fortress.core.model.Session#getAdminRoles()} if everything checks out good.
      * <li> throw a checked exception that will be {@link org.apache.directory.fortress.core.SecurityException} or its derivation.
@@ -92,7 +92,7 @@ public interface J2eePolicyMgr
      * </h4>
      * <ul>
      * <li> roles that violate Dynamic Separation of Duty Relationships will not be activated into session.
-     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link User#setRole(String)}.
+     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link User#setRoleName(String)}.
      * </ul>
      * </p>
      *
@@ -102,7 +102,7 @@ public interface J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
-    TcPrincipal createSession( String userId, char[] password ) throws SecurityException;
+    TcPrincipal createSession( String userId, String password ) throws SecurityException;
 
     /**
      * Perform user authentication {@link User#password} and role activations.<br />
@@ -115,9 +115,9 @@ public interface J2eePolicyMgr
      * <li> authenticate user password if trusted == false.
      * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>.
      * <li> fail for any user who is locked by OpenLDAP's policies {@link org.apache.directory.fortress.core.model.User#isLocked()}, regardless of trusted flag being set as parm on API.
-     * <li> evaluate temporal {@link org.apache.directory.fortress.core.util.time.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.model.UserRole} and {@link org.apache.directory.fortress.core.model.UserAdminRole} entities.
+     * <li> evaluate temporal {@link org.apache.directory.fortress.core.model.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.model.UserRole} and {@link org.apache.directory.fortress.core.model.UserAdminRole} entities.
      * <li> process selective role activations into User RBAC Session {@link User#roles}.
-     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.model.DSDChecker#validate(org.apache.directory.fortress.core.model.Session, org.apache.directory.fortress.core.util.time.Constraint, org.apache.directory.fortress.core.util.time.Time)} on {@link org.apache.directory.fortress.core.model.User#roles}.
+     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.impl.DSDChecker#validate(org.apache.directory.fortress.core.model.Session, org.apache.directory.fortress.core.model.Constraint, org.apache.directory.fortress.core.util.time.Time)} on {@link org.apache.directory.fortress.core.model.User#roles}.
      * <li> process selective administrative role activations {@link User#adminRoles}.
      * <li> return a {@link org.apache.directory.fortress.core.model.Session} containing {@link org.apache.directory.fortress.core.model.Session#getUser()}, {@link org.apache.directory.fortress.core.model.Session#getRoles()} and {@link org.apache.directory.fortress.core.model.Session#getAdminRoles()} if everything checks out good.
      * <li> throw a checked exception that will be {@link org.apache.directory.fortress.core.SecurityException} or its derivation.
@@ -149,7 +149,7 @@ public interface J2eePolicyMgr
      * </h4>
      * <ul>
      * <li> roles that violate Dynamic Separation of Duty Relationships will not be activated into session.
-     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link User#setRole(String)}.
+     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link User#setRoleName(String)}.
      * </ul>
      * </p>
      *
@@ -160,7 +160,7 @@ public interface J2eePolicyMgr
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
-    TcPrincipal createSession( String userId, char[] password, List<String> roles ) throws SecurityException;
+    TcPrincipal createSession( String userId, String password, List<String> roles ) throws SecurityException;
 
     /**
      * Perform user authentication {@link User#password} and role activations.<br />
@@ -173,9 +173,9 @@ public interface J2eePolicyMgr
      * <li> authenticate user password if trusted == false.
      * <li> perform <a href="http://www.openldap.org/">OpenLDAP</a> <a href="http://tools.ietf.org/html/draft-behera-ldap-password-policy-10/">password policy evaluation</a>.
      * <li> fail for any user who is locked by OpenLDAP's policies {@link org.apache.directory.fortress.core.model.User#isLocked()}, regardless of trusted flag being set as parm on API.
-     * <li> evaluate temporal {@link org.apache.directory.fortress.core.util.time.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.model.UserRole} and {@link org.apache.directory.fortress.core.model.UserAdminRole} entities.
+     * <li> evaluate temporal {@link org.apache.directory.fortress.core.model.Constraint}(s) on {@link User}, {@link org.apache.directory.fortress.core.model.UserRole} and {@link org.apache.directory.fortress.core.model.UserAdminRole} entities.
      * <li> process selective role activations into User RBAC Session {@link User#roles}.
-     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.model.DSDChecker#validate(org.apache.directory.fortress.core.model.Session, org.apache.directory.fortress.core.util.time.Constraint, org.apache.directory.fortress.core.util.time.Time)} on {@link org.apache.directory.fortress.core.model.User#roles}.
+     * <li> check Dynamic Separation of Duties {@link org.apache.directory.fortress.core.impl.DSDChecker#validate(org.apache.directory.fortress.core.model.Session, org.apache.directory.fortress.core.model.Constraint, org.apache.directory.fortress.core.util.time.Time)} on {@link org.apache.directory.fortress.core.model.User#roles}.
      * <li> process selective administrative role activations {@link User#adminRoles}.
      * <li> return a {@link org.apache.directory.fortress.core.model.Session} containing {@link org.apache.directory.fortress.core.model.Session#getUser()}, {@link org.apache.directory.fortress.core.model.Session#getRoles()} and {@link org.apache.directory.fortress.core.model.Session#getAdminRoles()} if everything checks out good.
      * <li> throw a checked exception that will be {@link org.apache.directory.fortress.core.SecurityException} or its derivation.
@@ -207,13 +207,13 @@ public interface J2eePolicyMgr
      * </h4>
      * <ul>
      * <li> roles that violate Dynamic Separation of Duty Relationships will not be activated into session.
-     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link User#setRole(String)}.
+     * <li> role activations will proceed in same order as supplied to User entity setter, see {@link User#setRoleName(String)}.
      * </ul>
      * </p>
      *
      * @param user      Contains {@link User#userId}, {@link org.apache.directory.fortress.core.model.User#password} (optional if {@code isTrusted} is 'true'), optional {@link User#roles}, optional {@link org.apache.directory.fortress.core.model.User#adminRoles}
      * @param isTrusted if true password is not required.
-     * @return Session object will contain authentication result code {@link org.apache.directory.fortress.core.model.Session#errorId}, RBAC role activations {@link org.apache.directory.fortress.core.model.Session#getRoles()}, Admin Role activations {@link org.apache.directory.fortress.core.model.Session#getAdminRoles()},OpenLDAP pw policy codes {@link org.apache.directory.fortress.core.model.Session#warningId}, {@link org.apache.directory.fortress.core.model.Session#expirationSeconds}, {@link org.apache.directory.fortress.core.model.Session#graceLogins} and more.
+     * @return Session object will contain authentication result code {@link org.apache.directory.fortress.core.model.Session#errorId}, RBAC role activations {@link org.apache.directory.fortress.core.model.Session#getRoles()}, Admin Role activations {@link org.apache.directory.fortress.core.model.Session#getAdminRoles()},OpenLDAP pw policy codes {@link org.apache.directory.fortress.core.model.Session#warnings}, {@link org.apache.directory.fortress.core.model.Session#expirationSeconds}, {@link org.apache.directory.fortress.core.model.Session#graceLogins} and more.
      * @throws org.apache.directory.fortress.core.SecurityException
      *          in the event of data validation failure, security policy violation or DAO error.
      */
