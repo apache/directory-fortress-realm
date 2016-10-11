@@ -105,7 +105,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
     @Override
     public TcPrincipal createSession( String userId, char[] password ) throws SecurityException
     {
-        User user = new User( userId, password );
+        User user = new User( userId, new String ( password ) );
         
         return createSession( user );
     }
@@ -115,7 +115,7 @@ public class J2eePolicyMgrImpl implements J2eePolicyMgr
      */
     public TcPrincipal createSession( String userId, char[] password, List<String> roles ) throws SecurityException
     {
-        User user = new User( userId, password );
+        User user = new User( userId, new String ( password ) );
         
         // Load the passed in role list into list of User requested roles:
         if ( CollectionUtils.isNotEmpty( roles ) )
