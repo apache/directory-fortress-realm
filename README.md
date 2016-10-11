@@ -16,7 +16,7 @@
    under the License.
 
 # README for Apache Fortress Realm
- * Version 1.0.1
+ * Version 2.0.0-RC1-SNAPSHOT
 
 -------------------------------------------------------------------------------
 ## Table of Contents
