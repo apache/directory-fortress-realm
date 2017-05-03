@@ -16,7 +16,7 @@
    under the License.
 
 # README for Apache Fortress Realm Context Setup
- * Version 2.0.0-RC1-SNAPSHOT
+ * Version 2.0.0-RC2
  * Apache Fortress Realm Context System Architecture Diagram
  ![Apache Fortress Realm Context System Architecture](images/fortress-realm-system-arch.png "Apache Fortress Realm Context System Architecture")
 

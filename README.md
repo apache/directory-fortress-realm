@@ -16,7 +16,7 @@
    under the License.
 
 # README for Apache Fortress Realm
- * Version 2.0.0-RC1-SNAPSHOT
+ * Version 2.0.0-RC2
 
 -------------------------------------------------------------------------------
 ## Table of Contents
@@ -49,7 +49,7 @@ Minimum hardware requirements:
  * 4GB RAM
 
 Minimum software requirements:
- * Java SDK 7++
+ * Java SDK 8
  * git
  * Apache Maven3++
  * Apache Fortress Core **Download & Install** in **FORTRESS_CORE_HOME** package **README.md**.
