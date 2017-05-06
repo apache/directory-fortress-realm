@@ -63,7 +63,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
  a. from git:
  ```
- git clone --branch 2.0.0-RC1 https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git
+ git clone --branch 2.0.0-RC2 https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git
  cd directory-fortress-realm
  mvn clean install
  ```
@@ -71,9 +71,9 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  b. or download package:
 
  ```
- wget http://www.apache.org/dist/directory/fortress/dist/2.0.0-RC1/fortress-realm-2.0.0-RC1-source-release.zip
- unzip fortress-realm-2.0.0-RC1-source-release.zip
- cd fortress-realm-2.0.0-RC1
+ wget http://www.apache.org/dist/directory/fortress/dist/2.0.0-RC2/fortress-realm-2.0.0-RC2-source-release.zip
+ unzip fortress-realm-2.0.0-RC2-source-release.zip
+ cd fortress-realm-2.0.0-RC2
  mvn clean install
  ```
 
