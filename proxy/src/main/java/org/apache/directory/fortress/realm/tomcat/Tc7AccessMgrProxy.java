@@ -32,15 +32,22 @@ import java.util.logging.Logger;
 import org.apache.directory.fortress.realm.util.ChildFirstUrlClassLoader;
 
 /**
- * This class extends the Tomcat 7 and beyond RealmBase class and provides Java EE security services within the Tomcat container.
- * This class is a "proxy" for the {@link org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl} class which isolates dependencies from the Tomcat
- * runtime environment by loading the implementation on a URLClassLoader.
+ *
+ * This class...
+ * <ul>
+ *   <li>extends the Tomcat 7 and beyond RealmBase class and provides Java EE security services within the Tomcat container.</li>
+ *   <li>loads into a jar that is placed directly on Tomcat's system classpath, it must have no dependencies on other 3rd party jars.</li>
+ *   <li>is a "proxy" for the {@link org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl} class which isolates dependencies from the Tomcat runtime environment by loading the implementation on a URLClassLoader.</li>
+ *   <li>accesses the runtime impl via instantiation into URL classloader.</li>
+ *   <li>runtime implementation classes reside inside .war for corresponding application.</li>
+ * </ul>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</ga>
  */
 public class Tc7AccessMgrProxy extends RealmBase
 {
     private static final String CLS_NM = Tc7AccessMgrProxy.class.getName();
+    // Do not change from Java's native logger in order to keep Tomcat's system classpath free of additional dependencies.
     private static final Logger LOG = Logger.getLogger( CLS_NM );
     private static final String REALM_IMPL = "org.apache.directory.fortress.realm.tomcat.TcAccessMgrImpl";
     private static final String REALM_CLASSPATH = "REALM_CLASSPATH";
