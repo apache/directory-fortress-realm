@@ -28,7 +28,7 @@
   <name>Apache Fortress Realm Implementation</name>
   <packaging>jar</packaging>
   <description>
-    Implementation classes for the Fortress Realm Component.
+    The Apache Fortress Realm Implementation Classes.
   </description>
 
   <dependencies>

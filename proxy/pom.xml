@@ -26,7 +26,7 @@
   </parent>
 
   <artifactId>fortress-realm-proxy</artifactId>
-  <name>Apache Fortress Realm Proxy</name>
+  <name>Apache Fortress Realm Proxy Classes</name>
   <packaging>jar</packaging>
   <description>
     Proxy classes for the Fortress Realm Component.

@@ -34,7 +34,7 @@
   <version>2.0.1-SNAPSHOT</version>
   <inceptionYear>2007</inceptionYear>
   <description>
-    Fortress Realm is an ANSI RBAC INCITS 359 compliant policy enforcement engine.
+    Apache Fortress Realm provides standards-based Role-Based Access Control security provider to Apache Tomcat.
   </description>
   <url>http://directory.apache.org/fortress/</url>
 
