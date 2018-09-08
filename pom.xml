@@ -414,7 +414,7 @@
       <dependency>
         <groupId>org.apache.directory.fortress</groupId>
         <artifactId>fortress-core</artifactId>
-        <version>$fortress-core.version}</version>
+        <version>${fortress-core.version}</version>
       </dependency>
 
       <dependency>
