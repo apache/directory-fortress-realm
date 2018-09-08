@@ -33,10 +33,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.directory.junit</groupId>
-      <artifactId>junit-addons</artifactId>
-      <scope>test</scope>
-      <version>${junit-addons.version}</version>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>fortress-core</artifactId>
+      <version>${fortress-core.version}</version>
     </dependency>
 
     <dependency>
@@ -47,9 +46,10 @@
     </dependency>
 
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>fortress-core</artifactId>
-      <version>${fortress-core.version}</version>
+      <groupId>org.apache.directory.junit</groupId>
+      <artifactId>junit-addons</artifactId>
+      <scope>test</scope>
+      <version>${junit-addons.version}</version>
     </dependency>
 
     <dependency>
