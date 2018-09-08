@@ -101,7 +101,7 @@
     <skin.version>1.0.2</skin.version>
     <slf4j.api.version>1.7.21</slf4j.api.version>
     <slf4j.log4j12.version>1.7.21</slf4j.log4j12.version>
-    <tomcat.catalina.version>9.0.11</tomcat.catalina.version>
+    <tomcat.catalina.version>7.0.22</tomcat.catalina.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
 
