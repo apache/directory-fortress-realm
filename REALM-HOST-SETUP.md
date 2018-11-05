@@ -16,7 +16,7 @@
    under the License.
 
 # README for Apache Fortress Realm Host Setup
- * Version 2.0.2
+ * Version 2.0.3
  * Apache Fortress Realm Host System Architecture Diagram
  ![Apache Fortress Realm Host System Architecture](images/fortress-realm-host-system-arch.png "Apache Fortress Realm Host System Architecture")
 
