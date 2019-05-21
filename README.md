@@ -63,7 +63,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
  a. from git:
  ```
- git clone --branch 2.0.3 https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git
+ git clone --branch 2.0.3 https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
  cd directory-fortress-realm
  mvn clean install
  ```

@@ -48,7 +48,7 @@
   <scm>
     <connection>scm:git:https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</connection>
     <developerConnection>
-      scm:git:https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git
+      scm:git:https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
     </developerConnection>
     <tag>2.0.3</tag>
   </scm>
@@ -92,7 +92,7 @@
     </distMgmtSiteUrl>
 
     <!-- Set versions for depending jars -->
-    <fortress-core.version>2.0.3</fortress-core.version>
+    <fortress-core.version>2.0.4-SNAPSHOT</fortress-core.version>
     <javadoc.version>2.9.1</javadoc.version>
     <junit.version>4.12</junit.version>
     <checkstyle-configuration.version>0.1</checkstyle-configuration.version>
@@ -101,7 +101,7 @@
     <skin.version>1.0.2</skin.version>
     <slf4j.api.version>1.7.21</slf4j.api.version>
     <slf4j.log4j12.version>1.7.21</slf4j.log4j12.version>
-    <tomcat.catalina.version>7.0.22</tomcat.catalina.version>
+    <tomcat.catalina.version>7.0.92</tomcat.catalina.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
 
