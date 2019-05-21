@@ -36,17 +36,17 @@
   <description>
     Apache Fortress Realm provides standards-based Role-Based Access Control security provider to Apache Tomcat.
   </description>
-  <url>http://directory.apache.org/fortress/</url>
+  <url>https://directory.apache.org/fortress/</url>
 
   <licenses>
     <license>
       <name>Apache License 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0</url>
     </license>
   </licenses>
 
   <scm>
-    <connection>scm:git:http://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</connection>
+    <connection>scm:git:https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</connection>
     <developerConnection>
       scm:git:https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git
     </developerConnection>
@@ -109,7 +109,7 @@
     <mailingList>
       <name>Apache Directory -- Fortress List</name>
       <post>fortress@directory.apache.org</post>
-      <archive>http://mail-archives.apache.org/mod_mbox/directory-fortress/</archive>
+      <archive>https://mail-archives.apache.org/mod_mbox/directory-fortress/</archive>
     </mailingList>
   </mailingLists>
 
