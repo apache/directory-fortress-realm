@@ -17,7 +17,7 @@
  specific language governing permissions and limitations
  under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -46,11 +46,10 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:https://git-wip-us.apache.org/repos/asf/directory-fortress-realm.git</connection>
-    <developerConnection>
-      scm:git:https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
-    </developerConnection>
-    <tag>2.0.3</tag>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/directory-fortress-realm.git</connection>
+    <developerConnection> scm:git:https://gitbox.apache.org/repos/asf/directory-fortress-realm.git </developerConnection>
+    <url>https://github.com/apache/directory-fortress-realm/tree/master</url>
+    <tag>master</tag>
   </scm>
 
   <issueManagement>
