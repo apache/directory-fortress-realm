@@ -65,7 +65,6 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  ```
  git clone --branch 2.0.3 https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
  cd directory-fortress-realm
- mvn clean install
  ```
 
  b. or download package:
@@ -74,7 +73,6 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  wget http://www.apache.org/dist/directory/fortress/dist/2.0.3/fortress-realm-2.0.3-source-release.zip
  unzip fortress-realm-2.0.3-source-release.zip
  cd fortress-realm-2.0.3
- mvn clean install
  ```
 
 2. Build the source
