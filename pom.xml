@@ -239,7 +239,6 @@
         </executions>
       </plugin>
 
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -389,25 +388,6 @@
               <artifactId>jdepend-maven-plugin</artifactId>
             </plugin>
 
-            <!--
-                  <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-changes-plugin</artifactId>
-                    <configuration>
-                    <onlyCurrentVersion>true</onlyCurrentVersion>
-                    <resolutionIds>Fixed</resolutionIds>
-                    <statusIds>Resolved,Closed</statusIds>
-                    <columnNames>Type,Key,Summary,Status,Resolution,Fix Version</columnNames>
-                    </configuration>
-                    <reportSets>
-                    <reportSet>
-                      <reports>
-                      <report>jira-report</report>
-                      </reports>
-                    </reportSet>
-                    </reportSets>
-                  </plugin>
-            -->
           </reportPlugins>
         </configuration>
       </plugin>
