@@ -59,7 +59,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 -------------------------------------------------------------------------------
 ## SECTION 2. Download & Install
 
-1. Build the source.
+1. Download the source.
 
  a. from git:
  ```
@@ -77,7 +77,21 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  mvn clean install
  ```
 
-2. Now build the javadoc:
+2. Build the source
+
+a. Java 8 target
+
+ ```
+ mvn clean install
+ ```
+
+b. Java 11 target
+
+ ```
+ mvn clean install -Djava.version=11
+ ```
+
+3. Now build the javadoc:
 
  ```
  mvn javadoc:javadoc
@@ -95,7 +109,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  </plugin>
  ```
 
-3. View the generated document here: [./target/site/apidocs/overview-summary.html](./target/site/apidocs/overview-summary.html).
+4. View the generated document here: [./target/site/apidocs/overview-summary.html](./target/site/apidocs/overview-summary.html).
 
 -------------------------------------------------------------------------------
 ## SECTION 3. Instructions for Application Usage
