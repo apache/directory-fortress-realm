@@ -49,7 +49,7 @@ Minimum hardware requirements:
  * 4GB RAM
 
 Minimum software requirements:
- * Java SDK 8
+ * Java SDK 8++
  * git
  * Apache Maven3++
  * Apache Fortress Core **Download & Install** in **FORTRESS_CORE_HOME** package **README.md**.
