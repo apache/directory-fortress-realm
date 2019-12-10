@@ -102,7 +102,7 @@
     <skin.version>1.0.2</skin.version>
     <slf4j.api.version>1.7.21</slf4j.api.version>
     <slf4j.log4j12.version>1.7.21</slf4j.log4j12.version>
-    <tomcat.catalina.version>7.0.92</tomcat.catalina.version>
+    <tomcat.catalina.version>9.0.29</tomcat.catalina.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
 
@@ -124,6 +124,17 @@
 
     <pluginManagement>
       <plugins>
+
+        <plugin>
+          <groupId>org.owasp</groupId>
+          <artifactId>dependency-check-maven</artifactId>
+          <version>5.2.4</version>
+          <configuration>
+            <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
+            <suppressionFile>${project.basedir}/src/owasp/suppression.xml</suppressionFile>
+          </configuration>
+        </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
@@ -339,6 +350,11 @@
 
             <plugin>
               <groupId>org.codehaus.mojo</groupId>
+              <artifactId>javancss-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
               <artifactId>versions-maven-plugin</artifactId>
               <reportSets>
                 <reportSet>
@@ -375,11 +391,6 @@
                   <exclude>**/dependency-reduced-pom.xml</exclude>
                 </excludes>
               </configuration>
-            </plugin>
-
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>javancss-maven-plugin</artifactId>
             </plugin>
 
             <plugin>
@@ -504,5 +515,26 @@
         </plugins>
       </build>
     </profile>
+
+    <!-- OWASP Dependency Vulnerability Scanner Profile -->
+    <profile>
+      <id>owasp</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
 </project>
