@@ -123,18 +123,6 @@ public class Tc7AccessMgrProxy extends RealmBase
 
 
     /**
-     * Gets the info attribute of the TcAccessMgrProxy object
-     *
-     * @return The info value
-     */
-    @Override
-    public String getInfo()
-    {
-        return info;
-    }
-
-
-    /**
      * Perform user authentication and evaluate password policies.
      *
      * @param userId   Contains the userid of the user signing on.
@@ -174,18 +162,6 @@ public class Tc7AccessMgrProxy extends RealmBase
     }
 
    
-    /**
-     * Gets the name attribute of the TcAccessMgrProxy object
-     *
-     * @return The name value
-     */
-    @Override
-    protected String getName()
-    {
-        return CLS_NM;
-    }
-
-
     /**
      * Gets the password attribute of the TcAccessMgrProxy object
      *
