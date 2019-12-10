@@ -16,7 +16,7 @@
    under the License.
 
 # README for Apache Fortress Realm
- * Version 2.0.3
+ * Version 2.0.4
 
 -------------------------------------------------------------------------------
 ## Table of Contents
@@ -63,16 +63,16 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
  a. from git:
  ```
- git clone --branch 2.0.3 https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
+ git clone --branch 2.0.4 https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
  cd directory-fortress-realm
  ```
 
  b. or download package:
 
  ```
- wget http://www.apache.org/dist/directory/fortress/dist/2.0.3/fortress-realm-2.0.3-source-release.zip
- unzip fortress-realm-2.0.3-source-release.zip
- cd fortress-realm-2.0.3
+ wget http://www.apache.org/dist/directory/fortress/dist/2.0.4/fortress-realm-2.0.4-source-release.zip
+ unzip fortress-realm-2.0.4-source-release.zip
+ cd fortress-realm-2.0.4
  ```
 
 2. Build the source
