@@ -100,8 +100,8 @@
     <findbugs.annotation.version>1.0.0</findbugs.annotation.version>
     <junit-addons.version>0.1</junit-addons.version>
     <skin.version>1.0.2</skin.version>
-    <slf4j.api.version>1.7.21</slf4j.api.version>
-    <slf4j.log4j12.version>1.7.21</slf4j.log4j12.version>
+    <slf4j.api.version>1.7.29</slf4j.api.version>
+    <slf4j.impl.version>2.13.3</slf4j.impl.version>
     <tomcat.catalina.version>9.0.29</tomcat.catalina.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
@@ -440,10 +440,10 @@
 
     <!-- logging implementation used for unit tests -->
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
       <scope>test</scope>
-      <version>${slf4j.log4j12.version}</version>
+      <version>${slf4j.impl.version}</version>
     </dependency>
 
     <dependency>
