@@ -22,9 +22,10 @@
 ## Table of Contents
 
  * Document Overview
- * Tips for first-time users.
- * SECTION 1. Prerequisites.
- * SECTION 2. Download & Install.
+ * About Apache Fortress Realm  
+ * Tips for first-time users
+ * SECTION 1. Prerequisites
+ * SECTION 2. Download & Install
  * SECTION 3. Instructions for Application Usage
 
 ___________________________________________________________________________________
@@ -32,6 +33,16 @@ ________________________________________________________________________________
 
 This document contains instructions to download and install the Apache Fortress Realm.  SECTION 3 contains steps to get it working with Apache Tomcat.
 
+___________________________________________________________________________________
+## About Apache Fortress Realm
+
+* Role-Based Access Control security provider to Apache Tomcat.
+
+* Uses Apache Tomcat Realm Interface
+
+* Declarative controls:
+      * authentication
+      * coarse-grained role check
 ___________________________________________________________________________________
 ##  Tips for first-time users
 
@@ -45,16 +56,13 @@ ________________________________________________________________________________
 ## SECTION 1. Prerequisites
 
 Minimum hardware requirements:
- * 2 Cores
- * 4GB RAM
+ * 1 Core
+ * 1GB RAM
 
-Minimum software requirements:
+Minimum software requirements (to build):
  * Java SDK 8++
  * git
  * Apache Maven3++
- * Apache Fortress Core **Download & Install** in **FORTRESS_CORE_HOME** package **README.md**.
-
-Everything else covered in steps that follow.  Tested on Debian, Centos & Windows machines.
 
 -------------------------------------------------------------------------------
 ## SECTION 2. Download & Install
