@@ -40,9 +40,7 @@ ________________________________________________________________________________
 
 * Uses Apache Tomcat Realm Interface
 
-* Declarative controls: 
-      * authentication 
-      * coarse-grained role check 
+* Declarative controls for authentication & coarse-grained authorization (role check) 
 ___________________________________________________________________________________
 ##  Tips for first-time users
 
