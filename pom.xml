@@ -95,13 +95,13 @@
     <!-- Set versions for depending jars -->
     <fortress-core.version>2.0.6</fortress-core.version>
     <javadoc.version>2.9.1</javadoc.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13.2</junit.version>
     <checkstyle-configuration.version>0.1</checkstyle-configuration.version>
     <findbugs.annotation.version>1.0.0</findbugs.annotation.version>
     <junit-addons.version>0.1</junit-addons.version>
     <skin.version>1.0.2</skin.version>
     <slf4j.api.version>1.7.29</slf4j.api.version>
-    <slf4j.impl.version>2.13.3</slf4j.impl.version>
+    <slf4j.impl.version>2.14.1</slf4j.impl.version>
     <tomcat.catalina.version>9.0.29</tomcat.catalina.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
@@ -536,6 +536,7 @@
           <plugin>
             <groupId>org.owasp</groupId>
             <artifactId>dependency-check-maven</artifactId>
+            <version>6.2.2</version>
             <executions>
               <execution>
                 <goals>
