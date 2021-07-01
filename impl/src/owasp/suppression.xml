@@ -22,58 +22,9 @@
     <!-- Suppress OWASP warnings about tomcat serverside vulnerabilities, not applicable here. -->
     <suppress>
         <notes><![CDATA[
-   file name: tomcat-api-9.0.29.jar
+   file name: api-i18n-2.0.0.jar
    ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat/tomcat\-api@.*$</packageUrl>
-        <cve>CVE-2016-5425</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-jni-9.0.29.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat/tomcat\-jni@.*$</packageUrl>
-        <cve>CVE-2016-5425</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-util-9.0.29.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat/tomcat\-util@.*$</packageUrl>
-        <cve>CVE-2016-5425</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-coyote-9.0.29.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat/tomcat\-coyote@.*$</packageUrl>
-        <cve>CVE-2016-5425</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-jsp-api-9.0.29.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat/tomcat\-jsp\-api@.*$</packageUrl>
-        <cve>CVE-2016-5425</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-catalina-9.0.29.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat/tomcat\-catalina@.*$</packageUrl>
-        <cve>CVE-2016-5425</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-util-scan-9.0.29.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat/tomcat\-util\-scan@.*$</packageUrl>
-        <cve>CVE-2016-5425</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-jaspic-api-9.0.29.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat/tomcat\-jaspic\-api@.*$</packageUrl>
-        <cve>CVE-2016-5425</cve>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.directory\.api/api\-i18n@.*$</packageUrl>
+        <cpe>cpe:/a:i18n_project:i18n</cpe>
     </suppress>
 </suppressions>

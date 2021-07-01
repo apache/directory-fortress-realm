@@ -31,7 +31,7 @@
   <artifactId>fortress-realm</artifactId>
   <packaging>pom</packaging>
   <name>Apache Fortress Realm</name>
-  <version>2.0.7-SNAPSHOT</version>
+  <version>2.0.6-SNAPSHOT</version>
   <inceptionYear>2007</inceptionYear>
   <description>
     Apache Fortress Realm provides standards-based Role-Based Access Control security provider to Apache Tomcat.
@@ -102,7 +102,7 @@
     <skin.version>1.0.2</skin.version>
     <slf4j.api.version>1.7.29</slf4j.api.version>
     <slf4j.impl.version>2.14.1</slf4j.impl.version>
-    <tomcat.catalina.version>9.0.29</tomcat.catalina.version>
+    <tomcat.catalina.version>9.0.48</tomcat.catalina.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
 
@@ -128,7 +128,7 @@
         <plugin>
           <groupId>org.owasp</groupId>
           <artifactId>dependency-check-maven</artifactId>
-          <version>5.2.4</version>
+          <version>6.2.2</version>
           <configuration>
             <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
             <suppressionFile>${project.basedir}/src/owasp/suppression.xml</suppressionFile>
@@ -536,7 +536,6 @@
           <plugin>
             <groupId>org.owasp</groupId>
             <artifactId>dependency-check-maven</artifactId>
-            <version>6.2.2</version>
             <executions>
               <execution>
                 <goals>
