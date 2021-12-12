@@ -93,7 +93,7 @@
     </distMgmtSiteUrl>
 
     <!-- Set versions for depending jars -->
-    <fortress-core.version>2.0.6</fortress-core.version>
+    <fortress-core.version>2.0.7</fortress-core.version>
     <javadoc.version>2.9.1</javadoc.version>
     <junit.version>4.13.2</junit.version>
     <checkstyle-configuration.version>0.1</checkstyle-configuration.version>
@@ -101,7 +101,7 @@
     <junit-addons.version>0.1</junit-addons.version>
     <skin.version>1.0.2</skin.version>
     <slf4j.api.version>1.7.29</slf4j.api.version>
-    <slf4j.impl.version>2.14.1</slf4j.impl.version>
+    <slf4j.impl.version>2.15.0</slf4j.impl.version>
     <tomcat.catalina.version>9.0.48</tomcat.catalina.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
