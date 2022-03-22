@@ -52,13 +52,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.directory.junit</groupId>
-      <artifactId>junit-addons</artifactId>
-      <scope>test</scope>
-      <version>${junit-addons.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
       <version>${slf4j.impl.version}</version>

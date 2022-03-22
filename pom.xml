@@ -94,16 +94,11 @@
 
     <!-- Set versions for depending jars -->
     <fortress-core.version>2.0.7</fortress-core.version>
-    <javadoc.version>2.9.1</javadoc.version>
     <junit.version>4.13.2</junit.version>
     <checkstyle-configuration.version>0.1</checkstyle-configuration.version>
-    <findbugs.annotation.version>1.0.0</findbugs.annotation.version>
-    <junit-addons.version>0.1</junit-addons.version>
-    <skin.version>1.0.2</skin.version>
     <slf4j.api.version>1.7.36</slf4j.api.version>
     <slf4j.impl.version>2.17.2</slf4j.impl.version>
     <tomcat.catalina.version>9.0.48</tomcat.catalina.version>
-    <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
 
   <mailingLists>
@@ -434,15 +429,7 @@
   </dependencyManagement>
 
   <dependencies>
-    <!-- for Java5 findbugs annotations are required in each module at compile time -->
-    <dependency>
-      <groupId>findbugs</groupId>
-      <artifactId>annotations</artifactId>
-      <scope>provided</scope>
-      <version>${findbugs.annotation.version}</version>
-    </dependency>
 
-    <!-- common logging interface -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
