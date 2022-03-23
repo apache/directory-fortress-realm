@@ -84,20 +84,22 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  ```
 
 2. Add to the file:
+
  ```
- <Context path="/myappcontext" reloadable="true">
+ <Context reloadable="true">
     <Realm className="org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy"
-           debug="0"
-           resourceName="UserDatabase"
            defaultRoles=""
            containerType="TomcatContext"
-           realmClasspath=""
            contextId="HOME"
+           realmClasspath=""
             />
- </Context>
- ```
+</Context>
+```
 
- Where *myappcontext* is the web context for *your* web application.
+- defaultRoles contains the comma-separated list of allowed role names for this web app. If left empty, it will default to the user's assigned roles.
+- containerType for realm context setups, this will always be 'TomcatContext'.
+- contextId contains the tenant ID. This should be 'HOME' if not using fortress multitenancy features. See [README-MULTITENANCY](https://github.com/apache/directory-fortress-core/blob/master/README-MULTITENANCY.md).
+- realmClasspath should always be empty, for realm context setups. It will use the web app's classpath.
 
 3. Edit the web app's deployment descriptor:
  ```
@@ -129,7 +131,13 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
   <!-- Security roles referenced by this web application -->
   <security-role>
-      <role-name>MY_ROLE_NAME</role-name>
+      <role-name>A_ROLE_NAME_1</role-name>
+  </security-role>
+  <security-role>
+      <role-name>A_ROLE_NAME_2</role-name>
+  </security-role>
+  <security-role>
+      <role-name>A_ROLE_NAME_3</role-name>
   </security-role>
   ...
  ```
