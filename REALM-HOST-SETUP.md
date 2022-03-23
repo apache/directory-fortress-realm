@@ -125,7 +125,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  ...
  -rwxrwxr-x 1 x y 5905 Jan 23 12:41 ehcache.xml
  -rw-rw-r-- 1 x y 1161 Jan 23 12:41 fortress.properties
- -rw-rw-r-- 1 x y 1235 Jan 23 12:41 log4j.properties
+ -rw-rw-r-- 1 x y 1235 Jan 23 12:41 log4j2.xml
  ...
  ```
 

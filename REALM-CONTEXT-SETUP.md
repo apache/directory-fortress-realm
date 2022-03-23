@@ -189,11 +189,11 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  enable.pool.reconnect=true
  ```
 
-8. Add two other files, **ehcache.xml** and **log4j.properties** to classpath of the web app.
+8. Add two other files, **ehcache.xml** and **log4j2.xml** to classpath of the web app.
 
  ```
  cp $FORTRESS_REALM_HOME/conf/echcache.xml $MY_APP_HOME/src/main/resources
- cp $FORTRESS_REALM_HOME/conf/log4j.properties $MY_APP_HOME/src/main/resources
+ cp $FORTRESS_REALM_HOME/conf/log4j2.xml $MY_APP_HOME/src/main/resources
  ```
 
 9. Verify these configuration artifacts are properly staged to your app resource folder:
@@ -202,7 +202,7 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
  ...
  -rwxrwxr-x 1 x y 5905 Jan 23 12:41 ehcache.xml
  -rw-rw-r-- 1 x y 1161 Jan 23 12:41 fortress.properties
- -rw-rw-r-- 1 x y 1235 Jan 23 12:41 log4j.properties
+ -rw-rw-r-- 1 x y 1235 Jan 23 12:41 log4j2.xml
  ...
  ```
  *Fortress needs all three files in its classpath.*
