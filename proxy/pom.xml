@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.fortress</groupId>
     <artifactId>fortress-realm</artifactId>
-    <version>2.0.8</version>
+    <version>2.0.9-SNAPSHOT</version>
   </parent>
 
   <artifactId>fortress-realm-proxy</artifactId>
