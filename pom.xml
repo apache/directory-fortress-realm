@@ -98,7 +98,7 @@
     <checkstyle-configuration.version>0.1</checkstyle-configuration.version>
     <slf4j.api.version>1.7.36</slf4j.api.version>
     <slf4j.impl.version>2.18.0</slf4j.impl.version>
-    <tomcat.catalina.version>9.0.48</tomcat.catalina.version>
+    <tomcat.catalina.version>9.0.64</tomcat.catalina.version>
   </properties>
 
   <mailingLists>
