@@ -58,9 +58,9 @@ Minimum hardware requirements:
  * 1GB RAM
 
 Minimum software requirements (to build):
- * Java SDK 8++
  * git
- * Apache Maven3++
+ * Java SDK >= 11
+ * Apache Maven >= 3
 
 -------------------------------------------------------------------------------
 ## SECTION 2. Download & Install
@@ -83,18 +83,8 @@ Minimum software requirements (to build):
 
 2. Build the source
 
-a. Java 8 target
-
  ```
  mvn clean install
- ```
-
--- OR --
-
-b. Java 11 target
-
- ```
- mvn clean install -Djava.version=11
  ```
 
 3. Now build the javadoc:
