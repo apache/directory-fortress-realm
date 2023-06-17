@@ -49,15 +49,10 @@ ________________________________________________________________________________
 -------------------------------------------------------------------------------
 ## SECTION 1. Prerequisites
 
-Minimum hardware requirements:
- * 2 Cores
- * 4GB RAM
-
 Minimum software requirements:
- * Java SDK 8++
- * Apache Tomcat7++
- * git
- * Apache Maven3++
+ * Java SDK >= 11
+ * Apache Maven >= 3
+ * Apache Tomcat >= 8
  * Apache Fortress Core **Download & Install** in **FORTRESS_CORE_HOME** package **README.md**.
  * Apache Fortress Core **Options for using Apache Fortress and LDAP server** in **FORTRESS_CORE_HOME** package **README.md**.
  * Apache Fortress Realm **Download & Install** in this package's [README](README.md).

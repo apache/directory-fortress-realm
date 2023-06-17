@@ -53,10 +53,6 @@ ________________________________________________________________________________
 -------------------------------------------------------------------------------
 ## SECTION 1. Prerequisites
 
-Minimum hardware requirements:
- * 1 Core
- * 1GB RAM
-
 Minimum software requirements (to build):
  * git
  * Java SDK >= 11
