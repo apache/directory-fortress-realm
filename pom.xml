@@ -96,7 +96,6 @@
     <fortress-core.version>2.0.9-SNAPSHOT</fortress-core.version>
     <junit.version>4.13.2</junit.version>
     <checkstyle-configuration.version>0.1</checkstyle-configuration.version>
-    <slf4j.api.version>2.0.7</slf4j.api.version>
     <slf4j.impl.version>2.20.0</slf4j.impl.version>
     <tomcat.catalina.version>9.0.64</tomcat.catalina.version>
   </properties>
@@ -430,13 +429,7 @@
 
   <dependencies>
 
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.api.version}</version>
-    </dependency>
-
-    <!-- logging implementation used for unit tests -->
+    <!-- logging implementation used for realm impl -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j2-impl</artifactId>
