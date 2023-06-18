@@ -32,7 +32,7 @@
   <packaging>pom</packaging>
   <name>Apache Fortress Realm</name>
   <version>3.0.0-SNAPSHOT</version>
-  <inceptionYear>2007</inceptionYear>
+  <inceptionYear>2014</inceptionYear>
   <description>
     Apache Fortress Realm provides standards-based Role-Based Access Control security provider to Apache Tomcat.
   </description>
@@ -85,7 +85,7 @@
   <!-- ====================================================== -->
   <properties>
 
-    <java.version>1.8</java.version>
+    <java.version>11</java.version>
     <additionalparam>-Xdoclint:none</additionalparam>
     <projectName>apache-directory-fortress-realm</projectName>
     <distMgmtSiteUrl>
@@ -93,12 +93,11 @@
     </distMgmtSiteUrl>
 
     <!-- Set versions for depending jars -->
-    <fortress-core.version>2.0.8</fortress-core.version>
+    <fortress-core.version>2.0.9-SNAPSHOT</fortress-core.version>
     <junit.version>4.13.2</junit.version>
     <checkstyle-configuration.version>0.1</checkstyle-configuration.version>
-    <slf4j.api.version>1.7.36</slf4j.api.version>
-    <slf4j.impl.version>2.18.0</slf4j.impl.version>
-    <tomcat.catalina.version>9.0.72</tomcat.catalina.version>
+    <slf4j.impl.version>2.20.0</slf4j.impl.version>
+    <tomcat.catalina.version>9.0.64</tomcat.catalina.version>
   </properties>
 
   <mailingLists>
@@ -430,18 +429,12 @@
 
   <dependencies>
 
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.api.version}</version>
-    </dependency>
-
-    <!-- logging implementation used for unit tests -->
+    <!-- logging implementation used for realm impl -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <scope>test</scope>
+      <artifactId>log4j-slf4j2-impl</artifactId>
       <version>${slf4j.impl.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
