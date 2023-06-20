@@ -97,7 +97,7 @@
     <junit.version>4.13.2</junit.version>
     <checkstyle-configuration.version>0.1</checkstyle-configuration.version>
     <slf4j.impl.version>2.20.0</slf4j.impl.version>
-    <tomcat.catalina.version>9.0.64</tomcat.catalina.version>
+    <tomcat.catalina.version>10.1.10</tomcat.catalina.version>
   </properties>
 
   <mailingLists>
