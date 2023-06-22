@@ -16,7 +16,7 @@
    under the License.
 
 # README for Apache Fortress Realm
- * Version 2.0.8
+ * Version 3.0.0
 
 -------------------------------------------------------------------------------
 ## Table of Contents
@@ -65,16 +65,16 @@ Minimum software requirements (to build):
 
  a. from git:
  ```
- git clone --branch 2.0.8 https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
+ git clone --branch 3.0.0 https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
  cd directory-fortress-realm
  ```
 
  b. or download package:
 
  ```
- wget http://www.apache.org/dist/directory/fortress/dist/2.0.8/fortress-realm-2.0.8-source-release.zip
- unzip fortress-realm-2.0.8-source-release.zip
- cd fortress-realm-2.0.8
+ wget http://www.apache.org/dist/directory/fortress/dist/2.0.8/fortress-realm-3.0.0-source-release.zip
+ unzip fortress-realm-3.0.0-source-release.zip
+ cd fortress-realm-3.0.0
  ```
 
 2. Build the source
@@ -87,18 +87,6 @@ Minimum software requirements (to build):
 
  ```
  mvn javadoc:javadoc
- ```
-
- If using java 8, add this param to the pom.xml:
- ```
- <plugin>
-    ...
-    <artifactId>maven-javadoc-plugin</artifactId>
-    <configuration>
-        <additionalparam>-Xdoclint:none</additionalparam>
-        ...
-    </configuration>
- </plugin>
  ```
 
 4. View the generated document here: [./target/site/apidocs/overview-summary.html](./target/site/apidocs/overview-summary.html).
