@@ -64,30 +64,30 @@ Minimum software requirements (to build):
 1. Download the source.
 
  a. from git:
- ```
- git clone --branch 3.0.0 https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
- cd directory-fortress-realm
- ```
+```
+git clone --branch 3.0.0 https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
+cd directory-fortress-realm
+```
 
  b. or download package:
 
- ```
- wget http://www.apache.org/dist/directory/fortress/dist/2.0.8/fortress-realm-3.0.0-source-release.zip
- unzip fortress-realm-3.0.0-source-release.zip
- cd fortress-realm-3.0.0
- ```
+```
+wget http://www.apache.org/dist/directory/fortress/dist/[version]/fortress-realm-3.0.0-source-release.zip
+unzip fortress-realm-[version]-source-release.zip
+cd fortress-realm-[version]
+```
 
 2. Build the source
 
- ```
- mvn clean install
- ```
+```
+mvn clean install
+```
 
 3. Now build the javadoc:
 
- ```
- mvn javadoc:javadoc
- ```
+```
+mvn javadoc:javadoc
+```
 
 4. View the generated document here: [./target/site/apidocs/overview-summary.html](./target/site/apidocs/overview-summary.html).
 

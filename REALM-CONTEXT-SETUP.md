@@ -64,9 +64,9 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
 1. copy **FORTRESS_REALM_HOME** proxy jar to **TOMCAT_HOME**/lib/
 
- ```
- cp $FORTRESS_REALM_HOME/proxy/target/fortress-realm-proxy-[version].jar $TOMCAT_HOME/lib
- ```
+```
+cp $FORTRESS_REALM_HOME/proxy/target/fortress-realm-proxy-[version].jar $TOMCAT_HOME/lib
+```
 
 2. Restart Tomcat server for changes to take effect.
 
@@ -74,20 +74,20 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 ## SECTION 3. Enable Web App to use the Context Realm
 
 1. Add a **context.xml** file to the **META-INF** folder of target web app.
- ```
- vi $MY_APP_HOME/src/main/resources/META-INF/conf/context.xml
- ```
+```
+vi $MY_APP_HOME/src/main/resources/META-INF/conf/context.xml
+```
 
 2. Add to the file:
 
- ```
- <Context reloadable="true">
-    <Realm className="org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy"
-           defaultRoles=""
-           containerType="TomcatContext"
-           contextId="HOME"
-           realmClasspath=""
-            />
+```xml
+<Context reloadable="true">
+   <Realm className="org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy"
+          defaultRoles=""
+          containerType="TomcatContext"
+          contextId="HOME"
+          realmClasspath=""
+           />
 </Context>
 ```
 
@@ -97,117 +97,117 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 - realmClasspath should always be empty, for realm context setups. It will use the web app's classpath.
 
 3. Edit the web app's deployment descriptor:
- ```
- vi $MY_APP_HOME/src/main/webapp/WEB-INF/web.xml
- ```
+```
+vi $MY_APP_HOME/src/main/webapp/WEB-INF/web.xml
+```
 
 4. Add Java EE security constraint declarations to the file:
- ```
-  ...
-  <security-constraint>
-      <display-name>Commander Security Constraint</display-name>
-      <web-resource-collection>
-          <web-resource-name>Protected Area</web-resource-name>
-          <!-- Define the context-relative URL(s) to be protected -->
-          <url-pattern>/*</url-pattern>
-      </web-resource-collection>
-      <auth-constraint>
-          <!-- Anyone with one of the listed roles may access this area -->
-          <role-name>MY_ROLE_NAME</role-name>
-          ...
-      </auth-constraint>
-  </security-constraint>
+```xml
+...
+<security-constraint>
+  <display-name>Commander Security Constraint</display-name>
+    <web-resource-collection>
+        <web-resource-name>Protected Area</web-resource-name>
+        <!-- Define the context-relative URL(s) to be protected -->
+        <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+        <!-- Anyone with one of the listed roles may access this area -->
+        <role-name>MY_ROLE_NAME</role-name>
+        ...
+    </auth-constraint>
+</security-constraint>
 
-  <!-- Example of HTTP Basic Authentication Setup. -->
-  <login-config>
-      <auth-method>BASIC</auth-method>
-      <realm-name>FortressSecurityRealm</realm-name>
-  </login-config>
+<!-- Example of HTTP Basic Authentication Setup. -->
+<login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>FortressSecurityRealm</realm-name>
+</login-config>
 
-  <!-- Security roles referenced by this web application -->
-  <security-role>
-      <role-name>A_ROLE_NAME_1</role-name>
-  </security-role>
-  <security-role>
-      <role-name>A_ROLE_NAME_2</role-name>
-  </security-role>
-  <security-role>
-      <role-name>A_ROLE_NAME_3</role-name>
-  </security-role>
-  ...
- ```
+<!-- Security roles referenced by this web application -->
+<security-role>
+    <role-name>A_ROLE_NAME_1</role-name>
+</security-role>
+<security-role>
+    <role-name>A_ROLE_NAME_2</role-name>
+</security-role>
+<security-role>
+    <role-name>A_ROLE_NAME_3</role-name>
+</security-role>
+...
+```
 
  *Fortress Realm follows standard Java EE security semantics.*
 
 5. Add this dependency to the Web app's **pom.xml** file.
 
- ```
- <dependency>
-     <groupId>org.apache.directory</groupId>
-     <artifactId>fortress-realm-impl</artifactId>
-     <version>${project.version}</version>
-     <classifier>classes</classifier>
-  </dependency>
-  ```
+```xml
+<dependency>
+    <groupId>org.apache.directory</groupId>
+    <artifactId>fortress-realm-impl</artifactId>
+    <version>${project.version}</version>
+    <classifier>classes</classifier>
+ </dependency>
+```
 
- *Where project.version contains target version, e.g. 1.0-RC41*
+ *Where project.version contains target version, e.g. 3.0.0*
 
 6. Add the **fortress.properties** file to the classpath of the web app.
 
  Copy the fortress.properties, created during **FORTRESS_CORE_HOME** setup, to app resource folder.
- ```
- cp $FORTRESS_CORE_HOME/config/fortress.properties $MY_APP_HOME/src/main/resources
- ```
+```
+cp $FORTRESS_CORE_HOME/config/fortress.properties $MY_APP_HOME/src/main/resources
+```
 
 7. Verify a match for target LDAP server coordinates.
- ```
- # This param tells fortress what type of ldap server in use:
- ldap.server.type=apacheds
+```properties
+# This param tells fortress what type of ldap server in use:
+ldap.server.type=apacheds
 
- # ldap host name
- host=localhost
+# ldap host name
+host=localhost
 
- # if ApacheDS is listening on
- port=10389
+# if ApacheDS is listening on
+port=10389
 
- # If ApacheDS, these credentials are used for read/write to fortress DIT
- admin.user=uid=admin,ou=system
- admin.pw=secret
+# If ApacheDS, these credentials are used for read/write to fortress DIT
+admin.user=uid=admin,ou=system
+admin.pw=secret
 
- # This is min/max settings for admin pool connections:
- min.admin.conn=1
- max.admin.conn=10
+# This is min/max settings for admin pool connections:
+min.admin.conn=1
+max.admin.conn=10
 
- # This node contains more fortress properties stored on behalf of connecting LDAP clients:
- config.realm=DEFAULT
- config.root=ou=Config,dc=example,dc=com
+# This node contains more fortress properties stored on behalf of connecting LDAP clients:
+config.realm=DEFAULT
+config.root=ou=Config,dc=example,dc=com
 
- # Used by application security components:
- perms.cached=true
+# Used by application security components:
+perms.cached=true
 
- # Fortress uses a cache:
- ehcache.config.file=ehcache.xml
+# Fortress uses a cache:
+ehcache.config.file=ehcache.xml
 
- # Default for pool reconnect flag is false:
- enable.pool.reconnect=true
- ```
+# Default for pool reconnect flag is false:
+enable.pool.reconnect=true
+```
 
 8. Add two other files, **ehcache.xml** and **log4j2.xml** to classpath of the web app.
 
- ```
- cp $FORTRESS_REALM_HOME/conf/echcache.xml $MY_APP_HOME/src/main/resources
- cp $FORTRESS_REALM_HOME/conf/log4j2.xml $MY_APP_HOME/src/main/resources
- ```
+```bash
+cp $FORTRESS_REALM_HOME/conf/echcache.xml $MY_APP_HOME/src/main/resources
+cp $FORTRESS_REALM_HOME/conf/log4j2.xml $MY_APP_HOME/src/main/resources
+```
 
 9. Verify these configuration artifacts are properly staged to your app resource folder:
- ```
- x@machine:~/MY_APP_HOME/src/main/resources$ ls -l
- ...
- -rwxrwxr-x 1 x y 5905 Jan 23 12:41 ehcache.xml
- -rw-rw-r-- 1 x y 1161 Jan 23 12:41 fortress.properties
- -rw-rw-r-- 1 x y 1235 Jan 23 12:41 log4j2.xml
- ...
- ```
+```bash
+~/MY_APP_HOME/src/main/resources$ ls -l
+...
+-rwxrwxr-x 1 x y 5905 Jan 23 12:41 ehcache.xml
+-rw-rw-r-- 1 x y 1161 Jan 23 12:41 fortress.properties
+-rw-rw-r-- 1 x y 1235 Jan 23 12:41 log4j2.xml
+...
+```
  *Fortress needs all three files in its classpath.*
 
 10. Redeploy web application to Tomcat.
@@ -216,12 +216,12 @@ Everything else covered in steps that follow.  Tested on Debian, Centos & Window
 
 12. Verify that realm is operating properly per Tomcat server log:
 
- ```
- tail -f -n10000 $TOMCAT_HOME/logs/catalina.out
- ...
- org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
- ...
- ```
+```bash
+tail -f -n10000 $TOMCAT_HOME/logs/catalina.out
+...
+org.apache.directory.fortress.realm.tomcat.Tc7AccessMgrProxy J2EE Tomcat7 policy agent initialization successful
+...
+```
 
 Realm Usage Notes:
 * This automatically enforces authentication and coarse-gained authorization (isUserInRole) checking for a single web app.
