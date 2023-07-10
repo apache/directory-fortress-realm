@@ -58,29 +58,6 @@
   </issueManagement>
 
   <!-- ====================================================== -->
-  <!-- The list of current developers                         -->
-  <!-- ====================================================== -->
-  <developers>
-    <developer>
-      <id>smckinney</id>
-      <name>Shawn McKinney</name>
-      <email>smckinney@apache.org</email>
-    </developer>
-
-    <developer>
-      <id>elecharny</id>
-      <name>Emmanuel Lecharny</name>
-      <email>elecharny@apache.org</email>
-    </developer>
-
-    <developer>
-      <id>cpike</id>
-      <name>Chris Pike</name>
-      <email>cpike@apache.org</email>
-    </developer>
-  </developers>
-
-  <!-- ====================================================== -->
   <!-- The used properties for this project                   -->
   <!-- ====================================================== -->
   <properties>
