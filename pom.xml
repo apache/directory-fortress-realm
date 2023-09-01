@@ -31,7 +31,7 @@
   <artifactId>fortress-realm</artifactId>
   <packaging>pom</packaging>
   <name>Apache Fortress Realm</name>
-  <version>3.0.0</version>
+  <version>3.0.0-SNAPSHOT</version>
   <inceptionYear>2014</inceptionYear>
   <description>
     Apache Fortress Realm provides standards-based Role-Based Access Control security provider to Apache Tomcat.
