@@ -73,7 +73,7 @@
     <fortress-core.version>3.0.0</fortress-core.version>
     <junit.version>4.13.2</junit.version>
     <checkstyle-configuration.version>0.1</checkstyle-configuration.version>
-    <tomcat.catalina.version>10.1.34</tomcat.catalina.version>
+    <tomcat.catalina.version>10.1.35</tomcat.catalina.version>
   </properties>
 
   <mailingLists>
