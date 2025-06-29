@@ -16,7 +16,7 @@
    under the License.
 
 # README for Apache Fortress Realm
- * Version 3.0.0
+ * Version 3.0.1
 
 -------------------------------------------------------------------------------
 ## Table of Contents
@@ -65,14 +65,14 @@ Minimum software requirements (to build):
 
  a. from git:
 ```
-git clone --branch 3.0.0 https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
+git clone --branch 3.0.1 https://gitbox.apache.org/repos/asf/directory-fortress-realm.git
 cd directory-fortress-realm
 ```
 
  b. or download package:
 
 ```
-wget http://www.apache.org/dist/directory/fortress/dist/[version]/fortress-realm-3.0.0-source-release.zip
+wget http://www.apache.org/dist/directory/fortress/dist/[version]/fortress-realm-3.0.1-source-release.zip
 unzip fortress-realm-[version]-source-release.zip
 cd fortress-realm-[version]
 ```

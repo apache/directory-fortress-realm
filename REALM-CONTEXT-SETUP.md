@@ -16,7 +16,7 @@
    under the License.
 
 # README for Apache Fortress Realm Context Setup
- * Version 3.0.0
+ * Version 3.0.1
  * Apache Fortress Realm Context System Architecture Diagram
  ![Apache Fortress Realm Context System Architecture](images/fortress-realm-system-arch.png "Apache Fortress Realm Context System Architecture")
 
@@ -150,7 +150,7 @@ vi $MY_APP_HOME/src/main/webapp/WEB-INF/web.xml
  </dependency>
 ```
 
- *Where project.version contains target version, e.g. 3.0.0*
+ *Where project.version contains target version, e.g. 3.0.1*
 
 6. Add the **fortress.properties** file to the classpath of the web app.
 
