@@ -55,8 +55,8 @@ ________________________________________________________________________________
 
 Minimum software requirements (to build):
  * git
- * Java SDK >= 11
- * Apache Maven >= 3
+ * Java SDK >= 17
+ * Apache Maven >= 3.6.3
 
 -------------------------------------------------------------------------------
 ## SECTION 2. Download & Install
